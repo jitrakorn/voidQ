@@ -8,15 +8,15 @@
             <web-module-libraries/>
             <web-module-additional-libraries>
                 <library>
-                    <file>${reference.voidQAdmin-war.dist-ear}</file>
-                    <path-in-war>/</path-in-war>
-                </library>
-                <library>
                     <file>${reference.voidQ-ejb.dist-ear}</file>
                     <path-in-war>/</path-in-war>
                 </library>
                 <library>
                     <file>${reference.voidQPartner.dist-ear}</file>
+                    <path-in-war>/</path-in-war>
+                </library>
+                <library>
+                    <file>${reference.voidQAdmin.dist-ear}</file>
                     <path-in-war>/</path-in-war>
                 </library>
             </web-module-additional-libraries>
@@ -31,7 +31,7 @@
                 <id>dist-ear</id>
             </reference>
             <reference>
-                <foreign-project>voidQAdmin-war</foreign-project>
+                <foreign-project>voidQAdmin</foreign-project>
                 <artifact-type>j2ee_ear_archive</artifact-type>
                 <script>build.xml</script>
                 <target>dist-ear</target>
