@@ -172,7 +172,13 @@ a:hover {
 }
 
 .dataTable3Value {
-    width: 60%;
+    width: 40%;
+    border-style: solid;
+    border-width: thin;
+}
+
+.dataTable3Button {
+    width: 20%;
     border-style: solid;
     border-width: thin;
 }

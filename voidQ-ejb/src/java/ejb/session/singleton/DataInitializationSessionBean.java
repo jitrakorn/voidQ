@@ -9,6 +9,7 @@ import javax.ejb.EJB;
 import javax.ejb.Singleton;
 import javax.ejb.LocalBean;
 import javax.ejb.Startup;
+import util.enumeration.AccountStatus;
 import util.exception.AdministratorNotFoundException;
 import util.exception.InputDataValidationException;
 
@@ -57,7 +58,7 @@ public class DataInitializationSessionBean
         try
         {
             administratorSessionBeanLocal.createNewAdmin(new Administrator("mx","mx","admin","password","lovemx93@gmail.com"));
-            partnerSessionBeanLocal.createNewPartner(new Partner("mx", "mx clinic", "geylang hotel 81", "lovemx93@gmail.com", "password"));
+            partnerSessionBeanLocal.createNewPartner(new Partner("mx", "mx clinic", "geylang hotel 81", "lovemx93@gmail.com", "password",AccountStatus.ACTIVATED));
           
         }
         catch(InputDataValidationException ex)

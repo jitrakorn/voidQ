@@ -19,6 +19,7 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
+import util.enumeration.AccountStatus;
 import util.exception.DeletePartnerException;
 import util.exception.InputDataValidationException;
 import util.exception.InvalidLoginCredentialException;
@@ -52,6 +53,7 @@ public class PartnerSessionBean implements PartnerSessionBeanLocal {
   @Override
     public Partner createNewPartner(Partner newPartner) throws InputDataValidationException
     {        
+      
         Set<ConstraintViolation<Partner>>constraintViolations = validator.validate(newPartner);
         
         if(constraintViolations.isEmpty())

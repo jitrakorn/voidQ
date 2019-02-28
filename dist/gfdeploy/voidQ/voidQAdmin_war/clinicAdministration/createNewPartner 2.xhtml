@@ -1,0 +1,93 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <h:head>
+        <title> voidQ :: System Administration :: Create New Partner</title>
+        <h:outputStylesheet library="css" name="default.css" />
+    </h:head>
+    <h:body>
+        <h1>voidQ :: System Administration :: Create New Partner</h1>
+
+        <ui:insert name="header">
+            <ui:include src="/header.xhtml" />
+        </ui:insert>
+
+        <ui:insert name="mainmenu">
+            <ui:include src="/mainmenu.xhtml" />
+        </ui:insert>
+
+        <section id="content" class="content">
+            <div>
+                <h3>Create New Partner</h3>
+                <br/>
+
+                <h:form>
+                    <h:messages errorClass="errorTextsWithBullet" fatalClass="errorTextsWithBullet" infoClass="infoTextsWithBullet" globalOnly="true" />
+                    <br/>
+
+                    <h:panelGrid columnClasses="dataTable3Label,dataTable3Value,dataTable3Button,dataTable3Message" columns="3">
+                        <h:outputLabel style="font-weight: bold;" for="txtEmail" value="Email" />
+                        <h:inputText id="txtEmail" value="#{createNewPartnerManagedBean.newPartner.email}" required="true" requiredMessage="Username is required" />
+                        <h:message errorClass="errorTextsNoMarginLeft" fatalClass="errorTextsNoMarginLeft" for="txtEmail" />
+
+                        <h:outputLabel style="font-weight: bold;" for="txtPassword" value="Password" />
+                        <h:inputSecret id="txtPassword" value="#{createNewPartnerManagedBean.newPartner.password}" required="true" requiredMessage="Password is required" />
+                        <h:message errorClass="errorTextsNoMarginLeft" fatalClass="errorTextsNoMarginLeft" for="txtPassword" />
+
+
+                        <h:outputLabel style="font-weight: bold;" for="txtPartnerName" value="Partner Name" />
+                        <h:inputText id="txtPartnerName" value="#{createNewPartnerManagedBean.newPartner.partnerName}" required="true" requiredMessage="Partner Name is required" />
+                        <h:message errorClass="errorTextsNoMarginLeft" fatalClass="errorTextsNoMarginLeft" for="txtPartnerName" />
+
+       
+                        <h:outputLabel style="font-weight: bold;" for="txtClinicName" value="Clinic Name" />
+                        <h:inputText id="txtClinicName" value="#{createNewPartnerManagedBean.newPartner.clinicName}" required="true" requiredMessage="Clinic Name is required" />
+                        <h:message errorClass="errorTextsNoMarginLeft" fatalClass="errorTextsNoMarginLeft" for="txtClinicName" />
+
+                        
+                    
+                        <h:outputLabel style="font-weight: bold;" for="txtPostalCode" value="Postal Code" />
+                         
+                        <h:inputText id="txtPostalCode" value="#{createNewPartnerManagedBean.postalcode}" required="true" requiredMessage="Postal code is required" />
+                      <div style="overflow: hidden; padding-right: .5em;">
+                  <h:commandButton value="Clear" type="reset" />&nbsp;
+                </div>
+                    
+
+                        <h:message errorClass="errorTextsNoMarginLeft" fatalClass="errorTextsNoMarginLeft" for="txtPostalCode" />
+                 
+        
+
+                       
+                        <h:outputLabel style="font-weight: bold;" for="txtClinicAddress" value="Clinic Address" />
+                        <h:inputText id="txtClinicAddress" value="#{createNewPartnerManagedBean.newPartner.clinicAddress}"  />
+                        
+                        <h:message errorClass="errorTextsNoMarginLeft" fatalClass="errorTextsNoMarginLeft" for="txtClinicAddress" />
+                        
+
+
+                    </h:panelGrid>
+                    <br/>
+                    <div style="text-align: left;">
+                        <h:commandButton value="Clear" type="reset" />&nbsp;
+                        <h:commandButton value="Create" type="submit" actionListener="#{createNewPartnerManagedBean.loadAddress}" />
+                    </div>
+                </h:form>
+            </div>
+        </section>
+
+        <ui:insert name="sidebar">
+            <ui:include src="/sidebar.xhtml" />
+        </ui:insert>
+
+        <ui:insert name="footer">
+            <ui:include src="/footer.xhtml" />
+        </ui:insert>
+
+    </h:body>
+</html>

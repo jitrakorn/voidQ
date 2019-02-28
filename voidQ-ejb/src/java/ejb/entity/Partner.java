@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -12,6 +14,7 @@ import javax.persistence.OneToMany;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import util.enumeration.AccountStatus;
 import util.security.CryptographicHelper;
 
 
@@ -47,7 +50,10 @@ public class Partner implements Serializable
     private String password;
     @Column(columnDefinition = "CHAR(32) NOT NULL")
     private String salt;
-    
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    @NotNull
+    private AccountStatus accountStatus;
    
     
 
@@ -60,12 +66,13 @@ public class Partner implements Serializable
        
     }
 
-    public Partner(String partnerName, String clinicName, String clinicAddress, String email, String password) {
+    public Partner(String partnerName, String clinicName, String clinicAddress, String email, String password, AccountStatus accountStatus) {
         this();
         this.partnerName = partnerName;
         this.clinicName = clinicName;
         this.clinicAddress = clinicAddress;
         this.email = email;
+        this.accountStatus = accountStatus;
         setPassword(password);
     }
 
@@ -176,6 +183,14 @@ public class Partner implements Serializable
 
     public void setClinicAddress(String clinicAddress) {
         this.clinicAddress = clinicAddress;
+    }
+
+    public AccountStatus getAccountStatus() {
+        return accountStatus;
+    }
+
+    public void setAccountStatus(AccountStatus accountStatus) {
+        this.accountStatus = accountStatus;
     }
 
   
