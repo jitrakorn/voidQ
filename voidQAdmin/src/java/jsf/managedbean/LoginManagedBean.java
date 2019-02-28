@@ -1,6 +1,8 @@
 package jsf.managedbean;
 
+import ejb.entity.Administrator;
 import ejb.entity.Partner;
+import ejb.session.stateless.AdministratorSessionBeanLocal;
 import ejb.session.stateless.PartnerSessionBeanLocal;
 import java.io.IOException;
 import javax.ejb.EJB;
@@ -21,7 +23,9 @@ public class LoginManagedBean
 {
 
     @EJB
-    private PartnerSessionBeanLocal partnerSessionBeanLocal;
+    private AdministratorSessionBeanLocal administratorSessionBeanLocal;
+
+   
 
     
     
@@ -41,10 +45,10 @@ public class LoginManagedBean
     {
         try
         {
-            Partner currentPartner = partnerSessionBeanLocal.emailLogin(username, password);
+            Administrator currentAdmin = administratorSessionBeanLocal.userNameLogin(username, password);
             FacesContext.getCurrentInstance().getExternalContext().getSession(true);
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("isLogin", true);
-            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("currentPartner", currentPartner);
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("currentAdmin", currentAdmin);
             FacesContext.getCurrentInstance().getExternalContext().redirect(FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath() + "/index.xhtml");
         }
         catch(InvalidLoginCredentialException ex)

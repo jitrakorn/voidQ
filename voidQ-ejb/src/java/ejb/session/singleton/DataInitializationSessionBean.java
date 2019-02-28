@@ -1,14 +1,16 @@
 package ejb.session.singleton;
 
+import ejb.entity.Administrator;
 import ejb.entity.Partner;
+import ejb.session.stateless.AdministratorSessionBeanLocal;
 import ejb.session.stateless.PartnerSessionBeanLocal;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.ejb.Singleton;
 import javax.ejb.LocalBean;
 import javax.ejb.Startup;
+import util.exception.AdministratorNotFoundException;
 import util.exception.InputDataValidationException;
-import util.exception.PartnerNotFoundException;
 
 
 
@@ -19,6 +21,9 @@ import util.exception.PartnerNotFoundException;
 
 public class DataInitializationSessionBean
 {    
+
+    @EJB(name = "AdministratorSessionBeanLocal")
+    private AdministratorSessionBeanLocal administratorSessionBeanLocal;
 
     @EJB(name = "PartnerSessionBeanLocal")
     private PartnerSessionBeanLocal partnerSessionBeanLocal;
@@ -36,9 +41,9 @@ public class DataInitializationSessionBean
     {
         try
         {
-            partnerSessionBeanLocal.retrievePartnerByEmail("lovemx93@gmail.com");
+            administratorSessionBeanLocal.retrieveAdminByUsername("admin");
         }
-        catch(PartnerNotFoundException ex)
+        catch(AdministratorNotFoundException ex)
         {
             initializeData();
         }
@@ -46,10 +51,12 @@ public class DataInitializationSessionBean
     
     
     
+    
     private void initializeData()
     {
         try
         {
+            administratorSessionBeanLocal.createNewAdmin(new Administrator("mx","mx","admin","password","lovemx93@gmail.com"));
             partnerSessionBeanLocal.createNewPartner(new Partner("mx", "mx clinic", "geylang hotel 81", "lovemx93@gmail.com", "password"));
           
         }

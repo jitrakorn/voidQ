@@ -1,16 +1,12 @@
 package ejb.entity;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import util.security.CryptographicHelper;
@@ -19,13 +15,13 @@ import util.security.CryptographicHelper;
 
 @Entity
 
-public class Admin implements Serializable
+public class Administrator implements Serializable
 {
     private static final long serialVersionUID = 1L;
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long adminId;
+    private Long administratorId;
     @Column(nullable = false, length = 32)
     @NotNull
     @Size(max = 32)
@@ -34,7 +30,6 @@ public class Admin implements Serializable
     @NotNull
     @Size(max = 32)
     private String lastName;    
-    @Enumerated(EnumType.STRING)
     @Column(nullable = false, unique = true, length = 32)
     @NotNull
     @Size(min = 4, max = 32)
@@ -48,26 +43,31 @@ public class Admin implements Serializable
     private String password;
     @Column(columnDefinition = "CHAR(32) NOT NULL")
     private String salt;
-  
     
+    @Column(nullable = false, unique = true, length = 64)
+    @NotNull
+    @Size(max = 64)
+    @Email
+    private String email;
+   
     
-    public Admin()
+    public Administrator()
     {
         this.salt = CryptographicHelper.getInstance().generateRandomString(32);
         
-       
+      
     }
 
     
     
-    public Admin(String firstName, String lastName, String username, String password) 
+    public Administrator(String firstName, String lastName, String username, String password, String email) 
     {
         this();
         
         this.firstName = firstName;
-        this.lastName = lastName;
+        this.lastName = lastName;      
         this.username = username;
-        
+        this.email = email;
         setPassword(password);
     }
     
@@ -77,7 +77,7 @@ public class Admin implements Serializable
     public int hashCode()
     {
         int hash = 0;
-        hash += (this.adminId != null ? this.adminId.hashCode() : 0);
+        hash += (this.administratorId != null ? this.administratorId.hashCode() : 0);
         
         return hash;
     }
@@ -87,14 +87,14 @@ public class Admin implements Serializable
     @Override
     public boolean equals(Object object)
     {
-        if (!(object instanceof Admin)) 
+        if (!(object instanceof Administrator)) 
         {
             return false;
         }
         
-        Admin other = (Admin) object;
+        Administrator other = (Administrator) object;
         
-        if ((this.adminId == null && other.adminId != null) || (this.adminId != null && !this.adminId.equals(other.adminId))) 
+        if ((this.administratorId == null && other.administratorId != null) || (this.administratorId != null && !this.administratorId.equals(other.administratorId))) 
         {
             return false;
         }
@@ -107,17 +107,17 @@ public class Admin implements Serializable
     @Override
     public String toString() 
     {
-        return "ejb.entity.Admin[ adminId=" + this.adminId + " ]";
+        return "ejb.entity.Administrator[ administratorId=" + this.administratorId + " ]";
     }
 
     
     
-    public Long getAdminId() {
-        return adminId;
+    public Long getAdministratorId() {
+        return administratorId;
     }
 
-    public void setAdminId(Long adminId) {
-        this.adminId = adminId;
+    public void setAdministratorId(Long administratorId) {
+        this.administratorId = administratorId;
     }
 
     public String getFirstName() {
@@ -136,7 +136,7 @@ public class Admin implements Serializable
         this.lastName = lastName;
     }
 
-   
+
 
     public String getUsername() {
         return username;
@@ -169,5 +169,14 @@ public class Admin implements Serializable
     public void setSalt(String salt) {
         this.salt = salt;
     }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
     
+   
 }
