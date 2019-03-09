@@ -5,7 +5,8 @@
  */
 package ejb.session.stateless;
 
-import ejb.entity.Administrator;
+
+import ejb.entity.AdminEntity;
 import java.util.concurrent.Future;
 import javax.ejb.AsyncResult;
 import javax.ejb.Asynchronous;
@@ -25,7 +26,7 @@ public class EmailController implements EmailControllerLocal {
     
      @Asynchronous
      @Override
-    public Future<Boolean> emailResetPassword(Administrator admin,String newPW)
+    public Future<Boolean> emailResetPassword(AdminEntity admin,String newPW)
     {
         EmailManager emailManager = new EmailManager(UNIX_USERNAME, UNIX_PASSWORD);
         Boolean result = emailManager.emailResetPassword(admin, "ohmx93@comp.nus.edu.sg",newPW);

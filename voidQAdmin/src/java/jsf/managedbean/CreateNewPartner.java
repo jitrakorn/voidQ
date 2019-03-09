@@ -1,6 +1,8 @@
 package jsf.managedbean;
 
-import ejb.entity.Partner;
+
+import ejb.entity.ClinicEntity;
+import ejb.entity.StaffEntity;
 import ejb.helper.Geocoding;
 import ejb.session.stateless.PartnerSessionBeanLocal;
 import java.io.IOException;
@@ -25,10 +27,12 @@ public class CreateNewPartner {
     @EJB(name = "PartnerSessionBeanLocal")
     private PartnerSessionBeanLocal partnerSessionBeanLocal;
     private String postalcode;
-    private Partner newPartner;
+    private ClinicEntity newClinic;
+    private StaffEntity newStaff;
 
     public CreateNewPartner() {
-        newPartner = new Partner();
+        newClinic = new ClinicEntity();
+         newStaff= new StaffEntity() ;
     }
 
     @PostConstruct
@@ -51,7 +55,7 @@ public class CreateNewPartner {
              JSONObject locObj = new JSONObject(addressJSON);
             JSONObject locName = locObj.getJSONArray("results").getJSONObject(0);
             String name = locName.getString("formatted_address");
-            newPartner.setClinicAddress(name);
+            newClinic.setAddress(name);
         } catch (IOException ex) {
 
         }
@@ -61,23 +65,18 @@ public class CreateNewPartner {
     public void createNewPartner(ActionEvent event) {
 
         try {
-            newPartner.setAccountStatus(AccountStatus.ACTIVATED);
-            Partner partner = partnerSessionBeanLocal.createNewPartner(newPartner);
-            newPartner = new Partner();
+            //newPartner.s(AccountStatus.ACTIVATED);
+            ClinicEntity partner = partnerSessionBeanLocal.createNewPartner(newClinic);
+            partner.getStaffEntities().add(newStaff);
+            newClinic = new ClinicEntity();
 
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New Partner created successfully (Staff ID: " + partner.getPartnerId() + ")", null));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New Clinic created successfully (Clinic ID: " + partner.getClinicId()+ ")", null));
         } catch (InputDataValidationException ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while creating the new partner: " + ex.getMessage(), null));
         }
     }
 
-    public Partner getNewPartner() {
-        return newPartner;
-    }
-
-    public void setNewPartner(Partner newPartner) {
-        this.newPartner = newPartner;
-    }
+   
 
     public String getPostalcode() {
         return postalcode;
@@ -85,6 +84,22 @@ public class CreateNewPartner {
 
     public void setPostalcode(String postalcode) {
         this.postalcode = postalcode;
+    }
+
+    public ClinicEntity getNewClinic() {
+        return newClinic;
+    }
+
+    public void setNewClinic(ClinicEntity newClinic) {
+        this.newClinic = newClinic;
+    }
+
+    public StaffEntity getNewStaff() {
+        return newStaff;
+    }
+
+    public void setNewStaff(StaffEntity newStaff) {
+        this.newStaff = newStaff;
     }
 
 }

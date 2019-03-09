@@ -1,6 +1,6 @@
 package jsf.managedbean;
 
-import ejb.entity.Administrator;
+import ejb.entity.AdminEntity;
 import ejb.session.stateless.AdministratorSessionBeanLocal;
 import java.io.IOException;
 import java.util.List;
@@ -22,7 +22,7 @@ public class ViewAllAdminsManagedBean
     @EJB(name = "AdministratorSessionBeanLocal")
     private AdministratorSessionBeanLocal administratorSessionBeanLocal;
 
-    private  List<Administrator> admins;
+    private  List<AdminEntity> admins;
     
 
   
@@ -47,11 +47,11 @@ public class ViewAllAdminsManagedBean
         FacesContext.getCurrentInstance().getExternalContext().redirect("viewAdminDetails.xhtml");
     }
 
-    public List<Administrator> getAdmins() {
+    public List<AdminEntity> getAdmins() {
         return admins;
     }
 
-    public void setAdmins(List<Administrator> admins) {
+    public void setAdmins(List<AdminEntity> admins) {
         this.admins = admins;
     }
 

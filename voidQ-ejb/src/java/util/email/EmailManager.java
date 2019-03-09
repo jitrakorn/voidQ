@@ -1,7 +1,8 @@
 package util.email;
 
 
-import ejb.entity.Administrator;
+
+import ejb.entity.AdminEntity;
 import java.text.NumberFormat;
 import java.util.Date;
 import java.util.Properties;
@@ -34,7 +35,7 @@ public class EmailManager
         this.smtpAuthPassword = smtpAuthPassword;
     }
     
-     public Boolean emailResetPassword(Administrator admin, String fromEmailAddress,String newPW)
+     public Boolean emailResetPassword(AdminEntity admin, String fromEmailAddress,String newPW)
     {
         String emailBody = "";
         

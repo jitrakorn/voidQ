@@ -5,8 +5,8 @@
  */
 package ejb.session.stateless;
 
-import ejb.entity.Administrator;
-import ejb.entity.Partner;
+
+import ejb.entity.AdminEntity;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
@@ -54,8 +54,8 @@ public class AdministratorSessionBean implements AdministratorSessionBeanLocal {
     }
 
     @Override
-    public Administrator createNewAdmin(Administrator newAdmin) throws InputDataValidationException {
-        Set<ConstraintViolation<Administrator>> constraintViolations = validator.validate(newAdmin);
+    public AdminEntity createNewAdmin(AdminEntity newAdmin) throws InputDataValidationException {
+        Set<ConstraintViolation<AdminEntity>> constraintViolations = validator.validate(newAdmin);
 
         if (constraintViolations.isEmpty()) {
             em.persist(newAdmin);
@@ -68,24 +68,24 @@ public class AdministratorSessionBean implements AdministratorSessionBeanLocal {
     }
 
     @Override
-    public Administrator retrieveAdminByUsername(String username) throws AdministratorNotFoundException {
-        Query query = em.createQuery("SELECT a FROM Administrator a WHERE a.username = :inUsername");
+    public AdminEntity retrieveAdminByUsername(String username) throws AdministratorNotFoundException {
+        Query query = em.createQuery("SELECT a FROM AdminEntity a WHERE a.email = :inUsername");
         query.setParameter("inUsername", username);
 
         try {
-            return (Administrator) query.getSingleResult();
+            return (AdminEntity) query.getSingleResult();
         } catch (NoResultException | NonUniqueResultException ex) {
             throw new AdministratorNotFoundException("Administrator " + username + " does not exist!");
         }
     }
 
       @Override
-    public Administrator resetPassword(Long adminId)
+    public AdminEntity resetPassword(Long adminId)
     {
          String password = new Random().ints(10, 33, 122).collect(StringBuilder::new,
                 StringBuilder::appendCodePoint, StringBuilder::append)
                 .toString();
-        Administrator admin= null;
+        AdminEntity admin= null;
         try {
              admin = retrieveAdminByAdminId(adminId);
           emailControllerLocal.emailResetPassword(admin, password);
@@ -98,15 +98,15 @@ public class AdministratorSessionBean implements AdministratorSessionBeanLocal {
     }
     
     @Override
-    public List<Administrator> retrieveAllAdministrators() {
-        Query query = em.createQuery("SELECT a FROM Administrator a");
+    public List<AdminEntity> retrieveAllAdministrators() {
+        Query query = em.createQuery("SELECT a FROM AdminEntity a");
 
         return query.getResultList();
     }
 
     @Override
-    public Administrator retrieveAdminByAdminId(Long adminId) throws AdministratorNotFoundException {
-        Administrator admin = em.find(Administrator.class, adminId);
+    public AdminEntity retrieveAdminByAdminId(Long adminId) throws AdministratorNotFoundException {
+        AdminEntity admin = em.find(AdminEntity.class, adminId);
 
         if (admin != null) {
             return admin;
@@ -116,18 +116,18 @@ public class AdministratorSessionBean implements AdministratorSessionBeanLocal {
     }
 
     @Override
-    public void updateAdmin(Administrator admin) throws InputDataValidationException, AdministratorNotFoundException, UpdateAdminException {
+    public void updateAdmin(AdminEntity admin) throws InputDataValidationException, AdministratorNotFoundException, UpdateAdminException {
         // Updated in v4.1 to update selective attributes instead of merging the entire state passed in from the client
         // Also check for existing staff before proceeding with the update
 
         // Updated in v4.2 with bean validation
-        Set<ConstraintViolation<Administrator>> constraintViolations = validator.validate(admin);
+        Set<ConstraintViolation<AdminEntity>> constraintViolations = validator.validate(admin);
 
         if (constraintViolations.isEmpty()) {
-            if (admin.getAdministratorId()!= null) {
-                Administrator adminToUpdate = retrieveAdminByAdminId(admin.getAdministratorId());
+            if (admin.getUserId()!= null) {
+                AdminEntity adminToUpdate = retrieveAdminByAdminId(admin.getUserId());
 
-                if (adminToUpdate.getUsername().equals(admin.getUsername())) {
+                if (adminToUpdate.getEmail().equals(admin.getEmail())) {
                     adminToUpdate.setFirstName(admin.getFirstName());
                     adminToUpdate.setLastName(admin.getLastName());
                    
@@ -143,9 +143,9 @@ public class AdministratorSessionBean implements AdministratorSessionBeanLocal {
     }
 
     @Override
-    public Administrator userNameLogin(String email, String password) throws InvalidLoginCredentialException {
+    public AdminEntity userNameLogin(String email, String password) throws InvalidLoginCredentialException {
         try {
-            Administrator admin = retrieveAdminByUsername(email);
+            AdminEntity admin = retrieveAdminByUsername(email);
             String passwordHash = CryptographicHelper.getInstance().byteArrayToHexString(CryptographicHelper.getInstance().doMD5Hashing(password + admin.getSalt()));
 
             if (admin.getPassword().equals(passwordHash)) {
@@ -162,7 +162,7 @@ public class AdministratorSessionBean implements AdministratorSessionBeanLocal {
 
     @Override
     public void deleteAdmin(Long adminId) throws AdministratorNotFoundException, DeleteAdminException {
-        Administrator admin = retrieveAdminByAdminId(adminId);
+        AdminEntity admin = retrieveAdminByAdminId(adminId);
 
         /*if(partner.getSaleTransactionEntities().isEmpty())
         {
@@ -177,7 +177,7 @@ public class AdministratorSessionBean implements AdministratorSessionBeanLocal {
         em.remove(admin);
     }
 
-    private String prepareInputDataValidationErrorsMessage(Set<ConstraintViolation<Administrator>> constraintViolations) {
+    private String prepareInputDataValidationErrorsMessage(Set<ConstraintViolation<AdminEntity>> constraintViolations) {
         String msg = "Input data validation error!:";
 
         for (ConstraintViolation constraintViolation : constraintViolations) {

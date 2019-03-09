@@ -5,7 +5,8 @@
  */
 package ejb.session.stateless;
 
-import ejb.entity.Partner;
+import ejb.entity.ClinicEntity;
+import ejb.entity.StaffEntity;
 import java.util.List;
 import java.util.Set;
 import javax.ejb.Local;
@@ -19,7 +20,6 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
-import util.enumeration.AccountStatus;
 import util.exception.DeletePartnerException;
 import util.exception.InputDataValidationException;
 import util.exception.InvalidLoginCredentialException;
@@ -51,17 +51,20 @@ public class PartnerSessionBean implements PartnerSessionBeanLocal {
  
  
   @Override
-    public Partner createNewPartner(Partner newPartner) throws InputDataValidationException
+    public ClinicEntity createNewPartner(ClinicEntity newClinic) throws InputDataValidationException
     {        
       
-        Set<ConstraintViolation<Partner>>constraintViolations = validator.validate(newPartner);
+        Set<ConstraintViolation<ClinicEntity>>constraintViolations = validator.validate(newClinic);
         
         if(constraintViolations.isEmpty())
         {
-            em.persist(newPartner);
+           
+            em.persist(newClinic);
+            
             em.flush();
+      
 
-            return newPartner;
+            return newClinic;
         }
         else
         {
@@ -70,14 +73,14 @@ public class PartnerSessionBean implements PartnerSessionBeanLocal {
     }
     
      @Override
-    public Partner retrievePartnerByEmail(String email) throws PartnerNotFoundException
+    public StaffEntity retrievePartnerByEmail(String email) throws PartnerNotFoundException
     {
-        Query query = em.createQuery("SELECT p FROM Partner p WHERE p.email = :inEmail");
+        Query query = em.createQuery("SELECT s FROM StaffEntity s WHERE s.email = :inEmail");
         query.setParameter("inEmail", email);
         
         try
         {
-            return (Partner)query.getSingleResult();
+            return (StaffEntity)query.getSingleResult();
         }
         catch(NoResultException | NonUniqueResultException ex)
         {
@@ -86,49 +89,50 @@ public class PartnerSessionBean implements PartnerSessionBeanLocal {
     }
     
      @Override
-    public List<Partner> retrieveAllPartners()
+    public List<ClinicEntity> retrieveAllPartners()
     {
-        Query query = em.createQuery("SELECT p FROM Partner p");
+        Query query = em.createQuery("SELECT c FROM ClinicEntity c");
         
         return query.getResultList();
     }
       @Override
-    public Partner retrievePartnerByPartnerId(Long partnerId) throws PartnerNotFoundException
+    public ClinicEntity retrievePartnerByPartnerId(Long clinicId) throws PartnerNotFoundException
     {
-        Partner partner = em.find(Partner.class, partnerId);
+        ClinicEntity clinic = em.find(ClinicEntity.class, clinicId);
         
-        if(partner != null)
+        if(clinic != null)
         {
-            return partner;
+            return clinic;
         }
         else
         {
-            throw new PartnerNotFoundException("Partner ID " + partnerId + " does not exist!");
+            throw new PartnerNotFoundException("Clinic ID " + clinicId + " does not exist!");
         }
     }
     
      @Override
-    public void updatePartner(Partner partner) throws InputDataValidationException, PartnerNotFoundException, UpdatePartnerException
+    public void updatePartner(ClinicEntity clinic) throws InputDataValidationException, PartnerNotFoundException, UpdatePartnerException
     {
         // Updated in v4.1 to update selective attributes instead of merging the entire state passed in from the client
         // Also check for existing staff before proceeding with the update
         
         // Updated in v4.2 with bean validation
         
-        Set<ConstraintViolation<Partner>>constraintViolations = validator.validate(partner);
+        Set<ConstraintViolation<ClinicEntity>>constraintViolations = validator.validate(clinic);
         
         if(constraintViolations.isEmpty())
         {        
-            if(partner.getPartnerId()!= null)
+            if(clinic.getClinicId()!= null)
             {
-                Partner partnerToUpdate = retrievePartnerByPartnerId(partner.getPartnerId());
+                ClinicEntity partnerToUpdate = retrievePartnerByPartnerId(clinic.getClinicId());
                 
-                if(partnerToUpdate.getEmail().equals(partner.getEmail()))
+                if(partnerToUpdate.getClinicId().equals(clinic.getClinicId()))
                 {
-                    partnerToUpdate.setClinicAddress(partner.getClinicAddress());
-                     partnerToUpdate.setClinicName(partner.getClinicName());
-                   partnerToUpdate.setPartnerName(partner.getPartnerName());
-                    // Username and password are deliberately NOT updated to demonstrate that client is not allowed to update account credential through this business method
+                   partnerToUpdate.setAddress(clinic.getAddress());
+                   partnerToUpdate.setClinicName(clinic.getClinicName());
+                   partnerToUpdate.setDescription(clinic.getDescription());
+                   partnerToUpdate.setUnitPrice(clinic.getUnitPrice());
+                   partnerToUpdate.setBookingEntities(clinic.getBookingEntities());  
                 }
                 else
                 {
@@ -147,18 +151,16 @@ public class PartnerSessionBean implements PartnerSessionBeanLocal {
     }
     
     @Override
-    public Partner emailLogin(String email, String password) throws InvalidLoginCredentialException
+    public StaffEntity emailLogin(String email, String password) throws InvalidLoginCredentialException
     {
         try
         {
-            Partner partner = retrievePartnerByEmail(email);
-            String passwordHash = CryptographicHelper.getInstance().byteArrayToHexString(CryptographicHelper.getInstance().doMD5Hashing(password + partner.getSalt()));
+            StaffEntity staffEntity = retrievePartnerByEmail(email);
+            String passwordHash = CryptographicHelper.getInstance().byteArrayToHexString(CryptographicHelper.getInstance().doMD5Hashing(password + staffEntity.getSalt()));
             
-            if(partner.getPassword().equals(passwordHash))
-            {
-                //load partner stuff .size
-                                
-                return partner;
+            if(staffEntity.getPassword().equals(passwordHash))
+            {         
+                return staffEntity;
             }
             else
             {
@@ -174,7 +176,7 @@ public class PartnerSessionBean implements PartnerSessionBeanLocal {
      @Override
     public void deletePartner(Long partnerId) throws PartnerNotFoundException, DeletePartnerException
     {
-        Partner partner = retrievePartnerByPartnerId(partnerId);
+        ClinicEntity partner = retrievePartnerByPartnerId(partnerId);
         
         /*if(partner.getSaleTransactionEntities().isEmpty())
         {
@@ -192,7 +194,7 @@ public class PartnerSessionBean implements PartnerSessionBeanLocal {
     
     
     
-     private String prepareInputDataValidationErrorsMessage(Set<ConstraintViolation<Partner>>constraintViolations)
+     private String prepareInputDataValidationErrorsMessage(Set<ConstraintViolation<ClinicEntity>>constraintViolations)
     {
         String msg = "Input data validation error!:";
             

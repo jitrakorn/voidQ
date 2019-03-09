@@ -1,6 +1,7 @@
 package jsf.managedbean;
 
-import ejb.entity.Administrator;
+
+import ejb.entity.AdminEntity;
 import ejb.session.stateless.AdministratorSessionBeanLocal;
 import java.io.IOException;
 import java.io.Serializable;
@@ -26,7 +27,7 @@ public class UpdateAdminManagedBean implements Serializable
 
 
    private Long adminIdToUpdate;
-    private Administrator adminToUpdate;
+    private  AdminEntity adminToUpdate;
    
 
     
@@ -93,11 +94,11 @@ public class UpdateAdminManagedBean implements Serializable
         }
     }
 
-    public Administrator getAdminToUpdate() {
+    public AdminEntity getAdminToUpdate() {
         return adminToUpdate;
     }
 
-    public void setAdminToUpdate(Administrator adminToUpdate) {
+    public void setAdminToUpdate(AdminEntity adminToUpdate) {
         this.adminToUpdate = adminToUpdate;
     }
 

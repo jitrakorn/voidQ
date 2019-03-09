@@ -1,6 +1,7 @@
 package jsf.managedbean;
 
-import ejb.entity.Administrator;
+
+import ejb.entity.AdminEntity;
 import ejb.session.stateless.AdministratorSessionBeanLocal;
 import java.io.IOException;
 import java.io.Serializable;
@@ -28,7 +29,7 @@ public class ViewAdminDetailsManagedBean implements Serializable
 
     
     private Long adminIdToView;
-    private Administrator adminToView;
+    private AdminEntity adminToView;
     
     
     
@@ -99,11 +100,11 @@ public class ViewAdminDetailsManagedBean implements Serializable
 
     
 
-    public Administrator getAdminToView() {
+    public AdminEntity getAdminToView() {
         return adminToView;
     }
 
-    public void setAdminToView(Administrator adminToView) {
+    public void setAdminToView(AdminEntity adminToView) {
         this.adminToView = adminToView;
     }
 

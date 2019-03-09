@@ -5,7 +5,9 @@
  */
 package ejb.session.stateless;
 
-import ejb.entity.Partner;
+import ejb.entity.ClinicEntity;
+import ejb.entity.StaffEntity;
+
 import java.util.List;
 import javax.ejb.Local;
 import util.exception.DeletePartnerException;
@@ -22,18 +24,18 @@ import util.exception.UpdatePartnerException;
 public interface PartnerSessionBeanLocal {
 
  
-    public Partner createNewPartner(Partner newPartner) throws InputDataValidationException;
+    public ClinicEntity createNewPartner(ClinicEntity newClinic) throws InputDataValidationException;
 
-    public Partner retrievePartnerByEmail(String email) throws PartnerNotFoundException;
+    public StaffEntity retrievePartnerByEmail(String email) throws PartnerNotFoundException;
 
-    public Partner emailLogin(String email, String password) throws InvalidLoginCredentialException;
+    public StaffEntity emailLogin(String email, String password) throws InvalidLoginCredentialException;
 
-    public List<Partner> retrieveAllPartners();
+    public List<ClinicEntity> retrieveAllPartners();
 
-    public Partner retrievePartnerByPartnerId(Long partnerId) throws PartnerNotFoundException;
+    public ClinicEntity retrievePartnerByPartnerId(Long clinicId) throws PartnerNotFoundException;
 
-    public void updatePartner(Partner partner) throws InputDataValidationException, PartnerNotFoundException, UpdatePartnerException;
+    public void updatePartner(ClinicEntity clinic) throws InputDataValidationException, PartnerNotFoundException, UpdatePartnerException;
 
-    public void deletePartner(Long partnerId) throws PartnerNotFoundException, DeletePartnerException;
+    public void deletePartner(Long clinicId) throws PartnerNotFoundException, DeletePartnerException;
     
 }

@@ -1,6 +1,7 @@
 package jsf.managedbean;
 
-import ejb.entity.Administrator;
+
+import ejb.entity.AdminEntity;
 import ejb.session.stateless.AdministratorSessionBeanLocal;
 
 import javax.annotation.PostConstruct;
@@ -26,13 +27,13 @@ public class CreateNewAdminManagedBean
  
     
     
-    private Administrator newAdmin;
+    private AdminEntity newAdmin;
     
     
     
     public CreateNewAdminManagedBean() 
     {
-        newAdmin = new Administrator();
+        newAdmin = new AdminEntity();
     }
     
  
@@ -51,10 +52,10 @@ public class CreateNewAdminManagedBean
        
         try
         {
-            Administrator admin = administratorSessionBeanLocal.createNewAdmin(newAdmin);
-            newAdmin = new Administrator();
+            AdminEntity admin = administratorSessionBeanLocal.createNewAdmin(newAdmin);
+            newAdmin = new AdminEntity();
 
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New Admin created successfully (Staff ID: " + admin.getAdministratorId()+ ")", null));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New Admin created successfully (Staff ID: " + admin.getUserId()+ ")", null));
         }
         catch(InputDataValidationException ex)
         {
@@ -62,11 +63,11 @@ public class CreateNewAdminManagedBean
         }
     }
 
-    public Administrator getNewAdmin() {
+    public AdminEntity getNewAdmin() {
         return newAdmin;
     }
 
-    public void setNewAdmin(Administrator newAdmin) {
+    public void setNewAdmin(AdminEntity newAdmin) {
         this.newAdmin = newAdmin;
     }
 

@@ -1,7 +1,7 @@
 package jsf.managedbean;
 
-import ejb.entity.Administrator;
-import ejb.entity.Partner;
+
+import ejb.entity.AdminEntity;
 import ejb.session.stateless.AdministratorSessionBeanLocal;
 import ejb.session.stateless.PartnerSessionBeanLocal;
 import java.io.IOException;
@@ -45,7 +45,7 @@ public class LoginManagedBean
     {
         try
         {
-            Administrator currentAdmin = administratorSessionBeanLocal.userNameLogin(username, password);
+            AdminEntity currentAdmin = administratorSessionBeanLocal.userNameLogin(username, password);
             FacesContext.getCurrentInstance().getExternalContext().getSession(true);
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("isLogin", true);
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("currentAdmin", currentAdmin);

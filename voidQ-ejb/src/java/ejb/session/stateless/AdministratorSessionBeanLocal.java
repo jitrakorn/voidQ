@@ -5,7 +5,7 @@
  */
 package ejb.session.stateless;
 
-import ejb.entity.Administrator;
+import ejb.entity.AdminEntity;
 import java.util.List;
 import javax.ejb.Local;
 import util.exception.AdministratorNotFoundException;
@@ -21,22 +21,22 @@ import util.exception.UpdateAdminException;
 @Local
 public interface AdministratorSessionBeanLocal {
 
-    public Administrator createNewAdmin(Administrator newAdmin) throws InputDataValidationException;
+    public AdminEntity createNewAdmin(AdminEntity newAdmin) throws InputDataValidationException;
 
-    public Administrator retrieveAdminByUsername(String username) throws AdministratorNotFoundException;
+    public AdminEntity retrieveAdminByUsername(String username) throws AdministratorNotFoundException;
 
-    public List<Administrator> retrieveAllAdministrators();
+    public List<AdminEntity> retrieveAllAdministrators();
 
-    public Administrator retrieveAdminByAdminId(Long adminId) throws AdministratorNotFoundException;
+    public AdminEntity retrieveAdminByAdminId(Long adminId) throws AdministratorNotFoundException;
 
-    public void updateAdmin(Administrator admin) throws InputDataValidationException, AdministratorNotFoundException, UpdateAdminException;
+    public void updateAdmin(AdminEntity admin) throws InputDataValidationException, AdministratorNotFoundException, UpdateAdminException;
 
-    public Administrator userNameLogin(String email, String password) throws InvalidLoginCredentialException;
+    public AdminEntity userNameLogin(String email, String password) throws InvalidLoginCredentialException;
 
     public void deleteAdmin(Long adminId) throws AdministratorNotFoundException, DeleteAdminException;
 
   
 
-    public Administrator resetPassword(Long adminId);
+    public AdminEntity resetPassword(Long adminId);
     
 }
