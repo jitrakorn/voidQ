@@ -13,7 +13,7 @@ import javax.ejb.LocalBean;
 import javax.ejb.Startup;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import util.enumeration.AccountStatus;
+import util.enumeration.ApplicationStatus;
 import util.exception.AdministratorNotFoundException;
 import util.exception.InputDataValidationException;
 
@@ -64,7 +64,7 @@ public class DataInitializationSessionBean
         try
         {
             administratorSessionBeanLocal.createNewAdmin(new AdminEntity("mx","mx","lovemx93@gmail.com","password"));
-         ClinicEntity ce =   partnerSessionBeanLocal.createNewPartner(new ClinicEntity("mx clinic", "best clinic", "geylang hotel 81", new BigDecimal(100)));
+         ClinicEntity ce =   partnerSessionBeanLocal.createNewPartner(new ClinicEntity("mx clinic", "best clinic", "geylang hotel 81", new BigDecimal(100),ApplicationStatus.ACTIVATED));
              StaffEntity se =  new StaffEntity("lovemx93@gmail.com","password","mx","mx","doctor","not taken",ce);
             em.persist(se);
         

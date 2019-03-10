@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -13,6 +15,7 @@ import javax.persistence.OneToMany;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import util.enumeration.ApplicationStatus;
 
 
 
@@ -33,15 +36,18 @@ public class ClinicEntity implements Serializable
     @Column(nullable = false, length = 32)
     @Size(max = 32)
     private String description;
-    @Column(nullable = false, length = 32)
+    @Column(nullable = false, length = 64)
     @NotNull
-    @Size(max = 32)
+    @Size(max = 64)
     private String address;
     @Column(nullable = false, precision = 11, scale = 2)
     @NotNull
     @DecimalMin("0.00")
     private BigDecimal unitPrice;
-    
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    @NotNull
+    private ApplicationStatus applicationStatus;
     @OneToMany(mappedBy = "clinicEntity")
     private List<StaffEntity> staffEntities;
     
@@ -57,11 +63,12 @@ public class ClinicEntity implements Serializable
     
     
     
-    public ClinicEntity(String clinicName, String description, String address, BigDecimal unitPrice) {
+    public ClinicEntity(String clinicName, String description, String address, BigDecimal unitPrice, ApplicationStatus applicationStatus ) {
         this.clinicName = clinicName;
         this.description = description;
         this.address = address;
         this.unitPrice = unitPrice;
+        this.applicationStatus=applicationStatus;
     }
     
 
@@ -173,6 +180,14 @@ public class ClinicEntity implements Serializable
 
     public void setBookingEntities(List<BookingEntity> bookingEntities) {
         this.bookingEntities = bookingEntities;
+    }
+
+    public ApplicationStatus getApplicationStatus() {
+        return applicationStatus;
+    }
+
+    public void setApplicationStatus(ApplicationStatus applicationStatus) {
+        this.applicationStatus = applicationStatus;
     }
 
     

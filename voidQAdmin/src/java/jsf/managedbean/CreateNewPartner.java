@@ -14,9 +14,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.inject.Named;
-import org.json.JSONArray;
 import org.json.JSONObject;
-import util.enumeration.AccountStatus;
 
 import util.exception.InputDataValidationException;
 
@@ -65,7 +63,7 @@ public class CreateNewPartner {
     public void createNewPartner(ActionEvent event) {
 
         try {
-            //newPartner.s(AccountStatus.ACTIVATED);
+            //newPartner.s(ApplicationStatus.ACTIVATED);
             ClinicEntity partner = partnerSessionBeanLocal.createNewPartner(newClinic);
             partner.getStaffEntities().add(newStaff);
             newClinic = new ClinicEntity();

@@ -2,7 +2,7 @@ package util.enumeration;
 
 
 
-public enum AccountStatus
+public enum ApplicationStatus
 {
     ACTIVATED,
     NOTACTIVATED

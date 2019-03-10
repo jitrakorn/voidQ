@@ -72,6 +72,29 @@ public class PartnerSessionBean implements PartnerSessionBeanLocal {
         }
     }
     
+    
+    @Override
+    public StaffEntity createNewStaff(StaffEntity newStaff) throws InputDataValidationException
+    {        
+      
+        Set<ConstraintViolation<StaffEntity>>constraintViolations = validator.validate(newStaff);
+        
+        if(constraintViolations.isEmpty())
+        {
+           
+            em.persist(newStaff);
+            
+            em.flush();
+      
+
+            return newStaff;
+        }
+        else
+        {
+            throw new InputDataValidationException(prepareInputDataValidationErrorsMessagea(constraintViolations));
+        }
+    }
+    
      @Override
     public StaffEntity retrievePartnerByEmail(String email) throws PartnerNotFoundException
     {
@@ -205,5 +228,17 @@ public class PartnerSessionBean implements PartnerSessionBeanLocal {
         
         return msg;
     }
+    private String prepareInputDataValidationErrorsMessagea(Set<ConstraintViolation<StaffEntity>>constraintViolations)
+    {
+        String msg = "Input data validation error!:";
+            
+        for(ConstraintViolation constraintViolation:constraintViolations)
+        {
+            msg += "\n\t" + constraintViolation.getPropertyPath() + " - " + constraintViolation.getInvalidValue() + "; " + constraintViolation.getMessage();
+        }
+        
+        return msg;
+    }
  
 }
+

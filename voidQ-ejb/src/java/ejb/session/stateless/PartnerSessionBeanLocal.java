@@ -37,5 +37,7 @@ public interface PartnerSessionBeanLocal {
     public void updatePartner(ClinicEntity clinic) throws InputDataValidationException, PartnerNotFoundException, UpdatePartnerException;
 
     public void deletePartner(Long clinicId) throws PartnerNotFoundException, DeletePartnerException;
+
+    public StaffEntity createNewStaff(StaffEntity newStaff) throws InputDataValidationException;
     
 }

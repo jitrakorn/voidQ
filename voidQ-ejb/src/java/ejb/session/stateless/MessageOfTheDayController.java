@@ -8,6 +8,7 @@ package ejb.session.stateless;
 import ejb.entity.MessageOfTheDayEntity;
 import java.util.List;
 import java.util.Set;
+import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -23,6 +24,7 @@ import util.exception.InputDataValidationException;
  * @author mingxuan
  */
 @Stateless
+@Local(MessageOfTheDayControllerLocal.class)
 public class MessageOfTheDayController implements MessageOfTheDayControllerLocal {
 
     

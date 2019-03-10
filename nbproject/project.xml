@@ -12,11 +12,15 @@
                     <path-in-war>/</path-in-war>
                 </library>
                 <library>
+                    <file>${reference.voidQAdmin.dist-ear}</file>
+                    <path-in-war>/</path-in-war>
+                </library>
+                <library>
                     <file>${reference.voidQPartner.dist-ear}</file>
                     <path-in-war>/</path-in-war>
                 </library>
                 <library>
-                    <file>${reference.voidQAdmin.dist-ear}</file>
+                    <file>${reference.voidQPartner.dist-ear}</file>
                     <path-in-war>/</path-in-war>
                 </library>
             </web-module-additional-libraries>

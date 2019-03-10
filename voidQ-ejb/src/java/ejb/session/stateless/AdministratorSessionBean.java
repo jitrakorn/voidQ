@@ -10,9 +10,8 @@ import ejb.entity.AdminEntity;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.ejb.EJB;
+import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
@@ -25,12 +24,9 @@ import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 import util.exception.AdministratorNotFoundException;
 import util.exception.DeleteAdminException;
-import util.exception.DeletePartnerException;
 import util.exception.InputDataValidationException;
 import util.exception.InvalidLoginCredentialException;
-import util.exception.PartnerNotFoundException;
 import util.exception.UpdateAdminException;
-import util.exception.UpdatePartnerException;
 import util.security.CryptographicHelper;
 
 /**
@@ -38,6 +34,7 @@ import util.security.CryptographicHelper;
  * @author mingxuan
  */
 @Stateless
+@Local(AdministratorSessionBeanLocal.class)
 public class AdministratorSessionBean implements AdministratorSessionBeanLocal {
 
     @EJB(name = "EmailControllerLocal")

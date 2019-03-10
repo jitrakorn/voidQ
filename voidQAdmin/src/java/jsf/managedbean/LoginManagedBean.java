@@ -3,7 +3,6 @@ package jsf.managedbean;
 
 import ejb.entity.AdminEntity;
 import ejb.session.stateless.AdministratorSessionBeanLocal;
-import ejb.session.stateless.PartnerSessionBeanLocal;
 import java.io.IOException;
 import javax.ejb.EJB;
 import javax.inject.Named;

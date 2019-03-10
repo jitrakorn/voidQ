@@ -7,7 +7,6 @@ package ejb.session.stateless;
 
 import ejb.entity.AdminEntity;
 import java.util.List;
-import javax.ejb.Local;
 import util.exception.AdministratorNotFoundException;
 import util.exception.DeleteAdminException;
 import util.exception.InputDataValidationException;
@@ -18,7 +17,7 @@ import util.exception.UpdateAdminException;
  *
  * @author mingxuan
  */
-@Local
+
 public interface AdministratorSessionBeanLocal {
 
     public AdminEntity createNewAdmin(AdminEntity newAdmin) throws InputDataValidationException;
@@ -34,8 +33,6 @@ public interface AdministratorSessionBeanLocal {
     public AdminEntity userNameLogin(String email, String password) throws InvalidLoginCredentialException;
 
     public void deleteAdmin(Long adminId) throws AdministratorNotFoundException, DeleteAdminException;
-
-  
 
     public AdminEntity resetPassword(Long adminId);
     

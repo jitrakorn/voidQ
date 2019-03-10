@@ -10,6 +10,7 @@ import ejb.entity.AdminEntity;
 import java.util.concurrent.Future;
 import javax.ejb.AsyncResult;
 import javax.ejb.Asynchronous;
+import javax.ejb.Local;
 import javax.ejb.Stateless;
 import util.email.EmailManager;
 
@@ -18,6 +19,7 @@ import util.email.EmailManager;
  * @author mingxuan
  */
 @Stateless
+@Local(EmailControllerLocal.class)
 public class EmailController implements EmailControllerLocal {
  private final String UNIX_USERNAME = "ohmx93@comp.nus.edu.sg";
     private final String UNIX_PASSWORD = "CIJGAHkoi987";
