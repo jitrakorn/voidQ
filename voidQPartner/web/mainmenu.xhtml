@@ -8,7 +8,8 @@
         <h3>Main Menu</h3>
         <nav>
             <br/>
-            <h:link outcome="/index">Home</h:link>
+            <h:link outcome="/index">Home</h:link><br/>
+            <h:link outcome="/partner/PartnerApplication.xhtml">Join Us!</h:link>
             <br/><br/>
             <h:panelGroup rendered="#{sessionScope.isLogin == true}">
                 <h:form id="logoutLinkForm">
@@ -16,12 +17,14 @@
                 </h:form>
                 <br/><br/>
                 <h4 class="menuHeader1">Partner Administration</h4>
-                <ul class="secondaryMenu">                    
-                    <li><h:link outcome="/partner/PartnerApplication.xhtml">Apply to join us as partner</h:link></li>
-                    <li><h:link outcome="/systemAdministration/viewAllAdmins.xhtml">View All Administrators</h:link></li>
+                <ul class="secondaryMenu">                         
+                    <li><h:link outcome="/partner/viewClinicDetails.xhtml">View Clinic Details</h:link></li>
                 </ul>
                 <br/>
-                <h4 class="menuHeader1">Clinic Administration</h4>
+                <h4 class="menuHeader1">User Administration</h4>
+                 <ul class="secondaryMenu">
+                     <li><h:link outcome="/userAdmin/viewUser.xhtml">View Userr</h:link></li>
+                </ul>
                 <h5 class="menuHeader2">For fuuture use ( maybe have roles?)</h5>
                 <ul class="secondaryMenu">
                      <li><h:link outcome="/clinicAdministration/createNewPartner.xhtml">Create New Partner</h:link></li>

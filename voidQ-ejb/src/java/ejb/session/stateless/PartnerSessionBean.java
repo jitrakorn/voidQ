@@ -133,6 +133,21 @@ public class PartnerSessionBean implements PartnerSessionBeanLocal {
         }
     }
     
+      @Override
+    public StaffEntity retrieveStaffByStaffId(Long staffId) throws PartnerNotFoundException
+    {
+        StaffEntity staff = em.find(StaffEntity.class, staffId);
+        
+        if(staff != null)
+        {
+            return staff;
+        }
+        else
+        {
+            throw new PartnerNotFoundException("Staff ID " + staffId + " does not exist!");
+        }
+    }
+    
      @Override
     public void updatePartner(ClinicEntity clinic) throws InputDataValidationException, PartnerNotFoundException, UpdatePartnerException
     {
@@ -170,6 +185,45 @@ public class PartnerSessionBean implements PartnerSessionBeanLocal {
         else
         {
             throw new InputDataValidationException(prepareInputDataValidationErrorsMessage(constraintViolations));
+        }
+    }
+    
+    
+       @Override
+    public void updateStaff(StaffEntity staff) throws InputDataValidationException, PartnerNotFoundException, UpdatePartnerException
+    {
+        // Updated in v4.1 to update selective attributes instead of merging the entire state passed in from the client
+        // Also check for existing staff before proceeding with the update
+        
+        // Updated in v4.2 with bean validation
+        
+        Set<ConstraintViolation<StaffEntity>>constraintViolations = validator.validate(staff);
+        
+        if(constraintViolations.isEmpty())
+        {        
+            if(staff.getUserId()!= null)
+            {
+                StaffEntity staffToUpdate = retrieveStaffByStaffId(staff.getUserId());
+                
+                if(staffToUpdate.getUserId().equals(staff.getUserId()))
+                {
+                   staffToUpdate.setEmail(staff.getEmail());
+                     staffToUpdate.setFirstName(staff.getFirstName());
+                       staffToUpdate.setLastName(staff.getLastName());
+                }
+                else
+                {
+                    throw new UpdatePartnerException("Email of staff record to be updated does not match the existing record");
+                }
+            }
+            else
+            {
+                throw new PartnerNotFoundException("Staff ID not provided for stadf to be updated");
+            }
+        }
+        else
+        {
+            throw new InputDataValidationException(prepareInputDataValidationErrorsMessagea(constraintViolations));
         }
     }
     
