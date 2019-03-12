@@ -28,36 +28,43 @@
                 <br/>
             
                 #{viewAdminDetailsManagedBean.foo()}
-                <h:form>
+               <h:form>
                     <h:messages errorClass="errorTextsWithBullet" fatalClass="errorTextsWithBullet" infoClass="infoTextsWithBullet" globalOnly="true" />
                     <br/>
+                    <h:commandLink value="Back" actionListener="#{updateAdminManagedBean.back}" />
+                    <br/><br/>
 
-                    <h:commandLink value="Back" actionListener="#{viewAdminDetailsManagedBean.back}" />&nbsp;|
-                    <h:commandLink value="Update" actionListener="#{viewAdminDetailsManagedBean.updateAdmin}" />&nbsp;|
-                    <h:commandLink value="Reset Password" actionListener="#{viewAdminDetailsManagedBean.resetPassword}" />&nbsp;|
-                    <h:commandLink value="Delete" actionListener="#{viewAdminDetailsManagedBean.deleteAdmin}" />
+                    <h:panelGrid columnClasses="dataTable3Label,dataTable3Value,dataTable3Message" columns="3" rendered="#{viewAdminDetailsManagedBean.adminToView != null}">
+                        
+                        <h:outputText style="font-weight: bold;" value="Staff ID"/>
+                        <h:outputText value="#{viewAdminDetailsManagedBean.adminToView.userId}"/>
+                        <h:outputText value="" />
+                        
+                        <h:outputLabel style="font-weight: bold;" for="txtEmail" value="Email"  />
+                        <h:inputText id="txtEmail" value="#{viewAdminDetailsManagedBean.adminToView.email}" required="true" requiredMessage="Email is required" readonly="#{viewAdminDetailsManagedBean.isDisabled}"/>
+                         <h:message errorClass="errorTextsNoMarginLeft" fatalClass="errorTextsNoMarginLeft" for="txtEmail" />
+
+                        <h:outputLabel style="font-weight: bold;" for="txtFirstName" value="First Name" />
+                        <h:inputText id="txtFirstName" value="#{viewAdminDetailsManagedBean.adminToView.firstName}" required="true" requiredMessage="First Name is required" readonly="#{viewAdminDetailsManagedBean.isDisabled}"/>
+                        <h:message errorClass="errorTextsNoMarginLeft" fatalClass="errorTextsNoMarginLeft" for="txtFirstName" />
+
+
+                        <h:outputLabel style="font-weight: bold;" for="txtLastName" value="Last Name" />
+                        <h:inputText id="txtLastName" value="#{viewAdminDetailsManagedBean.adminToView.lastName}" required="true" requiredMessage="Description is required" readonly="#{viewAdminDetailsManagedBean.isDisabled}"/>
+                        <h:message errorClass="errorTextsNoMarginLeft" fatalClass="errorTextsNoMarginLeft" for="txtLastName"  />
+
+        
+                     
+                        
+                    </h:panelGrid>
+                    <br/>
+                    <div style="text-align: center;">                       
+                        <h:commandButton value="Enable Edit" type="submit" actionListener="#{viewAdminDetailsManagedBean.enableEdit}" />
+                        <h:commandButton value="Update" type="submit" actionListener="#{viewAdminDetailsManagedBean.updateAdmin}" rendered="#{viewAdminDetailsManagedBean.isDisabled==false}" />
+                    </div>
                 </h:form>
-
-                <br/>
-
-                <h:panelGrid columnClasses="dataTableLabel,dataTableValue" columns="2" style="width: 100%;" rendered="#{viewAdminDetailsManagedBean.adminToView != null}">
-
-                    <h:outputText style="font-weight: bold; width: 20%;" value="Staff ID"/>
-                    <h:outputText style="width: 80%;" value="#{viewAdminDetailsManagedBean.adminToView.administratorId}"/>
-
-                    <h:outputText style="font-weight: bold;" value="Username"/>
-                    <h:outputText value="#{viewAdminDetailsManagedBean.adminToView.username}"/>
-
-                    <h:outputText style="font-weight: bold;" value="First Name"/>
-                    <h:outputText value="#{viewAdminDetailsManagedBean.adminToView.firstName}"/>
-
-                    <h:outputText style="font-weight: bold;" value="Last Name"/>
-                    <h:outputText value="#{viewAdminDetailsManagedBean.adminToView.lastName}"/>
-
-                   
-                </h:panelGrid>
-                
             </div>
+   
         </section>
         
         <ui:insert name="sidebar">

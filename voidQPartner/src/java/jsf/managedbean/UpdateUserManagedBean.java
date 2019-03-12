@@ -25,7 +25,7 @@ public class UpdateUserManagedBean implements Serializable
     @EJB(name = "PartnerSessionBeanLocal")
     private PartnerSessionBeanLocal partnerSessionBeanLocal;
 
-   private boolean isDisabled;
+   private boolean isDisabled = true;
 
 
    private Long staffIdToUpdate;
@@ -37,7 +37,7 @@ public class UpdateUserManagedBean implements Serializable
     
     public UpdateUserManagedBean() 
     {        
-        this.isDisabled= true;
+        isDisabled = !isDisabled;
     }
     
        

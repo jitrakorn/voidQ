@@ -31,9 +31,9 @@
                     <br/>
 
                     <h:panelGrid columnClasses="dataTable3Label,dataTable3Value,dataTable3Message" columns="3">
-                        <h:outputLabel style="font-weight: bold;" for="txtUsername" value="Username" />
-                        <h:inputText id="txtUsername" value="#{createNewAdminManagedBean.newAdmin.username}" required="true" requiredMessage="Username is required" />
-                        <h:message errorClass="errorTextsNoMarginLeft" fatalClass="errorTextsNoMarginLeft" for="txtUsername" />
+                        <h:outputLabel style="font-weight: bold;" for="txtEmail" value="Email" />
+                        <h:inputText id="txtEmail" value="#{createNewAdminManagedBean.newAdmin.email}" required="true" requiredMessage="Username is required" />
+                        <h:message errorClass="errorTextsNoMarginLeft" fatalClass="errorTextsNoMarginLeft" for="txtEmail" />
 
                         <h:outputLabel style="font-weight: bold;" for="txtPassword" value="Password" />
                         <h:inputSecret id="txtPassword" value="#{createNewAdminManagedBean.newAdmin.password}" required="true" requiredMessage="Password is required" />
@@ -49,10 +49,7 @@
                         <h:inputText id="txtLname" value="#{createNewAdminManagedBean.newAdmin.lastName}" required="true" requiredMessage="last Name is required" />
                         <h:message errorClass="errorTextsNoMarginLeft" fatalClass="errorTextsNoMarginLeft" for="txtLname" />
 
-                         <h:outputLabel style="font-weight: bold;" for="txtEmail" value="Email" />
-                         <h:inputText id="txtEmail" value="#{createNewAdminManagedBean.newAdmin.email}" required="true" requiredMessage="last Name is required" />
-                        <h:message errorClass="errorTextsNoMarginLeft" fatalClass="errorTextsNoMarginLeft" for="txtEmail" />
-
+                        
 
                     </h:panelGrid>
                     <br/>

@@ -25,16 +25,16 @@
             <div>
                 <h3>All Staffs</h3>
                 <h:form>
-                     <h:dataTable value="#{viewAllAdminsManagedBean.admins}" var="admins" style="width: 100%;">
+                    <h:dataTable value="#{viewAllAdminsManagedBean.admins}" var="admins" style="width: 100%;">
 
                         <h:column>			
                             <f:facet name = "header">Admin ID</f:facet>
-                            <h:outputText value="#{admins.administratorId}" />
+                            <h:outputText value="#{admins.userId}" />
                         </h:column>
 
                         <h:column>    				
                             <f:facet name = "header">Username</f:facet>
-                            <h:outputText value="#{admins.username}" />
+                            <h:outputText value="#{admins.email}" />
                         </h:column>
 
                         <h:column>    				
@@ -47,17 +47,14 @@
                             <h:outputText value="#{admins.lastName}" />
                         </h:column>
                          
-                          <h:column>    				
-                            <f:facet name = "header">Last Name</f:facet>
-                            <h:outputText value="#{admins.email}" />
-                        </h:column> 
+                  
 
    
                        
                          <h:column>    				
                             <f:facet name = "header">Action</f:facet>
                             <h:commandLink value="View" actionListener="#{viewAllAdminsManagedBean.viewAdminDetails}">
-                                <f:attribute name="adminId" value="#{admins.administratorId}" />
+                                <f:attribute name="adminId" value="#{admins.userId}" />
                             </h:commandLink>
                         </h:column>
                     </h:dataTable>

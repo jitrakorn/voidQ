@@ -55,7 +55,7 @@ public class CreateNewAdminManagedBean
             AdminEntity admin = administratorSessionBeanLocal.createNewAdmin(newAdmin);
             newAdmin = new AdminEntity();
 
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New Admin created successfully (Staff ID: " + admin.getUserId()+ ")", null));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New Admin created successfully (Admin ID: " + admin.getUserId()+ ")", null));
         }
         catch(InputDataValidationException ex)
         {

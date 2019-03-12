@@ -5,7 +5,6 @@ import ejb.entity.AdminEntity;
 import ejb.session.stateless.AdministratorSessionBeanLocal;
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.Random;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
@@ -31,10 +30,11 @@ public class ViewAdminDetailsManagedBean implements Serializable
     private Long adminIdToView;
     private AdminEntity adminToView;
     
-    
+     private boolean isDisabled = true;
     
     public ViewAdminDetailsManagedBean() 
     {
+         
     }
     
     
@@ -58,7 +58,31 @@ public class ViewAdminDetailsManagedBean implements Serializable
         }
     }
     
+     public void enableEdit(ActionEvent event)
+    {
+        isDisabled = !isDisabled;
+    }
     
+      public void updateAdmin(ActionEvent event)
+    {
+       
+        try
+        {
+            administratorSessionBeanLocal.updateAdmin(adminToView);
+
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Admin updated successfully", null));
+            isDisabled = !isDisabled;
+        }
+        catch(AdministratorNotFoundException ex)
+        {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while updating staff: " + ex.getMessage(), null));
+        }
+        catch(Exception ex)
+        {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An unexpected error has occurred: " + ex.getMessage(), null));
+        }
+        
+    }
     
     public void back(ActionEvent event) throws IOException
     {
@@ -73,12 +97,7 @@ public class ViewAdminDetailsManagedBean implements Serializable
     
     
     
-    public void updateAdmin(ActionEvent event) throws IOException
-    {
-        FacesContext.getCurrentInstance().getExternalContext().getFlash().put("adminIdToUpdate", adminIdToView);
-        FacesContext.getCurrentInstance().getExternalContext().redirect("updateAdmin.xhtml");
-    }
-    
+  
     
      public void resetPassword(ActionEvent event) throws IOException
     {
@@ -106,6 +125,22 @@ public class ViewAdminDetailsManagedBean implements Serializable
 
     public void setAdminToView(AdminEntity adminToView) {
         this.adminToView = adminToView;
+    }
+
+    public Long getAdminIdToView() {
+        return adminIdToView;
+    }
+
+    public void setAdminIdToView(Long adminIdToView) {
+        this.adminIdToView = adminIdToView;
+    }
+
+    public boolean isIsDisabled() {
+        return isDisabled;
+    }
+
+    public void setIsDisabled(boolean isDisabled) {
+        this.isDisabled = isDisabled;
     }
 
   

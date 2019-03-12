@@ -40,16 +40,16 @@
                         <h:outputText value="" />
                         
                         <h:outputLabel style="font-weight: bold;" for="txtEmail" value="Email"  />
-                        <h:inputText id="txtEmail" value="#{updateUserManagedBean.staffToUpdate.email}" required="true" requiredMessage="Email is required" disabled="#{updateUserManagedBean.isDisabled}"/>
+                        <h:inputText id="txtEmail" value="#{updateUserManagedBean.staffToUpdate.email}" required="true" requiredMessage="Email is required" readonly="#{updateUserManagedBean.isDisabled}"/>
                          <h:message errorClass="errorTextsNoMarginLeft" fatalClass="errorTextsNoMarginLeft" for="txtEmail" />
 
                         <h:outputLabel style="font-weight: bold;" for="txtFirstName" value="First Name" />
-                        <h:inputText id="txtFirstName" value="#{updateUserManagedBean.staffToUpdate.firstName}" required="true" requiredMessage="First Name is required" disabled="#{updateUserManagedBean.isDisabled}"/>
+                        <h:inputText id="txtFirstName" value="#{updateUserManagedBean.staffToUpdate.firstName}" required="true" requiredMessage="First Name is required" readonly="#{updateUserManagedBean.isDisabled}"/>
                         <h:message errorClass="errorTextsNoMarginLeft" fatalClass="errorTextsNoMarginLeft" for="txtFirstName" />
 
 
                         <h:outputLabel style="font-weight: bold;" for="txtLastName" value="Last Name" />
-                        <h:inputText id="txtLastName" value="#{updateUserManagedBean.staffToUpdate.lastName}" required="true" requiredMessage="Description is required" disabled="#{updateUserManagedBean.isDisabled}"/>
+                        <h:inputText id="txtLastName" value="#{updateUserManagedBean.staffToUpdate.lastName}" required="true" requiredMessage="Description is required" readonly="#{updateUserManagedBean.isDisabled}"/>
                         <h:message errorClass="errorTextsNoMarginLeft" fatalClass="errorTextsNoMarginLeft" for="txtLastName"  />
 
                          <h:outputText style="font-weight: bold;" value="Designation"/>
