@@ -33,11 +33,12 @@ public class UpdateUserManagedBean implements Serializable
    
 
     
-    
+    private String textValue = "Enable Edit";
+
     
     public UpdateUserManagedBean() 
     {        
-        isDisabled = !isDisabled;
+       
     }
     
        
@@ -67,8 +68,20 @@ public class UpdateUserManagedBean implements Serializable
     
     public void enableEdit(ActionEvent event)
     {
-        isDisabled= false;
+         isDisabled = !isDisabled;
+         if(isDisabled)
+         {
+             textValue = "Enable Edit";
+             
+         }
+         else
+         {
+             textValue = "Disable Edit";
+         }
+            
     }
+    
+    
     
     public void updateStaff(ActionEvent event)
     {
@@ -78,6 +91,7 @@ public class UpdateUserManagedBean implements Serializable
             partnerSessionBeanLocal.updateStaff(staffToUpdate);
 
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Staff updated successfully", null));
+            isDisabled = !isDisabled;
         }
         catch(PartnerNotFoundException ex)
         {
@@ -111,6 +125,14 @@ public class UpdateUserManagedBean implements Serializable
 
     public void setIsDisabled(boolean isDisabled) {
         this.isDisabled = isDisabled;
+    }
+
+    public String getTextValue() {
+        return textValue;
+    }
+
+    public void setTextValue(String textValue) {
+        this.textValue = textValue;
     }
 
 

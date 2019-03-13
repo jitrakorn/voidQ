@@ -61,7 +61,7 @@
                     </h:panelGrid>
                     <br/>
                     <div style="text-align: center;">                       
-                        <h:commandButton value="Enable Edit" type="submit" actionListener="#{updateUserManagedBean.enableEdit}" />
+                        <h:commandButton value="#{updateUserManagedBean.textValue}" type="submit" actionListener="#{updateUserManagedBean.enableEdit}" />
                         <h:commandButton value="Update" type="submit" actionListener="#{updateUserManagedBean.updateStaff}" rendered="#{updateUserManagedBean.isDisabled == false}" />
                     </div>
                 </h:form>
