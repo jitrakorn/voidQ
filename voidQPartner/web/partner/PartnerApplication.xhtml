@@ -61,8 +61,11 @@
                     
                         <h:outputLabel style="font-weight: bold;" for="txtPostalCode" value="Postal Code" />
                          
-                        <h:inputText id="txtPostalCode" value="#{partnerApplicationManagedBean.postalcode}" required="true" requiredMessage="Postal code is required" />
-                <h:commandButton value="Validate" type="submit" actionListener="#{partnerApplicationManagedBean.loadAddress}" />
+                        <h:inputText id="txtPostalCode" value="#{partnerApplicationManagedBean.postalcode}" required="true" requiredMessage="Postal code is required">
+                         <f:ajax listener="#{partnerApplicationManagedBean.loadAddress}" render="txtClinicAddress" />
+                         </h:inputText>
+                  
+                             
                 
                         <h:message errorClass="errorTextsNoMarginLeft" fatalClass="errorTextsNoMarginLeft" for="txtPostalCode" />
                  

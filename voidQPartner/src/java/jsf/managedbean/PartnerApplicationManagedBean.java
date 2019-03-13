@@ -1,6 +1,5 @@
 package jsf.managedbean;
 
-
 import ejb.entity.ClinicEntity;
 import ejb.entity.StaffEntity;
 import ejb.helper.Geocoding;
@@ -14,10 +13,10 @@ import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
+import javax.faces.event.AjaxBehaviorEvent;
 import javax.inject.Named;
 import org.json.JSONObject;
 import util.enumeration.ApplicationStatus;
-
 
 import util.exception.InputDataValidationException;
 
@@ -28,14 +27,13 @@ public class PartnerApplicationManagedBean {
     @EJB(name = "PartnerSessionBeanLocal")
     private PartnerSessionBeanLocal partnerSessionBeanLocal;
 
-  
-    
-private ClinicEntity newClinic;
+    private ClinicEntity newClinic;
     private StaffEntity newStaff;
     private String postalcode;
+
     public PartnerApplicationManagedBean() {
-     newClinic = new ClinicEntity();
-         newStaff= new StaffEntity() ;
+        newClinic = new ClinicEntity();
+        newStaff = new StaffEntity();
     }
 
     @PostConstruct
@@ -43,9 +41,8 @@ private ClinicEntity newClinic;
 
     }
 
-   
-  public void loadAddress(ActionEvent event) {
-
+    public void loadAddress(AjaxBehaviorEvent event) {
+      
         try {
             String hahaha = Geocoding.getJSONByGoogle(postalcode);
             System.out.println(hahaha);
@@ -53,10 +50,10 @@ private ClinicEntity newClinic;
             //JSONArray jsonArr = new JSONArray(jsonObj.getJSONArray("results"));
 
             JSONObject loc = jsonObj.getJSONArray("results").getJSONObject(0).getJSONObject("geometry").getJSONObject("location");
-            String lat  =loc.get("lat").toString();
+            String lat = loc.get("lat").toString();
             String lng = loc.get("lng").toString();
-            String addressJSON = Geocoding.addressLookUp(lat+","+lng);
-             JSONObject locObj = new JSONObject(addressJSON);
+            String addressJSON = Geocoding.addressLookUp(lat + "," + lng);
+            JSONObject locObj = new JSONObject(addressJSON);
             JSONObject locName = locObj.getJSONArray("results").getJSONObject(0);
             String name = locName.getString("formatted_address");
             newClinic.setAddress(name);
@@ -67,10 +64,10 @@ private ClinicEntity newClinic;
     }
 
     public void createNewPartner(ActionEvent event) {
-
+        System.out.println("run");
         try {
             newClinic.setApplicationStatus(ApplicationStatus.NOTACTIVATED);
-           
+
             ClinicEntity partner = partnerSessionBeanLocal.createNewPartner(newClinic);
             newStaff.setClinicEntity(partner);
             newStaff.setTitle("doctor");
@@ -78,15 +75,13 @@ private ClinicEntity newClinic;
             StaffEntity staff = partnerSessionBeanLocal.createNewStaff(newStaff);
             partner.getStaffEntities().add(staff);
             newClinic = new ClinicEntity();
-             newStaff = new StaffEntity();
+            newStaff = new StaffEntity();
 
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Your account  : " + staff.getEmail() + " is being created and application is being processed", null));
         } catch (InputDataValidationException ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while creating the new partner: " + ex.getMessage(), null));
         }
     }
-   
-
 
     public ClinicEntity getNewClinic() {
         return newClinic;
@@ -108,11 +103,10 @@ private ClinicEntity newClinic;
         return postalcode;
     }
 
+    
     public void setPostalcode(String postalcode) {
+          System.out.println(postalcode);
         this.postalcode = postalcode;
     }
 
-   
-
-    
 }

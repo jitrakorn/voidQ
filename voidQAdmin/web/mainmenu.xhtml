@@ -2,36 +2,47 @@
 <!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
                 xmlns:h="http://xmlns.jcp.org/jsf/html"
-                xmlns:f="http://xmlns.jcp.org/jsf/core">
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
 
     <section id="mainmenu" class="mainmenu">
-        <h3>Main Menu</h3>
+        
+        
+         <h3>Main Menu</h3>
         <nav>
-            <br/>
-            <h:link outcome="/index">Home</h:link>
-            <br/><br/>
-            <h:panelGroup rendered="#{sessionScope.isLogin == true}">
-                <h:form id="logoutLinkForm">
-                    <h:commandLink actionListener="#{loginManagedBean.logout}">Logout</h:commandLink>
-                </h:form>
-                <br/><br/>
-                <h4 class="menuHeader1">Admin Operation</h4>
-                <ul class="secondaryMenu">                    
-                    <li><h:link outcome="/systemAdministration/createNewAdmin.xhtml">Create new Admin</h:link></li>
-                    <li><h:link outcome="/systemAdministration/viewAllAdmins.xhtml">View All Administrators</h:link></li>
-                </ul>
-                <br/>
-                <h4 class="menuHeader1">Clinic Administration</h4>
-                <h5 class="menuHeader2">For fuuture use ( maybe have roles?)</h5>
-                <ul class="secondaryMenu">
-                     <li><h:link outcome="/clinicAdministration/createNewPartner.xhtml">Create New Partner</h:link></li>
-                    <li><h:link outcome="/clinicAdministration/viewAllStaffs.xhtml">View All Partners</h:link></li>
-                    <li><h:link outcome="/clinicAdministration/createNewStaff.xhtml">Create New Clinic</h:link></li>
-                    <li><h:link outcome="/clinicAdministration/viewAllStaffs.xhtml">View All Clinics</h:link></li>
-                </ul>
-            </h:panelGroup>
+            <h:form>
+                    
+                <p:menu style="width:200px;">
+
+                    <p:submenu label="System">
+                        <p:menuitem value="Home" outcome="/index" icon="fa fa-home" />
+                        <p:menuitem value="Logout" actionListener="#{loginManagedBean.logout}" icon="fa fa-sign-out" rendered="#{sessionScope.isLogin == true}" />
+                    </p:submenu>
+
+                    <p:submenu label="Admin Operation" rendered="#{sessionScope.isLogin == true}">
+                      
+                        
+                        <p:menuitem value="Create new Admin" outcome="/systemAdministration/createNewAdmin.xhtml" icon="fa fa-shopping-cart" />
+                        <p:menuitem value="View All Administrators" outcome="/systemAdministration/viewAllAdmins.xhtml" icon="fa fa-arrow-circle-right" />
+                    </p:submenu>
+                    
+                    <p:submenu label="Clinic Administration" rendered="#{sessionScope.isLogin == true}">
+                        
+                        <p:menuitem value="Create New Partner" outcome="/clinicAdministration/createNewPartner.xhtml" icon="fa fa-users" />
+                        <p:menuitem value="View All Partners" outcome="/clinicAdministration/viewAllStaffs.xhtml" icon="fa fa-tags" />
+                        <p:menuitem value="Create New Clinic" outcome="/clinicAdministration/createNewStaff.xhtml" icon="fa fa-search" />
+                        <p:menuitem value="View All Clinics" outcome="/clinicAdministration/viewAllStaffs.xhtml" icon="fa fa-filter" />
+                     
+                    </p:submenu>                        
+
+                </p:menu>
+
+            </h:form>
         </nav>
+            
     </section>
+        
+     
 
 </ui:composition>
 
