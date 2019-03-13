@@ -31,7 +31,7 @@ public class ViewAdminDetailsManagedBean implements Serializable
     private AdminEntity adminToView;
     
      private boolean isDisabled = true;
-    
+      private String textValue = "Enable Edit";
     public ViewAdminDetailsManagedBean() 
     {
          
@@ -61,6 +61,15 @@ public class ViewAdminDetailsManagedBean implements Serializable
      public void enableEdit(ActionEvent event)
     {
         isDisabled = !isDisabled;
+         if(isDisabled)
+         {
+             textValue = "Enable Edit";
+             
+         }
+         else
+         {
+             textValue = "Disable Edit";
+         }
     }
     
       public void updateAdmin(ActionEvent event)
@@ -72,6 +81,7 @@ public class ViewAdminDetailsManagedBean implements Serializable
 
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Admin updated successfully", null));
             isDisabled = !isDisabled;
+             textValue = "Enable Edit";
         }
         catch(AdministratorNotFoundException ex)
         {
@@ -141,6 +151,14 @@ public class ViewAdminDetailsManagedBean implements Serializable
 
     public void setIsDisabled(boolean isDisabled) {
         this.isDisabled = isDisabled;
+    }
+
+    public String getTextValue() {
+        return textValue;
+    }
+
+    public void setTextValue(String textValue) {
+        this.textValue = textValue;
     }
 
   

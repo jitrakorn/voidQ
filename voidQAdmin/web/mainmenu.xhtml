@@ -20,18 +20,14 @@
                     </p:submenu>
 
                     <p:submenu label="Admin Operation" rendered="#{sessionScope.isLogin == true}">
-                      
-                        
                         <p:menuitem value="Create new Admin" outcome="/systemAdministration/createNewAdmin.xhtml" icon="fa fa-shopping-cart" />
-                        <p:menuitem value="View All Administrators" outcome="/systemAdministration/viewAllAdmins.xhtml" icon="fa fa-arrow-circle-right" />
+                        <p:menuitem value="View Admins" outcome="/systemAdministration/viewAllAdmins.xhtml" icon="fa fa-arrow-circle-right" />
                     </p:submenu>
                     
                     <p:submenu label="Clinic Administration" rendered="#{sessionScope.isLogin == true}">
                         
                         <p:menuitem value="Create New Partner" outcome="/clinicAdministration/createNewPartner.xhtml" icon="fa fa-users" />
-                        <p:menuitem value="View All Partners" outcome="/clinicAdministration/viewAllStaffs.xhtml" icon="fa fa-tags" />
-                        <p:menuitem value="Create New Clinic" outcome="/clinicAdministration/createNewStaff.xhtml" icon="fa fa-search" />
-                        <p:menuitem value="View All Clinics" outcome="/clinicAdministration/viewAllStaffs.xhtml" icon="fa fa-filter" />
+
                      
                     </p:submenu>                        
 

@@ -92,6 +92,8 @@ public class UpdateUserManagedBean implements Serializable
 
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Staff updated successfully", null));
             isDisabled = !isDisabled;
+             textValue = "Enable Edit";
+            
         }
         catch(PartnerNotFoundException ex)
         {
