@@ -1,32 +1,3 @@
-* {
-	margin: 0;
-	padding: 0;
-	font-family: verdana,arial;	
-}
-
-body {
-	display: block;
-	width: 99%;
-	margin: 0.5% 0.5% 0.5% 0.5%;
-}
-
-p {
-	padding: 5px 0px 5px 0px;
-}
-
-table {
-	border-style: solid; 
-	border-width: 1px;
-	font-size: smaller;
-}
-
-th, td {
-	border-style: solid; 
-	border-width: 1px;
-	border-spacing: 1px;
-	padding: 3px;
-}
-
 a {
 	text-decoration-line: none;	
 }
@@ -36,149 +7,52 @@ a:hover {
 	cursor: hand;
 }
 
-.header {
-	display: block;
-	padding: 3px 3px 3px 3px;
-	clear: both;
-	background-color: whitesmoke;
+
+
+/* PrimeFaces styling elements below this comment */
+
+.ui-widget {
+    font-size: small;
 }
 
-.loginbox {
-	display:block;
-	text-align: right;
-	padding: 3px 3px 3px 3px;
+.ui-column-header {
+    font-size: small;
 }
 
-.mainmenu {
-	display: block;
-	width: 15%;
-	margin: 0.5% 0% 0.5% 0%;
-	padding: 3px 3px 3px 3px;
-	float: left;
-	background-color: whitesmoke;
+.ui-column-title {
+    font-size: small;
 }
 
-.content {
-	display: block;
-	width: 67.5%;
-	margin: 0.5% 0.5% 0.5% 0.5%;
-	padding: 3px 3px 3px 3px;
-	float: left;
+.ui-datatable {
+    font-size: small;
 }
 
-.sidebar {
-	display: block;
-	width: 15%;
-	margin: 0.5% 0% 0.5% 0%;
-	padding: 3px 3px 3px 3px;
-	float: right;
-	background-color: silver;
-	text-align: center;
+.ui-datatable-header {
+    font-size: small;
 }
 
-.footer {
-	display: block;
-	margin: 0.5% 0% 0% 0%;
-	padding: 3px 3px 3px 3px;
-	clear: both;
-	background-color: whitesmoke;
+.ui-datatable-footer {
+    font-size: small;
 }
 
-.advertisement {
-	margin: 5px 0px 5px 0px;
+.ui-datatable-column {
+    font-size: small;
 }
 
-.menuHeader1 {
-	padding: 3px 3px 3px 3px;
-	color: white;
-	background-color: grey;
+.ui-sortable-column {
+    font-size: small;
 }
 
-.menuHeader2 {
-	margin-top: 5px;
-	padding: 3px 3px 3px 3px;	
-	background-color: silver;
+.ui-sortable-column-icon {
+    font-size: small;
 }
 
-.secondaryMenu {
-	margin-left: 15px;
-	padding: 3px 3px 3px 3px;
+.ui-datatable-data {
+    font-size: small;
 }
 
-.cellnumber {
-	text-align: right;
+div.ui-growl {
+   left: 10;
 }
 
-.rowheader {
-	font-weight: bold;
-}
 
-.infoText {
-    color: blue;
-}
-
-.errorText {
-    color: red;
-}
-
-.infoTexts {
-    list-style-type: none;
-    margin-left: 20px;
-    color: blue;
-}
-
-.errorTexts {
-    list-style-type: none;
-    margin-left: 20px;
-    color: red;
-}
-
-.errorTextsNoMarginLeft {
-    list-style-type: none;
-    color: red;
-}
-
-.infoTextsWithBullet {
-    margin-left: 20px;
-    color: blue;
-}
-
-.errorTextsWithBullet {
-    margin-left: 20px;
-    color: red;
-}
-
-.dataTable {
-    border-style: solid;
-    border-width: thin;
-}
-
-.dataTableLabel {
-    width: 20%;
-    border-style: solid;
-    border-width: thin;
-}
-
-.dataTableValue {
-    width: 60%;
-    border-style: solid;
-    border-width: thin;
-}
-
-.dataTable3Label {
-    width: 20%;
-    border-style: solid;
-    border-width: thin;
-}
-
-.dataTable3Value {
-    width: 40%;
-    border-style: solid;
-    border-width: thin;
-}
-
-.dataTable3Message {
-    width: 20%;
-    border-style: solid;
-    border-width: thin;
-}

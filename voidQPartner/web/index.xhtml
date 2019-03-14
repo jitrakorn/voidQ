@@ -1,78 +1,47 @@
 <?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                template="/template/defaultTemplate.xhtml"
+                xmlns:ez="http://xmlns.jcp.org/jsf/composite/ezcomp"
+                xmlns:p="http://primefaces.org/ui">
+    
+    <ui:define name="content">
+        
+     
+        
+        <h:panelGroup rendered="#{sessionScope.isLogin == false}">
+            <article>
+                <h3>Welcome</h3>
+                <p>
+                    fucking lame shit                    
+                </p>
+                <p>
+                    <ul>
+                        <li>fking faster change the ui</li>
+                        <li>ffs @@@!!!!11!!!.</li>
+                    </ul>
+                </p>
+            </article>
+        </h:panelGroup>
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+        <h:panelGroup rendered="#{sessionScope.isLogin == true}">
+            <article>
+                <h3>Message Of The Day</h3>                    
+                <p>                    
+                    <ui:repeat value="#{partnerIndexManagedBean.messageOfTheDayEntities}" var="motd">
+                        
+                        <p:panel header="#{utilManagedBean.formatMotdHeader(motd.messageDate)} - #{motd.title}" toggleable="true">
+                            <h:outputText value="#{motd.message}" />
+                        </p:panel>
+                        <br/>                
 
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
-    <h:head>
-        <title>voidQ :: Home</title>
-        <h:outputStylesheet library="css" name="default.css" />
-    </h:head>
-    <h:body>
-        <h1>voidQ :: Home</h1>
+                    </ui:repeat>                                                              
+                </p>
+            </article>
+        </h:panelGroup>
         
-        <ui:insert name="header">
-            <ui:include src="/header.xhtml" />
-        </ui:insert>
-         <ui:insert name="mainmenu">
-            <ui:include src="/mainmenu.xhtml" />
-        </ui:insert>
-       
-        
-        <section id="content" class="content">
-            <h:panelGroup rendered="#{sessionScope.isLogin == false}">
-                <article>
-                    <h3>Welcome</h3>
-                    <p>
-                        This version of voidQ is sooo shitty !!!!:                    
-                    </p>
-                    <p>
-                        <ul style="margin-left: 20px;">
-                            <li>Yall better refine this shiity UI.</li>
-                            <li>fuck mens</li>
-                        </ul>
-                    </p>
-                </article>
-            </h:panelGroup>
-            
-            <h:panelGroup rendered="#{sessionScope.isLogin == true}">
-                <article>
-                    <h3>Message Of The Day</h3>                    
-                    <p>
-                        <h:dataTable value="#{partnerIndexManagedBean.messageOfTheDayEntities}" var="motd" width="600">
-                            
-                            <h:column>    				
-                                <f:facet name = "header">Date</f:facet>
-                                <h:outputText value="#{motd.messageDate}">
-                                    <f:convertDateTime pattern="dd/MM/yyyy" />
-                                </h:outputText>
-                            </h:column>
-                            
-                            <h:column>    				
-                                <f:facet name = "header">Title</f:facet>
-                                <h:outputText value="#{motd.title}" />                                    
-                            </h:column>
-                            
-                            <h:column>    				
-                                <f:facet name = "header">message</f:facet>
-                                <h:outputText value="#{motd.message}" />                                    
-                            </h:column>
-                            
-                        </h:dataTable>                                                
-                    </p>
-                </article>
-            </h:panelGroup>
-        </section>
-        
-        <ui:insert name="sidebar">
-            <ui:include src="/sidebar.xhtml" />
-        </ui:insert>
-        
-        <ui:insert name="footer">
-            <ui:include src="/footer.xhtml" />
-        </ui:insert>
-        
-    </h:body>
-</html>
+    </ui:define>
+
+</ui:composition>

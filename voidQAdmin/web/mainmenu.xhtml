@@ -6,9 +6,6 @@
                 xmlns:p="http://primefaces.org/ui">
 
     <section id="mainmenu" class="mainmenu">
-        
-        
-         <h3>Main Menu</h3>
         <nav>
             <h:form>
                     
@@ -19,16 +16,12 @@
                         <p:menuitem value="Logout" actionListener="#{loginManagedBean.logout}" icon="fa fa-sign-out" rendered="#{sessionScope.isLogin == true}" />
                     </p:submenu>
 
-                    <p:submenu label="Admin Operation" rendered="#{sessionScope.isLogin == true}">
-                        <p:menuitem value="Create new Admin" outcome="/systemAdministration/createNewAdmin.xhtml" icon="fa fa-shopping-cart" />
-                        <p:menuitem value="View Admins" outcome="/systemAdministration/viewAllAdmins.xhtml" icon="fa fa-arrow-circle-right" />
+                    <p:submenu label="Administration" rendered="#{sessionScope.isLogin == true}">
+                        <p:menuitem value="Admin Operation" outcome="/systemAdministration/adminManagement.xhtml" icon="fa fa-users" />
                     </p:submenu>
                     
                     <p:submenu label="Clinic Administration" rendered="#{sessionScope.isLogin == true}">
-                        
-                        <p:menuitem value="Create New Partner" outcome="/clinicAdministration/createNewPartner.xhtml" icon="fa fa-users" />
-
-                     
+                        <p:menuitem value="Partner Operation" outcome="/clinicAdministration/createNewPartner.xhtml" icon="fa fa-users" />
                     </p:submenu>                        
 
                 </p:menu>
@@ -37,8 +30,5 @@
         </nav>
             
     </section>
-        
-     
-
 </ui:composition>
 

@@ -5,6 +5,7 @@ import ejb.entity.StaffEntity;
 import ejb.helper.Geocoding;
 import ejb.session.stateless.PartnerSessionBeanLocal;
 import java.io.IOException;
+import java.io.Serializable;
 import java.math.BigDecimal;
 
 import javax.annotation.PostConstruct;
@@ -14,15 +15,17 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.AjaxBehaviorEvent;
+import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import org.json.JSONObject;
+import org.primefaces.event.FlowEvent;
 import util.enumeration.ApplicationStatus;
 
 import util.exception.InputDataValidationException;
 
 @Named(value = "partnerApplicationManagedBean")
-@RequestScoped
-public class PartnerApplicationManagedBean {
+@ViewScoped
+public class PartnerApplicationManagedBean implements Serializable {
 
     @EJB(name = "PartnerSessionBeanLocal")
     private PartnerSessionBeanLocal partnerSessionBeanLocal;
@@ -30,6 +33,7 @@ public class PartnerApplicationManagedBean {
     private ClinicEntity newClinic;
     private StaffEntity newStaff;
     private String postalcode;
+    private boolean skip;
 
     public PartnerApplicationManagedBean() {
         newClinic = new ClinicEntity();
@@ -63,7 +67,7 @@ public class PartnerApplicationManagedBean {
 
     }
 
-    public void createNewPartner(ActionEvent event) {
+    public void createNewPartner() {
         System.out.println("run");
         try {
             newClinic.setApplicationStatus(ApplicationStatus.NOTACTIVATED);
@@ -82,7 +86,28 @@ public class PartnerApplicationManagedBean {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while creating the new partner: " + ex.getMessage(), null));
         }
     }
-
+ public void save() {        
+        FacesMessage msg = new FacesMessage("Successful", "Welcome :" + newStaff.getFirstName());
+        FacesContext.getCurrentInstance().addMessage(null, msg);
+    }
+     
+    public boolean isSkip() {
+        return skip;
+    }
+ 
+    public void setSkip(boolean skip) {
+        this.skip = skip;
+    }
+     
+    public String onFlowProcess(FlowEvent event) {
+        if(skip) {
+            skip = false;   //reset in case user goes back
+            return "confirm";
+        }
+        else {
+            return event.getNewStep();
+        }
+    }
     public ClinicEntity getNewClinic() {
         return newClinic;
     }
