@@ -8,10 +8,13 @@ import java.io.Serializable;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
+import javax.servlet.http.HttpServletRequest;
+import org.primefaces.PrimeFaces;
 import util.exception.PartnerNotFoundException;
 
 
@@ -31,6 +34,7 @@ public class UpdateUserManagedBean implements Serializable
    private Long staffIdToUpdate;
     private  StaffEntity staffToUpdate;
    
+    private String email,fname,lname,title;
 
     
     private String textValue = "Enable Edit";
@@ -66,24 +70,32 @@ public class UpdateUserManagedBean implements Serializable
     {        
     }
     
-    public void enableEdit(ActionEvent event)
+     public void reset() {
+        PrimeFaces.current().resetInputs("formUser:userPanel");
+    }
+    public void enableEdit() 
     {
+         PrimeFaces.current().resetInputs("formUser:userPanel");
+        System.out.println("beeofre" + isDisabled);
          isDisabled = !isDisabled;
+         System.out.println("after" + isDisabled);
          if(isDisabled)
          {
-             textValue = "Enable Edit";
              
+             textValue = "Enable Edit";
+            
          }
          else
          {
              textValue = "Disable Edit";
+             
          }
-            
+            System.out.println(textValue);
     }
     
+   
     
-    
-    public void updateStaff(ActionEvent event)
+    public void updateStaff()
     {
        
         try
@@ -135,6 +147,38 @@ public class UpdateUserManagedBean implements Serializable
 
     public void setTextValue(String textValue) {
         this.textValue = textValue;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getFname() {
+        return fname;
+    }
+
+    public void setFname(String fname) {
+        this.fname = fname;
+    }
+
+    public String getLname() {
+        return lname;
+    }
+
+    public void setLname(String lname) {
+        this.lname = lname;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
 
