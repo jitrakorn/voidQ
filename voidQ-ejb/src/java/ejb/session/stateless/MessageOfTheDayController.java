@@ -6,18 +6,21 @@
 package ejb.session.stateless;
 
 import ejb.entity.MessageOfTheDayEntity;
+import ejb.entity.StaffEntity;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
+ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 import util.exception.InputDataValidationException;
+import util.exception.UpdateNewsException;
 
 /**
  *
@@ -73,7 +76,13 @@ public class MessageOfTheDayController implements MessageOfTheDayControllerLocal
         return query.getResultList();
     }
     
-    
+     @Override
+    public MessageOfTheDayEntity retrieveMessageByID(Long msgId) 
+    {
+        Query query = entityManager.createQuery("SELECT m FROM MessageOfTheDayEntity m WHERE m.motdId = :inMsgId");
+        query.setParameter("inMsgId", msgId);   
+            return (MessageOfTheDayEntity)query.getSingleResult();
+    }
     
     private String prepareInputDataValidationErrorsMessage(Set<ConstraintViolation<MessageOfTheDayEntity>>constraintViolations)
     {
@@ -86,6 +95,44 @@ public class MessageOfTheDayController implements MessageOfTheDayControllerLocal
         
         return msg;
     }
-
+  @Override
+    public void updateNews(MessageOfTheDayEntity msg,StaffEntity staff) throws InputDataValidationException, UpdateNewsException
+    {
+        // Updated in v4.1 to update selective attributes instead of merging the entire state passed in from the client
+        // Also check for existing staff before proceeding with the update
+        
+        // Updated in v4.2 with bean validation
+         Date date = new Date();
+        Set<ConstraintViolation<MessageOfTheDayEntity>>constraintViolations = validator.validate(msg);
+        
+        if(constraintViolations.isEmpty())
+        {        
+            if(msg.getMotdId()!= null)
+            {
+                MessageOfTheDayEntity msgToUpdate = retrieveMessageByID(msg.getMotdId());
+                
+                if(msgToUpdate.getMotdId().equals(msg.getMotdId()))
+                {
+                   msgToUpdate.setMessage(msg.getMessage());
+                   msgToUpdate.setTitle(msg.getTitle());
+                   msgToUpdate.setLastEditedMessageDate(date);
+                   msgToUpdate.setLastEditedStaffEntity(staff);
+                   
+                }
+                else
+                {
+                    throw new UpdateNewsException("ID of News to be updated does not match the existing record");
+                }
+            }
+            else
+            {
+                throw new UpdateNewsException("News ID not provided for news to be updated");
+            }
+        }
+        else
+        {
+            throw new InputDataValidationException(prepareInputDataValidationErrorsMessage(constraintViolations));
+        }
+    }
     
 }

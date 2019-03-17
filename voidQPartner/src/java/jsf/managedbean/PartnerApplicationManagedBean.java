@@ -6,14 +6,11 @@ import ejb.helper.Geocoding;
 import ejb.session.stateless.PartnerSessionBeanLocal;
 import java.io.IOException;
 import java.io.Serializable;
-import java.math.BigDecimal;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
-import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
-import javax.faces.event.ActionEvent;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;

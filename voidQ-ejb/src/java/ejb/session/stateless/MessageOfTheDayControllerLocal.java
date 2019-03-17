@@ -6,9 +6,11 @@
 package ejb.session.stateless;
 
 import ejb.entity.MessageOfTheDayEntity;
+import ejb.entity.StaffEntity;
 import java.util.List;
 import javax.ejb.Local;
 import util.exception.InputDataValidationException;
+import util.exception.UpdateNewsException;
 
 /**
  *
@@ -20,5 +22,9 @@ public interface MessageOfTheDayControllerLocal {
     public MessageOfTheDayEntity createNewMessageOfTheDay(MessageOfTheDayEntity newMessageOfTheDayEntity) throws InputDataValidationException;
 
     public List<MessageOfTheDayEntity> retrieveAllMessagesOfTheDay();
+
+    public MessageOfTheDayEntity retrieveMessageByID(Long msgId);
+
+    public void updateNews(MessageOfTheDayEntity msg, StaffEntity staff) throws InputDataValidationException, UpdateNewsException;
     
 }

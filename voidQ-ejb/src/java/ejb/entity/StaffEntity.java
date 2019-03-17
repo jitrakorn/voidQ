@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -40,12 +41,20 @@ public class StaffEntity extends UserEntity implements Serializable {
     
     @OneToMany(mappedBy = "staffEntity")
     private List<BookingEntity> bookingEntities;
+    
+    @OneToMany(mappedBy = "staffEntity")
+    private List<MessageOfTheDayEntity> messageOfTheDayEntities;
 
+     @OneToOne(optional=true)
+    private MessageOfTheDayEntity messageOfTheDayEntity;
+    
     public StaffEntity() {
         
        
         super();
+        messageOfTheDayEntity= new MessageOfTheDayEntity();
          bookingEntities=new ArrayList<>();
+         messageOfTheDayEntities=new ArrayList<>();
 
     }
 
@@ -132,6 +141,22 @@ public class StaffEntity extends UserEntity implements Serializable {
 
     public void setBookingEntities(List<BookingEntity> bookingEntities) {
         this.bookingEntities = bookingEntities;
+    }
+
+    public List<MessageOfTheDayEntity> getMessageOfTheDayEntities() {
+        return messageOfTheDayEntities;
+    }
+
+    public void setMessageOfTheDayEntities(List<MessageOfTheDayEntity> messageOfTheDayEntities) {
+        this.messageOfTheDayEntities = messageOfTheDayEntities;
+    }
+
+    public MessageOfTheDayEntity getMessageOfTheDayEntity() {
+        return messageOfTheDayEntity;
+    }
+
+    public void setMessageOfTheDayEntity(MessageOfTheDayEntity messageOfTheDayEntity) {
+        this.messageOfTheDayEntity = messageOfTheDayEntity;
     }
 
 }

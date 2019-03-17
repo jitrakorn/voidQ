@@ -1,7 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
-    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="1">
+        <file>
+            <url>src/java/ejb/session/stateless/ClinicSessionBean.java</url>
+            <bookmark id="1">
+                <name/>
+                <line>0</line>
+                <key/>
+            </bookmark>
+        </file>
+    </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group/>
+        <group>
+            <file>file:/Users/mingxuan/Desktop/Y2S2/IS3106/Project/voidQ/voidQ-ejb/src/conf/persistence.xml</file>
+            <file>file:/Users/mingxuan/Desktop/Y2S2/IS3106/Project/voidQ/voidQ-ejb/src/java/ejb/session/stateless/MessageOfTheDayController.java</file>
+            <file>file:/Users/mingxuan/Desktop/Y2S2/IS3106/Project/voidQ/voidQ-ejb/src/java/ejb/entity/StaffEntity.java</file>
+            <file>file:/Users/mingxuan/Desktop/Y2S2/IS3106/Project/voidQ/voidQ-ejb/src/java/ejb/entity/MessageOfTheDayEntity.java</file>
+        </group>
     </open-files>
 </project-private>

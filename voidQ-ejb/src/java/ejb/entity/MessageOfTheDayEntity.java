@@ -7,17 +7,18 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-
-
 @Entity
 
-public class MessageOfTheDayEntity implements Serializable
-{
+public class MessageOfTheDayEntity implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,23 +35,29 @@ public class MessageOfTheDayEntity implements Serializable
     @Temporal(TemporalType.DATE)
     @NotNull
     private Date messageDate;
+    @Column(nullable = true)
+    @Temporal(TemporalType.DATE)
+    private Date lastEditedMessageDate;
+    @OneToOne(mappedBy="messageOfTheDayEntity")
+    @JoinColumn(nullable=true)
+    private StaffEntity lastEditedStaffEntity;
+    
+    
+    @ManyToOne(optional = false)
+    @JoinColumn(nullable = false)
+    private StaffEntity staffEntity;
 
-    
-    
-    public MessageOfTheDayEntity()
-    {
+    public MessageOfTheDayEntity() {
     }
 
-    
-    
-    public MessageOfTheDayEntity(String title, String message, Date messageDate)
-    {
+    public MessageOfTheDayEntity(String title, String message, Date messageDate, StaffEntity staffEntity,StaffEntity lastEditedStaffEntity,Date lastEditedMessageDate) {
         this.title = title;
         this.message = message;
         this.messageDate = messageDate;
+        this.staffEntity = staffEntity;
+        this.lastEditedStaffEntity=lastEditedStaffEntity;
+        this.lastEditedMessageDate=lastEditedMessageDate;
     }
-    
-    
 
     public Long getMotdId() {
         return motdId;
@@ -85,8 +92,6 @@ public class MessageOfTheDayEntity implements Serializable
         return "ejb.entity.MessageOfTheDayEntity[ motdId=" + motdId + " ]";
     }
 
-    
-    
     public String getTitle() {
         return title;
     }
@@ -109,5 +114,29 @@ public class MessageOfTheDayEntity implements Serializable
 
     public void setMessageDate(Date messageDate) {
         this.messageDate = messageDate;
-    }    
+    }
+
+    public StaffEntity getStaffEntity() {
+        return staffEntity;
+    }
+
+    public void setStaffEntity(StaffEntity staffEntity) {
+        this.staffEntity = staffEntity;
+    }
+
+    public Date getLastEditedMessageDate() {
+        return lastEditedMessageDate;
+    }
+
+    public void setLastEditedMessageDate(Date lastEditedMessageDate) {
+        this.lastEditedMessageDate = lastEditedMessageDate;
+    }
+
+    public StaffEntity getLastEditedStaffEntity() {
+        return lastEditedStaffEntity;
+    }
+
+    public void setLastEditedStaffEntity(StaffEntity lastEditedStaffEntity) {
+        this.lastEditedStaffEntity = lastEditedStaffEntity;
+    }
 }

@@ -1,0 +1,58 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                template="/template/defaultTemplate.xhtml"
+                xmlns:p="http://primefaces.org/ui">
+    <ui:define name="content">
+
+        <div>
+            <h3>Create New Announcement</h3>
+            <br></br>
+            #{updateUserManagedBean.foo()}
+           <h:form id="form">
+   
+ 
+               <p:carousel value="#{viewNewsDetailsManagedBean.messageOfTheDayEntity}" headerText="Custom" var="news" itemStyle="height:200px;text-align:center" numVisible="1" easing="easeOutBounce" style="width:250px" circular="true">
+        <h:panelGrid columns="2" style="width:100%" columnClasses="label,value">
+          
+ 
+            <h:outputText value="Title" />
+            <h:outputText value="#{news.title}" />
+ 
+            <h:outputText value="News" />
+            <h:outputText value="#{news.message}" />
+ 
+      
+ 
+            <f:facet name="footer">
+                <p:commandButton update=":form:carDetail" oncomplete="PF('carDialog').show()" icon="pi pi-search">
+                    <f:setPropertyActionListener value="#{news}" target="#{viewNewsDetailsManagedBean.selectedMessageOfTheDayEntity}" />
+                </p:commandButton>
+            </f:facet>
+        </h:panelGrid>
+    </p:carousel> 
+     
+   
+ 
+    <p:dialog header="Car Info" widgetVar="carDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+        <p:outputPanel id="carDetail" style="text-align:center;">
+            <p:panelGrid  columns="2" rendered="#{not empty viewNewsDetailsManagedBean.selectedMessageOfTheDayEntity}" columnClasses="label,value">
+
+ 
+                <h:outputText value="Title:" />
+                <h:outputText value="#{viewNewsDetailsManagedBean.selectedMessageOfTheDayEntity.title}" />
+ 
+                <h:outputText value="Message" />
+                <h:outputText value="#{viewNewsDetailsManagedBean.selectedMessageOfTheDayEntity.message}" />
+ 
+               
+            </p:panelGrid>
+        </p:outputPanel>
+    </p:dialog>
+</h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>
