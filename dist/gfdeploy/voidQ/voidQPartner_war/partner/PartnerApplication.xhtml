@@ -1,104 +1,141 @@
 <?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                template="/template/defaultTemplate.xhtml"
+                xmlns:p="http://primefaces.org/ui">
+       <ui:define name="content">
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
-    <h:head>
-        <title> voidQ :: System Administration :: Application</title>
-        <h:outputStylesheet library="css" name="default.css" />
-    </h:head>
-    <h:body>
-        <h1>voidQ :: Partner Application :: Join us as Partner</h1>
-
-        <ui:insert name="header">
-            <ui:include src="/header.xhtml" />
-        </ui:insert>
-
-        <ui:insert name="mainmenu">
-            <ui:include src="/mainmenu.xhtml" />
-        </ui:insert>
-
-        <section id="content" class="content">
-           
-                <h3>Partner Application</h3>
-                <br/>
-
-                <h:form>
-                    <h:messages errorClass="errorTextsWithBullet" fatalClass="errorTextsWithBullet" infoClass="infoTextsWithBullet" globalOnly="true" />
-                    <br/>
-
-                    <h:panelGrid columnClasses="dataTable3Label,dataTable3Value,dataTable3Message" columns="3">
-                        <h:outputLabel style="font-weight: bold;" for="txtEmail" value="Email" />
-                        <h:inputText id="txtEmail" value="#{partnerApplicationManagedBean.newStaff.email}" required="true" requiredMessage="Username is required" />
-                        <h:message errorClass="errorTextsNoMarginLeft" fatalClass="errorTextsNoMarginLeft" for="txtEmail" />
-
-                        <h:outputLabel style="font-weight: bold;" for="txtPassword" value="Password" />
-                        <h:inputSecret id="txtPassword" value="#{partnerApplicationManagedBean.newStaff.password}" required="true" requiredMessage="Password is required" />
-                        <h:message errorClass="errorTextsNoMarginLeft" fatalClass="errorTextsNoMarginLeft" for="txtPassword" />
-
-
-                        <h:outputLabel style="font-weight: bold;" for="txtPartnerFname" value="Partner First Name" />
-                        <h:inputText id="txtPartnerFname" value="#{partnerApplicationManagedBean.newStaff.firstName}" required="true" requiredMessage="Partner First Name is required" />
-                        <h:message errorClass="errorTextsNoMarginLeft" fatalClass="errorTextsNoMarginLeft" for="txtPartnerFname" />
-                        
-                         <h:outputLabel style="font-weight: bold;" for="txtPartnerLname" value="Partner Last Name" />
-                         <h:inputText id="txtPartnerLname" value="#{partnerApplicationManagedBean.newStaff.lastName}" required="true" requiredMessage="Partner Last Name is required" />
-                        <h:message errorClass="errorTextsNoMarginLeft" fatalClass="errorTextsNoMarginLeft" for="txtPartnerLname" />
-
-       
-                        <h:outputLabel style="font-weight: bold;" for="txtClinicName" value="Clinic Name" />
-                        <h:inputText id="txtClinicName" value="#{partnerApplicationManagedBean.newClinic.clinicName}" required="true" requiredMessage="Clinic Name is required" />
-                        <h:message errorClass="errorTextsNoMarginLeft" fatalClass="errorTextsNoMarginLeft" for="txtClinicName" />
-                        
-                        <h:outputLabel style="font-weight: bold;" for="txtDesc" value="Description" />
-                        <h:inputText id="txtDesc" value="#{partnerApplicationManagedBean.newClinic.description}" required="true" requiredMessage="Clinic Description is required" />
-                        <h:message errorClass="errorTextsNoMarginLeft" fatalClass="errorTextsNoMarginLeft" for="txtDesc" />
-
-                        
+        <div>
+            <h3>Partner Management</h3>
+            <style type="text/css">
+    .label {
+        width:20%;
+        padding:4px;
+    }
+ 
+    .value {
+        width:80%;
+        padding:4px;
+    }
+ 
+    .grid {
+        width:100%;
+    }
+ 
+    .error {
+        color: red;
+    }
+ 
+    .outputLabel {
+        font-weight: bold;
+    }
+ 
+    .grid {
+        width:33%;
+        padding:4px;
+    }
+</style>
+               <h:form>
+         
+    <p:growl id="growl" sticky="true" showDetail="true"/>
+ 
+    <p:wizard flowListener="#{partnerApplicationManagedBean.onFlowProcess}">
+        <p:tab id="personal" title="Personal">
+            <p:panel header="Personal Details">
+                <p:messages />
+                <h:panelGrid columns="2" columnClasses="label, value">
                     
-                        <h:outputLabel style="font-weight: bold;" for="txtPostalCode" value="Postal Code" />
-                         
-                        <h:inputText id="txtPostalCode" value="#{partnerApplicationManagedBean.postalcode}" required="true" requiredMessage="Postal code is required">
+                     <h:outputText value="Email *" />
+                     <p:inputText value="#{partnerApplicationManagedBean.newStaff.email}" required="true" label="Email"/>
+                     
+                     <h:outputText value="Password: *" />
+                     <p:inputText value="#{partnerApplicationManagedBean.newStaff.password}" required="true" label="Firstname"/>
+                    
+                    <h:outputText value="Firstname: *" />
+                    <p:inputText value="#{partnerApplicationManagedBean.newStaff.firstName}" required="true" label="Firstname"/>
+ 
+                    <h:outputText value="Lastname: *" />
+                    <p:inputText value="#{partnerApplicationManagedBean.newStaff.lastName}" required="true" label="Lastname"/>
+ 
+                    <h:outputText value="Skip to last: " />
+                    <h:selectBooleanCheckbox value="#{partnerApplicationManagedBean.skip}" />
+                </h:panelGrid>
+            </p:panel>
+        </p:tab>
+ 
+        <p:tab id="address" title="Clinic">
+            <p:panel header="Clinic Details">
+                <p:messages />
+                <h:panelGrid columns="2" columnClasses="label, value">
+                    <h:outputText value="Clinic Name: " />
+                    <p:inputText value="#{partnerApplicationManagedBean.newClinic.clinicName}" />
+                    
+                    <h:outputText value="Clinic Description: " />
+                    <p:inputText value="#{partnerApplicationManagedBean.newClinic.description}" />
+ 
+                    <h:outputText value="Postal Code: " />
+                    <p:inputText value="#{partnerApplicationManagedBean.postalcode}" >
                          <f:ajax listener="#{partnerApplicationManagedBean.loadAddress}" render="txtClinicAddress" />
-                         </h:inputText>
-                  
-                             
-                
-                        <h:message errorClass="errorTextsNoMarginLeft" fatalClass="errorTextsNoMarginLeft" for="txtPostalCode" />
+                         </p:inputText>
+ 
+                    <h:outputText value="Clinic Address: " />
+                    <p:inputText id="txtClinicAddress" value="#{partnerApplicationManagedBean.newClinic.address}" />
+                    
+                    <h:outputText value="Clinic Consultation Cost: " />
+                    <p:inputText id="txtClinicCost" value="#{partnerApplicationManagedBean.newClinic.unitPrice}" />
+                    
+ 
                  
-        
+                </h:panelGrid>
+            </p:panel>
+        </p:tab>
+  
+ 
+        <p:tab id="confirm" title="Confirmation">
+            <p:panel header="Confirmation">
+                <h:panelGrid id="confirmation" columns="3" columnClasses="grid,grid,grid">
+                    <h:panelGrid columns="2" columnClasses="label, value">
+                        <h:outputText value="Email: " />
+                         <h:outputText value="#{partnerApplicationManagedBean.newStaff.email}" styleClass="outputLabel" />
+                         
+                          <h:outputText value="Password: " />
+                          <h:outputText value="#{partnerApplicationManagedBean.newStaff.password}" styleClass="outputLabel" />
 
-                       
-                        <h:outputLabel style="font-weight: bold;" for="txtClinicAddress" value="Clinic Address" />
-                        <h:inputText id="txtClinicAddress" value="#{partnerApplicationManagedBean.newClinic.address}"  />
+ 
+                        <h:outputText value="Firstname: " />
+                        <h:outputText value="#{partnerApplicationManagedBean.newStaff.firstName}" styleClass="outputLabel"/>
                         
-                        <h:message errorClass="errorTextsNoMarginLeft" fatalClass="errorTextsNoMarginLeft" for="txtClinicAddress" />
-                        
-                         <h:outputLabel style="font-weight: bold;" for="txtClinicCost" value="Clinic Consultation Cost" />
-                         <h:inputText id="txtClinicCost" value="#{partnerApplicationManagedBean.newClinic.unitPrice}"  />
-                        
-                        <h:message errorClass="errorTextsNoMarginLeft" fatalClass="errorTextsNoMarginLeft" for="txtClinicCost" />
+                          <h:outputText value="Lastname: " />
+                          <h:outputText value="#{partnerApplicationManagedBean.newStaff.lastName}" styleClass="outputLabel"/>
 
                     </h:panelGrid>
-                    <br/>
-                    <div style="text-align: left;">
-                        <h:commandButton value="Clear" type="reset" />&nbsp;
-                        <h:commandButton value="Create" type="submit" actionListener="#{partnerApplicationManagedBean.createNewPartner}" />
-                    </div>
-                </h:form>
-         
-        </section>
+ 
+                    <h:panelGrid columns="2" columnClasses="label, value">
+                        <h:outputText value="Clinic Name: " />
+                        <h:outputText value="#{partnerApplicationManagedBean.newClinic.clinicName}" styleClass="outputLabel"/>
+ 
+                        <h:outputText value="Clinic Description: " />
+                        <h:outputText value="#{partnerApplicationManagedBean.newClinic.description}" styleClass="outputLabel"/>
+ 
+                        <h:outputText value="Clinic Address: " />
+                        <h:outputText value="#{partnerApplicationManagedBean.newClinic.address}" styleClass="outputLabel"/>
+                        
+                           <h:outputText value="Clinic Consultation Cost: " />
+                           <h:outputText value="#{partnerApplicationManagedBean.newClinic.unitPrice}" styleClass="outputLabel"/>
+                    </h:panelGrid>
+ 
+                  
+                </h:panelGrid>
+ 
+                <p:commandButton value="Submit" action="#{partnerApplicationManagedBean.createNewPartner}" update="growl" process="@this"/>
+            </p:panel>
+        </p:tab>
+    </p:wizard>
+ 
+</h:form>
+            </div>
+           </ui:define>
 
-        <ui:insert name="sidebar">
-            <ui:include src="/sidebar.xhtml" />
-        </ui:insert>
-
-        <ui:insert name="footer">
-            <ui:include src="/footer.xhtml" />
-        </ui:insert>
-
-    </h:body>
-</html>
+</ui:composition>

@@ -170,11 +170,11 @@ public class PartnerSessionBean implements PartnerSessionBeanLocal {
                    partnerToUpdate.setClinicName(clinic.getClinicName());
                    partnerToUpdate.setDescription(clinic.getDescription());
                    partnerToUpdate.setUnitPrice(clinic.getUnitPrice());
-                   partnerToUpdate.setBookingEntities(clinic.getBookingEntities());  
+                   
                 }
                 else
                 {
-                    throw new UpdatePartnerException("Email of partner record to be updated does not match the existing record");
+                    throw new UpdatePartnerException("ID of partner record to be updated does not match the existing record");
                 }
             }
             else
@@ -226,6 +226,8 @@ public class PartnerSessionBean implements PartnerSessionBeanLocal {
             throw new InputDataValidationException(prepareInputDataValidationErrorsMessagea(constraintViolations));
         }
     }
+    
+     
     
     @Override
     public StaffEntity emailLogin(String email, String password) throws InvalidLoginCredentialException

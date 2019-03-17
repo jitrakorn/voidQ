@@ -18,11 +18,11 @@
                     </p:submenu>
 
                     <p:submenu label="Partner" rendered="#{sessionScope.isLogin == true}">
-                        <p:menuitem value="Partner Operation" outcome="/partner/viewPartnerDetails.xhtml" icon="fa fa-users" />
+                        <p:menuitem value="Partner Details" outcome="/partner/viewPartnerDetails.xhtml" icon="fa fa-users" />
                     </p:submenu>
                     
-                    <p:submenu label="Clinic Administration" rendered="#{sessionScope.isLogin == true}">
-                        <p:menuitem value="Partner Operation" outcome="/partner/viewClinicDetails.xhtml" icon="fa fa-users" />
+                    <p:submenu label="Clinic" rendered="#{sessionScope.isLogin == true}">
+                        <p:menuitem value="Clinic Details" outcome="/partner/viewClinicDetails.xhtml" icon="fa fa-users" />
                     </p:submenu>                        
 
                 </p:menu>

@@ -3,15 +3,13 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/Users/mingxuan/Desktop/Y2S2/IS3106/Project/voidQ/voidQPartner/web/partner/createNewPartner.xhtml</file>
-            <file>file:/Users/mingxuan/Desktop/Y2S2/IS3106/Project/voidQ/voidQPartner/web/index.xhtml</file>
-            <file>file:/Users/mingxuan/Desktop/Y2S2/IS3106/Project/voidQ/voidQPartner/src/java/jsf/managedbean/PartnerApplicationManagedBean.java</file>
             <file>file:/Users/mingxuan/Desktop/Y2S2/IS3106/Project/voidQ/voidQPartner/src/java/jsf/managedbean/UpdateUserManagedBean.java</file>
             <file>file:/Users/mingxuan/Desktop/Y2S2/IS3106/Project/voidQ/voidQPartner/web/partner/viewClinicDetails.xhtml</file>
-            <file>file:/Users/mingxuan/Desktop/Y2S2/IS3106/Project/voidQ/voidQPartner/web/partner/PartnerApplication.xhtml</file>
+            <file>file:/Users/mingxuan/Desktop/Y2S2/IS3106/Project/voidQ/voidQPartner/web/mainmenu.xhtml</file>
             <file>file:/Users/mingxuan/Desktop/Y2S2/IS3106/Project/voidQ/voidQPartner/web/partner/updateClinic.xhtml</file>
             <file>file:/Users/mingxuan/Desktop/Y2S2/IS3106/Project/voidQ/voidQPartner/web/userAdmin/viewUser.xhtml</file>
             <file>file:/Users/mingxuan/Desktop/Y2S2/IS3106/Project/voidQ/voidQPartner/web/partner/viewPartnerDetails.xhtml</file>
+            <file>file:/Users/mingxuan/Desktop/Y2S2/IS3106/Project/voidQ/voidQPartner/web/WEB-INF/web.xml</file>
         </group>
     </open-files>
 </project-private>

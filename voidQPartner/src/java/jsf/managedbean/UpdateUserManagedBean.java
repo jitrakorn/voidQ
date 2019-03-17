@@ -28,15 +28,13 @@ public class UpdateUserManagedBean implements Serializable
     @EJB(name = "PartnerSessionBeanLocal")
     private PartnerSessionBeanLocal partnerSessionBeanLocal;
 
-   private boolean isDisabled = true;
-
+  
 
    private Long staffIdToUpdate;
     private  StaffEntity staffToUpdate;
    
-    private String email,fname,lname,title;
+     private boolean isDisabled = true;
 
-    
     private String textValue = "Enable Edit";
 
     
@@ -149,37 +147,7 @@ public class UpdateUserManagedBean implements Serializable
         this.textValue = textValue;
     }
 
-    public String getEmail() {
-        return email;
-    }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getFname() {
-        return fname;
-    }
-
-    public void setFname(String fname) {
-        this.fname = fname;
-    }
-
-    public String getLname() {
-        return lname;
-    }
-
-    public void setLname(String lname) {
-        this.lname = lname;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
 
 
 
