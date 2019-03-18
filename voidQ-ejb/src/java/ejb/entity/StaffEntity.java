@@ -38,33 +38,35 @@ public class StaffEntity extends UserEntity implements Serializable {
     @ManyToOne(optional = false)
     @JoinColumn(nullable = false)
     private ClinicEntity clinicEntity;
-    
+
     @OneToMany(mappedBy = "staffEntity")
     private List<BookingEntity> bookingEntities;
-    
+
     @OneToMany(mappedBy = "staffEntity")
     private List<MessageOfTheDayEntity> messageOfTheDayEntities;
 
-     @OneToOne(optional=true)
+    @OneToOne(mappedBy="lastEditedStaffEntity")
     private MessageOfTheDayEntity messageOfTheDayEntity;
-    
+
     public StaffEntity() {
-        
-       
+
         super();
-        messageOfTheDayEntity= new MessageOfTheDayEntity();
-         bookingEntities=new ArrayList<>();
-         messageOfTheDayEntities=new ArrayList<>();
+
+        bookingEntities = new ArrayList<>();
+        messageOfTheDayEntities = new ArrayList<>();
 
     }
 
-    public StaffEntity(String email, String password, String firstName, String lastName, String title, String status,ClinicEntity clinicEntity) {
+    public StaffEntity(String email, String password, String firstName, String lastName, String title, String status, ClinicEntity clinicEntity) {
+        
         super(email, password);
+
         this.firstName = firstName;
         this.lastName = lastName;
         this.title = title;
         this.status = status;
-        this.clinicEntity=clinicEntity;
+        this.clinicEntity = clinicEntity;
+
     }
 
     @Override

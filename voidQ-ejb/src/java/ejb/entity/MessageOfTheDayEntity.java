@@ -38,25 +38,23 @@ public class MessageOfTheDayEntity implements Serializable {
     @Column(nullable = true)
     @Temporal(TemporalType.DATE)
     private Date lastEditedMessageDate;
-    @OneToOne(mappedBy="messageOfTheDayEntity")
-    @JoinColumn(nullable=true)
+    @OneToOne
+    @JoinColumn
     private StaffEntity lastEditedStaffEntity;
     
     
     @ManyToOne(optional = false)
-    @JoinColumn(nullable = false)
+    @JoinColumn
     private StaffEntity staffEntity;
 
     public MessageOfTheDayEntity() {
     }
 
-    public MessageOfTheDayEntity(String title, String message, Date messageDate, StaffEntity staffEntity,StaffEntity lastEditedStaffEntity,Date lastEditedMessageDate) {
+    public MessageOfTheDayEntity(String title, String message, Date messageDate, StaffEntity staffEntity) {
         this.title = title;
         this.message = message;
         this.messageDate = messageDate;
         this.staffEntity = staffEntity;
-        this.lastEditedStaffEntity=lastEditedStaffEntity;
-        this.lastEditedMessageDate=lastEditedMessageDate;
     }
 
     public Long getMotdId() {

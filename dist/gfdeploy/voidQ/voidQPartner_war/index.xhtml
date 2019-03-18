@@ -37,6 +37,8 @@
                           
                             <h:outputText value="Posted by : #{motd.staffEntity.firstName} #{motd.staffEntity.lastName} #{motd.messageDate} " style="float:right;" />
                             <br/>
+                            <h:outputText value="Last edited by : #{motd.lastEditedStaffEntity.firstName} #{motd.lastEditedStaffEntity.lastName} #{motd.lastEditedMessageDate}" rendered="#{motd.lastEditedStaffEntity!=null}" style="float:right;" />
+                             <br/>
                             <p:commandButton actionListener="#{partnerIndexManagedBean.redirect}" id="iconOnly"  style="margin-right:20px;" icon="pi pi-save" title="Icon Only" >
                                  <f:attribute name="newsID" value="#{motd.motdId}" />
                                       </p:commandButton>

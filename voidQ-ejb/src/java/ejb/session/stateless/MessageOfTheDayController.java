@@ -117,7 +117,8 @@ public class MessageOfTheDayController implements MessageOfTheDayControllerLocal
                    msgToUpdate.setTitle(msg.getTitle());
                    msgToUpdate.setLastEditedMessageDate(date);
                    msgToUpdate.setLastEditedStaffEntity(staff);
-                   
+                   staff.setMessageOfTheDayEntity(msgToUpdate);
+    
                 }
                 else
                 {
