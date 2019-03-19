@@ -7,9 +7,13 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
+import javax.faces.application.FacesMessage;
+import org.primefaces.push.annotation.OnMessage;
+import org.primefaces.push.annotation.PushEndpoint;
+import org.primefaces.push.impl.JSONEncoder;
 
 
-
+@PushEndpoint("/notify")
 @Named(value = "indexManagedBean")
 @RequestScoped
 
@@ -26,7 +30,7 @@ public class IndexManagedBean
     {
     }
 
-
+    
 
     @PostConstruct
     public void postConstruct()
@@ -34,7 +38,11 @@ public class IndexManagedBean
         messageOfTheDayEntities = messageOfTheDayControllerLocal.retrieveAllMessagesOfTheDay();
     }
 
-    
+    @OnMessage(encoders = { JSONEncoder.class })
+	public FacesMessage onMessage(FacesMessage message) {
+            System.out.println(message);
+		return message;
+	}
     
     public List<MessageOfTheDayEntity> getMessageOfTheDayEntities() {
         return messageOfTheDayEntities;

@@ -8,10 +8,18 @@
         <param-name>javax.faces.DATETIMECONVERTER_DEFAULT_TIMEZONE_IS_SYSTEM_TIMEZONE</param-name>
         <param-value>true</param-value>
     </context-param>
+   
     <context-param>
         <param-name>primefaces.FONT_AWESOME</param-name>
         <param-value>true</param-value>
     </context-param>
+    
+    
+    <context-param>
+    <param-name>org.omnifaces.SOCKET_ENDPOINT_ENABLED</param-name>
+    <param-value>true</param-value>
+</context-param>
+    
     <listener>
         <description>ServletContextListener, HttpSessionListener</description>
         <listener-class>web.listener.WebApplicationListener</listener-class>
@@ -33,4 +41,6 @@
     <welcome-file-list>
         <welcome-file>index.xhtml</welcome-file>
     </welcome-file-list>
+    
+   
 </web-app>

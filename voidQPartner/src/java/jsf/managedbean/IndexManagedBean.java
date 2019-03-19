@@ -10,6 +10,7 @@ import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
+import org.primefaces.push.annotation.PushEndpoint;
 
 
 

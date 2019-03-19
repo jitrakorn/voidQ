@@ -11,4 +11,5 @@
       <property name="useSSL" value="false"/>
     <property name="allowPublicKeyRetrieval" value="true"/>
   </jdbc-connection-pool>
+   
 </resources>

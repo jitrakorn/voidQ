@@ -13,11 +13,14 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.view.ViewScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
 import org.json.JSONObject;
+import org.omnifaces.cdi.Push;
+import org.omnifaces.cdi.PushContext;
 import org.primefaces.event.FlowEvent;
+import org.primefaces.push.annotation.PushEndpoint;
 import util.enumeration.ApplicationStatus;
-
 import util.exception.InputDataValidationException;
 
 @Named(value = "partnerApplicationManagedBean")
@@ -31,6 +34,14 @@ public class PartnerApplicationManagedBean implements Serializable {
     private StaffEntity newStaff;
     private String postalcode;
     private boolean skip;
+private String message;
+    @Inject
+    @Push
+    private PushContext someChannel;
+
+    public void sendMessage(Object message) {
+        someChannel.send(message);
+    }
 
     public PartnerApplicationManagedBean() {
         newClinic = new ClinicEntity();
@@ -43,7 +54,7 @@ public class PartnerApplicationManagedBean implements Serializable {
     }
 
     public void loadAddress(AjaxBehaviorEvent event) {
-      
+
         try {
             String hahaha = Geocoding.getJSONByGoogle(postalcode);
             System.out.println(hahaha);
@@ -65,7 +76,7 @@ public class PartnerApplicationManagedBean implements Serializable {
     }
 
     public void createNewPartner() {
-        System.out.println("run");
+
         try {
             newClinic.setApplicationStatus(ApplicationStatus.NOTACTIVATED);
 
@@ -77,34 +88,37 @@ public class PartnerApplicationManagedBean implements Serializable {
             partner.getStaffEntities().add(staff);
             newClinic = new ClinicEntity();
             newStaff = new StaffEntity();
-
+            someChannel.send("dfdfdfd");
+          
+            //sendJMSMessageToQueueCheckoutNotification("New partner application waiting for approval")
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Your account  : " + staff.getEmail() + " is being created and application is being processed", null));
         } catch (InputDataValidationException ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while creating the new partner: " + ex.getMessage(), null));
         }
     }
- public void save() {        
+
+    public void save() {
         FacesMessage msg = new FacesMessage("Successful", "Welcome :" + newStaff.getFirstName());
         FacesContext.getCurrentInstance().addMessage(null, msg);
     }
-     
+
     public boolean isSkip() {
         return skip;
     }
- 
+
     public void setSkip(boolean skip) {
         this.skip = skip;
     }
-     
+
     public String onFlowProcess(FlowEvent event) {
-        if(skip) {
+        if (skip) {
             skip = false;   //reset in case user goes back
             return "confirm";
-        }
-        else {
+        } else {
             return event.getNewStep();
         }
     }
+
     public ClinicEntity getNewClinic() {
         return newClinic;
     }
@@ -125,10 +139,52 @@ public class PartnerApplicationManagedBean implements Serializable {
         return postalcode;
     }
 
-    
     public void setPostalcode(String postalcode) {
-          System.out.println(postalcode);
+        System.out.println(postalcode);
         this.postalcode = postalcode;
     }
 
+    /*  private void sendJMSMessageToQueueCheckoutNotification() throws JMSException 
+    {
+        Connection connection = null;
+        Session session = null;
+        try 
+        {
+            connection = queueCheckoutNotificationFactory.createConnection();
+            session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
+            
+            MapMessage mapMessage = session.createMapMessage();
+            mapMessage.setString("message", "A new partner application has been submitted!");
+            MessageProducer messageProducer = session.createProducer(queueCheckoutNotification);
+            messageProducer.send(mapMessage);
+        }
+        finally
+        {
+            if (session != null) 
+            {
+                try 
+                {
+                    session.close();
+                } 
+                catch (JMSException ex) 
+                {
+                    ex.printStackTrace();
+                }
+            }
+            
+            if (connection != null) 
+            {
+                connection.close();
+            }
+        }
+    } */
+
+    public String getMessage() {
+        System.out.println(message);
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
 }
