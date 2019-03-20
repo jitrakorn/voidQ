@@ -62,9 +62,9 @@
 
         </p:layout>
    
-                 <h:form>  <p:growl id="growl" sticky="true" showDetail="true"/>
-                <p:remoteCommand name="rc" update="growl" action="#{notificationManagedBean.execute}" />
-                 <o:socket channel="someChannel" onmessage="pushListener" />
+                 <h:form id="partnerForm">  <p:growl id="growl" sticky="true" showDetail="true"/>
+                     <p:remoteCommand name="rc" update="growl" action="#{newsManagedBean.execute}" />
+                 <o:socket channel="news" onmessage="pushListener" />
                       </h:form>
                
     </h:body>

@@ -14,9 +14,9 @@ import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
-import jsf.helper.NotificationManagedBean;
 import org.omnifaces.cdi.Push;
 import org.omnifaces.cdi.PushContext;
+
 import org.primefaces.PrimeFaces;
 import util.exception.InputDataValidationException;
 
@@ -27,8 +27,21 @@ public class NewsManagedBean implements Serializable {
     @EJB(name = "MessageOfTheDayControllerLocal")
     private MessageOfTheDayControllerLocal messageOfTheDayControllerLocal;
 
+  
     @Inject
-    private NotificationManagedBean notificationManagedBean;
+    @Push(channel = "news")
+    private PushContext news;
+
+    String notify = "New announcement posted";
+
+
+    public void execute() {
+        StringBuilder sb = new StringBuilder("<html><body>");
+        sb.append("<a href='www.comp.nus.edu.sg'>Click here for more</a>");
+        sb.append("</body></html>");
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, notify, sb.toString()));
+    }
+
     private StaffEntity staffToUpdate;
     private MessageOfTheDayEntity messageOfTheDayEntity;
    
@@ -58,7 +71,7 @@ public class NewsManagedBean implements Serializable {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Announcement created successfully", null));
             messageOfTheDayEntity.setMessage("");
             messageOfTheDayEntity.setTitle("");
-           notificationManagedBean.sendMessage("ccb");
+           news.send("ccb");
         } catch (InputDataValidationException ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An unexpected error has occurred: " + ex.getMessage(), null));
         }

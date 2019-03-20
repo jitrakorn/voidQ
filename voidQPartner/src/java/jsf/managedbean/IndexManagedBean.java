@@ -3,6 +3,7 @@ package jsf.managedbean;
 import ejb.entity.MessageOfTheDayEntity;
 import ejb.session.stateless.MessageOfTheDayControllerLocal;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -10,14 +11,13 @@ import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
-import org.primefaces.push.annotation.PushEndpoint;
 
 
 
 @Named(value = "partnerIndexManagedBean")
 @RequestScoped
 
-public class IndexManagedBean 
+public class IndexManagedBean implements Serializable
 {
     @EJB
     private MessageOfTheDayControllerLocal messageOfTheDayControllerLocal;

@@ -10,11 +10,13 @@ import java.io.Serializable;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
+import javax.faces.bean.ApplicationScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+
 import org.json.JSONObject;
 import org.omnifaces.cdi.Push;
 import org.omnifaces.cdi.PushContext;
@@ -26,6 +28,10 @@ import util.exception.InputDataValidationException;
 @ViewScoped
 public class PartnerApplicationManagedBean implements Serializable {
 
+    @Inject
+    @Push(channel = "partner")
+    private PushContext newPartnerChannel;
+
     @EJB(name = "PartnerSessionBeanLocal")
     private PartnerSessionBeanLocal partnerSessionBeanLocal;
 
@@ -33,11 +39,17 @@ public class PartnerApplicationManagedBean implements Serializable {
     private StaffEntity newStaff;
     private String postalcode;
     private boolean skip;
-    String notify = "A new announcement has been posted";
 
- 
+    public void sendMessage(Object message) {
+        newPartnerChannel.send(message);
+    }
+    String notify = "New partner application for approval";
 
- 
+    public void execute() {
+
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, notify, "ccb"));
+    }
+
     public PartnerApplicationManagedBean() {
         newClinic = new ClinicEntity();
         newStaff = new StaffEntity();
@@ -83,17 +95,13 @@ public class PartnerApplicationManagedBean implements Serializable {
             partner.getStaffEntities().add(staff);
             newClinic = new ClinicEntity();
             newStaff = new StaffEntity();
-
-         
-
+    sendMessage("ccb");
             //sendJMSMessageToQueueCheckoutNotification("New partner application waiting for approval")
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Your account  : " + staff.getEmail() + " is being created and application is being processed", null));
         } catch (InputDataValidationException ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while creating the new partner: " + ex.getMessage(), null));
         }
     }
-
-   
 
     public void save() {
         FacesMessage msg = new FacesMessage("Successful", "Welcome :" + newStaff.getFirstName());
