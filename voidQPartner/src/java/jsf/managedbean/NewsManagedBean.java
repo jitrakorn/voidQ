@@ -3,19 +3,20 @@ package jsf.managedbean;
 import ejb.entity.MessageOfTheDayEntity;
 import ejb.entity.StaffEntity;
 import ejb.session.stateless.MessageOfTheDayControllerLocal;
-import ejb.session.stateless.PartnerSessionBeanLocal;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
+import jsf.helper.NotificationManagedBean;
+import org.omnifaces.cdi.Push;
+import org.omnifaces.cdi.PushContext;
 import org.primefaces.PrimeFaces;
 import util.exception.InputDataValidationException;
 
@@ -26,9 +27,11 @@ public class NewsManagedBean implements Serializable {
     @EJB(name = "MessageOfTheDayControllerLocal")
     private MessageOfTheDayControllerLocal messageOfTheDayControllerLocal;
 
+    @Inject
+    private NotificationManagedBean notificationManagedBean;
     private StaffEntity staffToUpdate;
     private MessageOfTheDayEntity messageOfTheDayEntity;
-
+   
     public NewsManagedBean() {
         messageOfTheDayEntity = new MessageOfTheDayEntity();
     }
@@ -39,6 +42,10 @@ public class NewsManagedBean implements Serializable {
 
     }
 
+   
+
+ 
+
     public void addAnnouncement() {
         SimpleDateFormat inputDateFormat = new SimpleDateFormat("d/M/y");
         messageOfTheDayEntity.setStaffEntity(staffToUpdate); //need update to persistence 
@@ -47,18 +54,20 @@ public class NewsManagedBean implements Serializable {
 
         try {
             messageOfTheDayControllerLocal.createNewMessageOfTheDay(messageOfTheDayEntity);
-           
+
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Announcement created successfully", null));
-             messageOfTheDayEntity.setMessage("");
-              messageOfTheDayEntity.setTitle("");
-            
+            messageOfTheDayEntity.setMessage("");
+            messageOfTheDayEntity.setTitle("");
+           notificationManagedBean.sendMessage("ccb");
         } catch (InputDataValidationException ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An unexpected error has occurred: " + ex.getMessage(), null));
         }
     }
- public void reset() {
+
+    public void reset() {
         PrimeFaces.current().resetInputs("cb");
     }
+
     public MessageOfTheDayEntity getMessageOfTheDayEntity() {
         return messageOfTheDayEntity;
     }

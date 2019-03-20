@@ -39,18 +39,13 @@
                     padding:4px;
                 }
             </style>
-             <script>
-                
-               function pushListener(message) {
-                  return message;
-			}
-                       
-            </script>
-            <p:growl id="growl" sticky="true" showDetail="true"/>
-
-            <h:form>
 
 
+
+
+            <h:form id="mainForm">
+
+               
 
                 <p:wizard flowListener="#{partnerApplicationManagedBean.onFlowProcess}">
                     <p:tab id="personal" title="Personal">
@@ -144,15 +139,15 @@
                         </p:panel>
                     </p:tab>
                 </p:wizard>
-                <h:inputText id="x"  />
                
-                
-                <o:socket channel="someChannel" onmessage="pushListener" />
-          
-           
-               
+
+
+             
+
+
+
             </h:form>
-            
+
 
 
         </div>

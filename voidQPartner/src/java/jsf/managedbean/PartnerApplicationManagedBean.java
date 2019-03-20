@@ -33,15 +33,11 @@ public class PartnerApplicationManagedBean implements Serializable {
     private StaffEntity newStaff;
     private String postalcode;
     private boolean skip;
-private String message;
-    @Inject
-    @Push
-    private PushContext someChannel;
+    String notify = "A new announcement has been posted";
 
-    public void sendMessage(Object message) {
-        someChannel.send(message);
-    }
+ 
 
+ 
     public PartnerApplicationManagedBean() {
         newClinic = new ClinicEntity();
         newStaff = new StaffEntity();
@@ -87,14 +83,17 @@ private String message;
             partner.getStaffEntities().add(staff);
             newClinic = new ClinicEntity();
             newStaff = new StaffEntity();
-            someChannel.send("dfdfdfd");
-          
+
+         
+
             //sendJMSMessageToQueueCheckoutNotification("New partner application waiting for approval")
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Your account  : " + staff.getEmail() + " is being created and application is being processed", null));
         } catch (InputDataValidationException ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while creating the new partner: " + ex.getMessage(), null));
         }
     }
+
+   
 
     public void save() {
         FacesMessage msg = new FacesMessage("Successful", "Welcome :" + newStaff.getFirstName());
@@ -139,7 +138,7 @@ private String message;
     }
 
     public void setPostalcode(String postalcode) {
-        System.out.println(postalcode);
+
         this.postalcode = postalcode;
     }
 
@@ -177,13 +176,4 @@ private String message;
             }
         }
     } */
-
-    public String getMessage() {
-        System.out.println(message);
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
 }
