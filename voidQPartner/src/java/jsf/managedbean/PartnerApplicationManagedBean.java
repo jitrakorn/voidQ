@@ -19,7 +19,6 @@ import org.json.JSONObject;
 import org.omnifaces.cdi.Push;
 import org.omnifaces.cdi.PushContext;
 import org.primefaces.event.FlowEvent;
-import org.primefaces.push.annotation.PushEndpoint;
 import util.enumeration.ApplicationStatus;
 import util.exception.InputDataValidationException;
 

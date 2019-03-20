@@ -39,7 +39,13 @@
                     padding:4px;
                 }
             </style>
-
+             <script>
+                
+               function pushListener(message) {
+                  return message;
+			}
+                       
+            </script>
             <p:growl id="growl" sticky="true" showDetail="true"/>
 
             <h:form>
@@ -138,19 +144,8 @@
                         </p:panel>
                     </p:tab>
                 </p:wizard>
-                <h:inputText id="x" />
-                 <script>
-                
-               function pushListener(message) {
-                   console.log(message)
-                   var s = document.getElementById("x");
-             $("#pushListener").text(message);
-             var newV = message;
-              document.getElementById("x").innerHTML = message;
-			}
-                        pushListener(messag);
-
-            </script>
+                <h:inputText id="x"  />
+               
                 
                 <o:socket channel="someChannel" onmessage="pushListener" />
           
