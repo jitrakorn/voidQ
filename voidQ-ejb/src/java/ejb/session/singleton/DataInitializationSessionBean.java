@@ -2,6 +2,7 @@ package ejb.session.singleton;
 
 import ejb.entity.AdminEntity;
 import ejb.entity.ClinicEntity;
+import ejb.entity.PatientEntity;
 import ejb.entity.StaffEntity;
 import ejb.session.stateless.AdministratorSessionBeanLocal;
 import ejb.session.stateless.PartnerSessionBeanLocal;
@@ -67,8 +68,11 @@ public class DataInitializationSessionBean
          ClinicEntity ce =   partnerSessionBeanLocal.createNewPartner(new ClinicEntity("mx clinic", "best clinic", "geylang hotel 81", new BigDecimal(100),ApplicationStatus.ACTIVATED));
              StaffEntity se =  new StaffEntity("lovemx93@gmail.com","password","mx","mx","doctor","not taken",ce);
             em.persist(se);
+            PatientEntity pe = new PatientEntity("lovemx93@gmail.com","password","mx","mx",958673,ce);
+            em.persist(pe);
+            ce.getPatientEntity().add(pe);
         
-        ce.getStaffEntities().add(se);
+
             
         }
         catch(InputDataValidationException ex)

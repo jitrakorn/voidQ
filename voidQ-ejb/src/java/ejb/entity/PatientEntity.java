@@ -1,10 +1,15 @@
 package ejb.entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -22,21 +27,27 @@ public class PatientEntity extends UserEntity implements Serializable {
     @NotNull
     @Size(max = 32)
     private String lastName;
-    @Column(nullable = false, length = 8)
+    @Column(nullable = false)
     @NotNull
-    @Size(max = 8)
-    private int phoneNumber;
-
+    @Min(1)
+    private Integer phoneNumber;
+     @OneToMany(mappedBy = "patientEntity")
+    private List<BookingEntity> bookingEntities;
+     
+     @ManyToOne
+    private ClinicEntity clinicEntity;
     public PatientEntity() {
         super();
+        bookingEntities= new ArrayList<>();
 
     }
 
-    public PatientEntity(String username, String password, String firstName, String lastName, int phoneNumber) {
+    public PatientEntity(String username, String password, String firstName, String lastName, Integer phoneNumber,ClinicEntity clinicEntity) {
         super(username, password);
         this.firstName = firstName;
         this.lastName = lastName;
         this.phoneNumber=phoneNumber;
+        this.clinicEntity=clinicEntity;
     }
 
     @Override
@@ -84,12 +95,28 @@ public class PatientEntity extends UserEntity implements Serializable {
     }
 
   
-    public int getPhoneNumber() {
+    public Integer getPhoneNumber() {
         return phoneNumber;
     }
 
-    public void setPhoneNumber(int phoneNumber) {
+    public void setPhoneNumber(Integer phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+
+    public List<BookingEntity> getBookingEntities() {
+        return bookingEntities;
+    }
+
+    public void setBookingEntities(List<BookingEntity> bookingEntities) {
+        this.bookingEntities = bookingEntities;
+    }
+
+    public ClinicEntity getClinicEntity() {
+        return clinicEntity;
+    }
+
+    public void setClinicEntity(ClinicEntity clinicEntity) {
+        this.clinicEntity = clinicEntity;
     }
 
 }

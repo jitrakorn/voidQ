@@ -28,7 +28,11 @@
                     
                     <p:submenu label="Clinic" rendered="#{sessionScope.isLogin == true}">
                         <p:menuitem value="Clinic Details" outcome="/partner/viewClinicDetails.xhtml" icon="fa fa-users" />
-                    </p:submenu>                        
+                    </p:submenu>   
+                    
+                     <p:submenu label="Patient" rendered="#{sessionScope.isLogin == true}">
+                        <p:menuitem value="View Patients" outcome="/partner/patientManagement.xhtml" icon="fa fa-users" />
+                    </p:submenu>   
 
                 </p:menu>
 

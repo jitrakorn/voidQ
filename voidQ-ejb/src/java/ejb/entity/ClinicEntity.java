@@ -12,6 +12,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -54,10 +55,14 @@ public class ClinicEntity implements Serializable
     @OneToMany(mappedBy = "clinicEntity")
     private List<BookingEntity> bookingEntities;
     
+     @OneToMany(mappedBy = "clinicEntity")
+   private List<PatientEntity> patientEntity;
+    
 
     public ClinicEntity() {
         bookingEntities= new ArrayList<>();
          staffEntities = new ArrayList<>();
+         patientEntity = new ArrayList<>();
     }
 
     
@@ -190,6 +195,15 @@ public class ClinicEntity implements Serializable
         this.applicationStatus = applicationStatus;
     }
 
+    public List<PatientEntity> getPatientEntity() {
+        return patientEntity;
+    }
+
+    public void setPatientEntity(List<PatientEntity> patientEntity) {
+        this.patientEntity = patientEntity;
+    }
+
+  
     
     
    

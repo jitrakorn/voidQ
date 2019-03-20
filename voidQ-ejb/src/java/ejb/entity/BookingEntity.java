@@ -52,6 +52,11 @@ public class BookingEntity implements Serializable {
     @JoinColumn(nullable = false)
     private StaffEntity staffEntity;
 
+      @ManyToOne(optional = false)
+    @JoinColumn(nullable = false)
+    private PatientEntity patientEntity;
+
+     
     public BookingEntity() {
     }
 
@@ -140,6 +145,14 @@ public class BookingEntity implements Serializable {
 
     public void setStaffEntity(StaffEntity staffEntity) {
         this.staffEntity = staffEntity;
+    }
+
+    public PatientEntity getPatientEntity() {
+        return patientEntity;
+    }
+
+    public void setPatientEntity(PatientEntity patientEntity) {
+        this.patientEntity = patientEntity;
     }
     
 }
