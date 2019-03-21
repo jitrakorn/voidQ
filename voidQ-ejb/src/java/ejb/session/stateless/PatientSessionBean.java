@@ -5,7 +5,6 @@
  */
 package ejb.session.stateless;
 
-import ejb.entity.AdminEntity;
 import ejb.entity.PatientEntity;
 import ejb.entity.StaffEntity;
 import java.util.List;
@@ -19,10 +18,8 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
-import util.exception.AdministratorNotFoundException;
 import util.exception.InputDataValidationException;
 import util.exception.PatientNotFoundException;
-import util.exception.UpdateAdminException;
 import util.exception.UpdatePatientException;
 
 /**
@@ -49,8 +46,9 @@ public class PatientSessionBean implements PatientSessionBeanLocal {
         query.setParameter("inClinic", staffEntity.getClinicEntity());
         return query.getResultList();
     }
-     @Override
-        public PatientEntity retrievePatientByPatientId(Long patientId) throws PatientNotFoundException {
+
+    @Override
+    public PatientEntity retrievePatientByPatientId(Long patientId) throws PatientNotFoundException {
         PatientEntity patient = em.find(PatientEntity.class, patientId);
 
         if (patient != null) {
@@ -59,7 +57,8 @@ public class PatientSessionBean implements PatientSessionBeanLocal {
             throw new PatientNotFoundException("Patient ID " + patientId + " does not exist!");
         }
     }
-     @Override
+
+    @Override
     public void updatePatient(PatientEntity patient) throws InputDataValidationException, PatientNotFoundException, UpdatePatientException {
         // Updated in v4.1 to update selective attributes instead of merging the entire state passed in from the client
         // Also check for existing staff before proceeding with the update
@@ -68,13 +67,13 @@ public class PatientSessionBean implements PatientSessionBeanLocal {
         Set<ConstraintViolation<PatientEntity>> constraintViolations = validator.validate(patient);
 
         if (constraintViolations.isEmpty()) {
-            if (patient.getUserId()!= null) {
+            if (patient.getUserId() != null) {
                 PatientEntity patientToUpdate = retrievePatientByPatientId(patient.getUserId());
 
                 if (patientToUpdate.getEmail().equals(patient.getEmail())) {
                     patientToUpdate.setFirstName(patient.getFirstName());
                     patientToUpdate.setLastName(patient.getLastName());
-                   
+
                 } else {
                     throw new UpdatePatientException("Username of patient record to be updated does not match the existing record");
                 }
@@ -86,8 +85,7 @@ public class PatientSessionBean implements PatientSessionBeanLocal {
         }
     }
 
-    
-     private String prepareInputDataValidationErrorsMessage(Set<ConstraintViolation<PatientEntity>> constraintViolations) {
+    private String prepareInputDataValidationErrorsMessage(Set<ConstraintViolation<PatientEntity>> constraintViolations) {
         String msg = "Input data validation error!:";
 
         for (ConstraintViolation constraintViolation : constraintViolations) {

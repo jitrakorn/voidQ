@@ -19,6 +19,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import util.enumeration.BookingStatus;
 
 /**
  *
@@ -31,48 +32,37 @@ public class BookingEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long bookingId;
-    @Column(nullable = false, length = 32)
+    @Column(nullable = false)
     @NotNull
-    @Size(max = 32)
-    private String status;
+    private BookingStatus status;
     @Temporal(TemporalType.TIMESTAMP)
     @Column(nullable = false)
     @NotNull
-    private Date transactionDateTime;  
-    
-    
-       @OneToOne
+    private Date transactionDateTime;
+
+    @OneToOne
     private TransactionEntity transactionEntity;
-       
-        @ManyToOne(optional = false)
+
+    @ManyToOne(optional = false)
     @JoinColumn(nullable = false)
     private ClinicEntity clinicEntity;
-     
-     @ManyToOne(optional = false)
+
+    @ManyToOne(optional = false)
     @JoinColumn(nullable = false)
     private StaffEntity staffEntity;
 
-      @ManyToOne(optional = false)
+    @ManyToOne(optional = false)
     @JoinColumn(nullable = false)
     private PatientEntity patientEntity;
 
-     
     public BookingEntity() {
     }
 
-    public BookingEntity(String status, Date transactionDateTime, TransactionEntity transactionEntity) {
+    public BookingEntity(BookingStatus status, Date transactionDateTime, TransactionEntity transactionEntity) {
         this.status = status;
         this.transactionDateTime = transactionDateTime;
         this.transactionEntity = transactionEntity;
     }
-
-  
-
-  
-    
-   
-    
-    
 
     public Long getBookingId() {
         return bookingId;
@@ -107,11 +97,11 @@ public class BookingEntity implements Serializable {
         return "ejb.entity.BookingEntity[ id=" + bookingId + " ]";
     }
 
-    public String getStatus() {
+    public BookingStatus getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(BookingStatus status) {
         this.status = status;
     }
 
@@ -154,5 +144,5 @@ public class BookingEntity implements Serializable {
     public void setPatientEntity(PatientEntity patientEntity) {
         this.patientEntity = patientEntity;
     }
-    
+
 }

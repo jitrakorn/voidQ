@@ -17,7 +17,6 @@ import util.exception.UpdateAdminException;
  *
  * @author mingxuan
  */
-
 public interface AdministratorSessionBeanLocal {
 
     public AdminEntity createNewAdmin(AdminEntity newAdmin) throws InputDataValidationException;
@@ -35,5 +34,5 @@ public interface AdministratorSessionBeanLocal {
     public void deleteAdmin(Long adminId) throws AdministratorNotFoundException, DeleteAdminException;
 
     public AdminEntity resetPassword(Long adminId);
-    
+
 }

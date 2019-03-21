@@ -5,7 +5,6 @@
  */
 package ejb.session.stateless;
 
-
 import ejb.entity.AdminEntity;
 import java.util.concurrent.Future;
 import javax.ejb.AsyncResult;
@@ -21,22 +20,17 @@ import util.email.EmailManager;
 @Stateless
 @Local(EmailControllerLocal.class)
 public class EmailController implements EmailControllerLocal {
- private final String UNIX_USERNAME = "ohmx93@comp.nus.edu.sg";
+
+    private final String UNIX_USERNAME = "ohmx93@comp.nus.edu.sg";
     private final String UNIX_PASSWORD = "CIJGAHkoi987";
-    
-    
-    
-     @Asynchronous
-     @Override
-    public Future<Boolean> emailResetPassword(AdminEntity admin,String newPW)
-    {
+
+    @Asynchronous
+    @Override
+    public Future<Boolean> emailResetPassword(AdminEntity admin, String newPW) {
         EmailManager emailManager = new EmailManager(UNIX_USERNAME, UNIX_PASSWORD);
-        Boolean result = emailManager.emailResetPassword(admin, "ohmx93@comp.nus.edu.sg",newPW);
-        
-         return new AsyncResult<>(result);
-    } 
-    
-    
-    
-    
+        Boolean result = emailManager.emailResetPassword(admin, "ohmx93@comp.nus.edu.sg", newPW);
+
+        return new AsyncResult<>(result);
+    }
+
 }
