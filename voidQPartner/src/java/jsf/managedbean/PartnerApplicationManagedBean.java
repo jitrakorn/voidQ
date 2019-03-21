@@ -18,8 +18,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.json.JSONObject;
-import org.omnifaces.cdi.Push;
-import org.omnifaces.cdi.PushContext;
+
 import org.primefaces.event.FlowEvent;
 import util.enumeration.ApplicationStatus;
 import util.exception.InputDataValidationException;
@@ -28,10 +27,10 @@ import util.exception.InputDataValidationException;
 @ViewScoped
 public class PartnerApplicationManagedBean implements Serializable {
 
-    @Inject
+   /* @Inject
     @Push(channel = "partner")
     private PushContext newPartnerChannel;
-
+*/
     @EJB(name = "PartnerSessionBeanLocal")
     private PartnerSessionBeanLocal partnerSessionBeanLocal;
 
@@ -41,7 +40,7 @@ public class PartnerApplicationManagedBean implements Serializable {
     private boolean skip;
 
     public void sendMessage(Object message) {
-        newPartnerChannel.send(message);
+     //   newPartnerChannel.send(message);
     }
     String notify = "New partner application for approval";
 
@@ -95,7 +94,7 @@ public class PartnerApplicationManagedBean implements Serializable {
             partner.getStaffEntities().add(staff);
             newClinic = new ClinicEntity();
             newStaff = new StaffEntity();
-    sendMessage("ccb");
+    //sendMessage("ccb");
             //sendJMSMessageToQueueCheckoutNotification("New partner application waiting for approval")
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Your account  : " + staff.getEmail() + " is being created and application is being processed", null));
         } catch (InputDataValidationException ex) {

@@ -14,8 +14,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
-import org.omnifaces.cdi.Push;
-import org.omnifaces.cdi.PushContext;
+
 
 import org.primefaces.PrimeFaces;
 import util.exception.InputDataValidationException;
@@ -28,10 +27,10 @@ public class NewsManagedBean implements Serializable {
     private MessageOfTheDayControllerLocal messageOfTheDayControllerLocal;
 
   
-    @Inject
+   /* @Inject
     @Push(channel = "news")
     private PushContext news;
-
+*/
     String notify = "New announcement posted";
 
 
@@ -71,7 +70,7 @@ public class NewsManagedBean implements Serializable {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Announcement created successfully", null));
             messageOfTheDayEntity.setMessage("");
             messageOfTheDayEntity.setTitle("");
-           news.send("ccb");
+       //    news.send("ccb");
         } catch (InputDataValidationException ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An unexpected error has occurred: " + ex.getMessage(), null));
         }

@@ -6,17 +6,16 @@ import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
-import org.omnifaces.cdi.Push;
-import org.omnifaces.cdi.PushContext;
+
 
 @Named(value = "receiveNotificationManagedBean")
 @ViewScoped
 public class receiveNotificationManagedBean implements Serializable {
 
-    @Inject
+ /*   @Inject
     @Push(channel = "partner")
     private PushContext newPartnerChannel;
-
+*/
     String notify2 = "New partner application for approval";
 
     public void execute2() {
