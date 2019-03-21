@@ -7,7 +7,9 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:p="http://primefaces.org/ui"
->
+      xmlns:o="http://omnifaces.org/ui"
+xmlns:of="http://omnifaces.org/functions"
+      >
     <h:head>
         <title>voidQ Partner Administration</title>
         <h:outputStylesheet library="css" name="default.css" />
@@ -18,17 +20,17 @@
 
             <p:layoutUnit position="north" size="120">
 
-                 <script>
-                 function pushListener(message)
-                 {
-                     if(message === "ccb")
-                         rc();
-                 }
-                              </script>
+                <script>
+                    function pushListener(message)
+                    {
+                        if (message === "ccb")
+                            rc();
+                    }
+                </script>
                 <h1>voidQ Partner Administration</h1>
-               
-                
-             
+
+
+
                 <ui:insert name="header">
                     <ui:include src="/header.xhtml" />
                 </ui:insert>
@@ -60,11 +62,14 @@
             </p:layoutUnit>                
 
         </p:layout>
-   
-                 <h:form id="partnerForm">  <p:growl id="growl" sticky="true" showDetail="true"/>
-                     <p:remoteCommand name="rc" update="growl" action="#{newsManagedBean.execute}" />
- 
-                      </h:form>
-               
+
+        <h:form id="partnerForm">  <p:growl id="growl" sticky="true" showDetail="true"/>
+            <p:remoteCommand name="rc" update="growl" action="#{newsManagedBean.execute}" />
+            <o:socket channel="someChannel" onmessage="pushListener" />
+
+        </h:form>
+
+
+       
     </h:body>
 </html>
