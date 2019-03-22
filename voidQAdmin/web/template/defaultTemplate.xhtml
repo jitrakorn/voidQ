@@ -9,7 +9,7 @@
       xmlns:p="http://primefaces.org/ui"
      >
     <h:head>
-        <title>voidQ Partner Administration</title>
+        <title>voidQ Administration</title>
         <h:outputStylesheet library="css" name="default.css" />
     </h:head>
     <h:body>
@@ -26,7 +26,7 @@
                          rc();
                  }
                               </script>
-                <h1>voidQ Partner Administration</h1>
+                <h1>voidQ Administration</h1>
                
                 
              
@@ -62,10 +62,7 @@
 
         </p:layout>
    
-                 <h:form id="partnerForm">  <p:growl id="growl" sticky="true" showDetail="true"/>
-                     <p:remoteCommand name="rc" update="growl" action="#{receiveNotificationManagedBean.execute2}" />
-               
-                      </h:form>
+                
                
     </h:body>
 </html>

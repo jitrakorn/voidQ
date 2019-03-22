@@ -145,4 +145,12 @@ public class BookingEntity implements Serializable {
         this.patientEntity = patientEntity;
     }
 
+    public String getVisitReason() {
+        return visitReason;
+    }
+
+    public void setVisitReason(String visitReason) {
+        this.visitReason = visitReason;
+    }
+    
 }
