@@ -35,6 +35,10 @@ public class BookingEntity implements Serializable {
     @NotNull
     @Size(max = 32)
     private String status;
+    @Column(nullable = false, length = 32)
+    @NotNull
+    @Size(max = 32)
+    private String visitReason;
     @Temporal(TemporalType.TIMESTAMP)
     @Column(nullable = false)
     @NotNull
@@ -153,6 +157,14 @@ public class BookingEntity implements Serializable {
 
     public void setPatientEntity(PatientEntity patientEntity) {
         this.patientEntity = patientEntity;
+    }
+
+    public String getVisitReason() {
+        return visitReason;
+    }
+
+    public void setVisitReason(String visitReason) {
+        this.visitReason = visitReason;
     }
     
 }

@@ -6,6 +6,7 @@
 package ejb.session.stateless;
 
 import ejb.entity.AdminEntity;
+import ejb.entity.BookingEntity;
 
 import java.util.concurrent.Future;
 import javax.ejb.Local;
@@ -20,5 +21,7 @@ public interface EmailControllerLocal {
     
 
     public Future<Boolean> emailResetPassword(AdminEntity admin, String newPW);
+
+    public Future<Boolean> emailClinic(BookingEntity bookingEntity, Long clinicId);
     
 }
