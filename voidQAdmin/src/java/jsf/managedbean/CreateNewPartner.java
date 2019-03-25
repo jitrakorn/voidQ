@@ -1,11 +1,11 @@
 package jsf.managedbean;
 
-
 import ejb.entity.ClinicEntity;
 import ejb.entity.StaffEntity;
 import ejb.helper.Geocoding;
 import ejb.session.stateless.PartnerSessionBeanLocal;
 import java.io.IOException;
+import java.io.Serializable;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -13,24 +13,29 @@ import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
+import javax.faces.event.AjaxBehaviorEvent;
+import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import org.json.JSONObject;
+import org.primefaces.event.FlowEvent;
+import util.enumeration.ApplicationStatus;
 
 import util.exception.InputDataValidationException;
 
 @Named(value = "createNewPartnerManagedBean")
-@RequestScoped
-public class CreateNewPartner {
+@ViewScoped
+public class CreateNewPartner implements Serializable {
 
     @EJB(name = "PartnerSessionBeanLocal")
     private PartnerSessionBeanLocal partnerSessionBeanLocal;
     private String postalcode;
     private ClinicEntity newClinic;
     private StaffEntity newStaff;
+    private boolean skip;
 
     public CreateNewPartner() {
         newClinic = new ClinicEntity();
-         newStaff= new StaffEntity() ;
+        newStaff = new StaffEntity();
     }
 
     @PostConstruct
@@ -38,7 +43,16 @@ public class CreateNewPartner {
 
     }
 
-    public void loadAddress(ActionEvent event) {
+    public String onFlowProcess(FlowEvent event) {
+        if (skip) {
+            skip = false;   //reset in case user goes back
+            return "confirm";
+        } else {
+            return event.getNewStep();
+        }
+    }
+
+    public void loadAddress(AjaxBehaviorEvent event) {
 
         try {
             String hahaha = Geocoding.getJSONByGoogle(postalcode);
@@ -47,10 +61,10 @@ public class CreateNewPartner {
             //JSONArray jsonArr = new JSONArray(jsonObj.getJSONArray("results"));
 
             JSONObject loc = jsonObj.getJSONArray("results").getJSONObject(0).getJSONObject("geometry").getJSONObject("location");
-            String lat  =loc.get("lat").toString();
+            String lat = loc.get("lat").toString();
             String lng = loc.get("lng").toString();
-            String addressJSON = Geocoding.addressLookUp(lat+","+lng);
-             JSONObject locObj = new JSONObject(addressJSON);
+            String addressJSON = Geocoding.addressLookUp(lat + "," + lng);
+            JSONObject locObj = new JSONObject(addressJSON);
             JSONObject locName = locObj.getJSONArray("results").getJSONObject(0);
             String name = locName.getString("formatted_address");
             newClinic.setAddress(name);
@@ -60,21 +74,27 @@ public class CreateNewPartner {
 
     }
 
-    public void createNewPartner(ActionEvent event) {
+    public void createNewPartner() {
 
         try {
-            //newPartner.s(ApplicationStatus.ACTIVATED);
+            newClinic.setApplicationStatus(ApplicationStatus.ACTIVATED);
             ClinicEntity partner = partnerSessionBeanLocal.createNewPartner(newClinic);
             partner.getStaffEntities().add(newStaff);
             newClinic = new ClinicEntity();
 
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New Clinic created successfully (Clinic ID: " + partner.getClinicId()+ ")", null));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New Clinic created successfully (Clinic ID: " + partner.getClinicId() + ")", null));
         } catch (InputDataValidationException ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while creating the new partner: " + ex.getMessage(), null));
         }
     }
 
-   
+    public boolean isSkip() {
+        return skip;
+    }
+
+    public void setSkip(boolean skip) {
+        this.skip = skip;
+    }
 
     public String getPostalcode() {
         return postalcode;
