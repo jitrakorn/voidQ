@@ -56,6 +56,11 @@
                     <p:column headerText="Description" sortBy="#{adminEntity.lastName}" filterBy="#{adminEntity.lastName}" filterMatchMode="contains">
                         <h:outputText value="#{adminEntity.lastName}" />
                     </p:column>
+                    
+                    
+                    <p:column headerText="Contact Number" sortBy="#{adminEntity.phoneNumber}" filterBy="#{adminEntity.phoneNumber}" filterMatchMode="contains">
+                        <h:outputText value="#{adminEntity.phoneNumber}" />
+                    </p:column>
 
                     <p:column headerText="Action" >
                         <p:commandButton update="formViewAdmin" oncomplete="PF('dialogViewAdmin').show()" icon="ui-icon-document" title="View">
@@ -67,6 +72,9 @@
                         <p:commandButton icon="ui-icon-trash" actionListener="#{adminManagementManagedBean.deleteAdmin}" update="formAllAdmins:dataTableAllAdmins formAllAdmins:messages">
                             <f:attribute name="adminEntityToDelete" value="#{adminEntity}" />
                             <p:confirm header="Confirmation" message="Are you sure you want to delete #{adminEntity.email}" icon="ui-icon-alert" />
+                        </p:commandButton>
+                        <p:commandButton value="Reset Password" actionListener="#{adminManagementManagedBean.resetPassword}" update="formAllAdmins" icon="ui-icon-pencil" title="Update">
+                            <f:attribute name="adminEntityToReset" value="#{adminEntity}" />
                         </p:commandButton>
                     </p:column>
 
@@ -188,6 +196,15 @@
                         </p:column>
                         <p:column>
                             <h:outputText value="#{adminManagementManagedBean.selectedAdminEntityToView.lastName}" />
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column>
+                            <h:outputLabel value="Contact Number " />
+                        </p:column>
+                        <p:column>
+                            <h:outputText value="#{adminManagementManagedBean.selectedAdminEntityToView.phoneNumber}" />
                         </p:column>
                     </p:row>
                     

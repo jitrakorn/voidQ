@@ -6,6 +6,8 @@ import ejb.helper.Geocoding;
 import ejb.session.stateless.PartnerSessionBeanLocal;
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -14,10 +16,13 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.AjaxBehaviorEvent;
+import javax.faces.model.SelectItem;
+import javax.faces.model.SelectItemGroup;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import org.json.JSONObject;
 import org.primefaces.event.FlowEvent;
+import org.primefaces.model.UploadedFile;
 import util.enumeration.ApplicationStatus;
 
 import util.exception.InputDataValidationException;
@@ -32,7 +37,14 @@ public class CreateNewPartner implements Serializable {
     private ClinicEntity newClinic;
     private StaffEntity newStaff;
     private boolean skip;
-
+    private String company;
+    private List<SelectItem> companies;
+    private UploadedFile file;
+    private boolean renderFile;
+    private Integer getUnApproved;
+    private List<ClinicEntity> unapprovedList;
+    private String rejectReason;
+      private ClinicEntity selectedClinicEntityToView;
     public CreateNewPartner() {
         newClinic = new ClinicEntity();
         newStaff = new StaffEntity();
@@ -40,7 +52,48 @@ public class CreateNewPartner implements Serializable {
 
     @PostConstruct
     public void postConstruct() {
+        companies = new ArrayList<>();
+        companies.add(new SelectItem("hahaha"));
+        unapprovedList= partnerSessionBeanLocal.retrieveUnApprovedApplications();
+        getUnApproved=partnerSessionBeanLocal.retrieveUnApprovedApplications().size();
 
+    }
+
+    public void renderFileUpload(AjaxBehaviorEvent Event) {
+      
+      // if selected item == NO
+      //do nothing else 
+        renderFile=true;
+          System.out.println("run" + renderFile);
+    }
+
+        public void doUpdateClinic(ActionEvent event)
+    {
+      
+        selectedClinicEntityToView = (ClinicEntity)event.getComponent().getAttributes().get("clinicEntityToUpdate");
+          
+        
+       
+    }
+    
+    public UploadedFile getFile() {
+        return file;
+    }
+
+    public void setFile(UploadedFile file) {
+        this.file = file;
+    }
+
+    
+    public void reject()
+    {
+       //call clicnic entity set message (rejectreason) selectedClinicEntityToView
+    }
+    public void upload() {
+        if (file != null) {
+            FacesMessage message = new FacesMessage("Succesful", file.getFileName() + " is uploaded.");
+            FacesContext.getCurrentInstance().addMessage(null, message);
+        }
     }
 
     public String onFlowProcess(FlowEvent event) {
@@ -74,6 +127,7 @@ public class CreateNewPartner implements Serializable {
 
     }
 
+    
     public void createNewPartner() {
 
         try {
@@ -118,6 +172,62 @@ public class CreateNewPartner implements Serializable {
 
     public void setNewStaff(StaffEntity newStaff) {
         this.newStaff = newStaff;
+    }
+
+    public String getCompany() {
+        return company;
+    }
+
+    public void setCompany(String company) {
+        this.company = company;
+    }
+
+    public List<SelectItem> getCompanies() {
+        return companies;
+    }
+
+    public void setCompanies(List<SelectItem> companies) {
+        this.companies = companies;
+    }
+
+    public boolean isRenderFile() {
+        return renderFile;
+    }
+
+    public void setRenderFile(boolean renderFile) {
+        this.renderFile = renderFile;
+    }
+
+    public Integer getGetUnApproved() {
+        return getUnApproved;
+    }
+
+    public void setGetUnApproved(Integer getUnApproved) {
+        this.getUnApproved = getUnApproved;
+    }
+
+    public List<ClinicEntity> getUnapprovedList() {
+        return unapprovedList;
+    }
+
+    public void setUnapprovedList(List<ClinicEntity> unapprovedList) {
+        this.unapprovedList = unapprovedList;
+    }
+
+    public String getRejectReason() {
+        return rejectReason;
+    }
+
+    public void setRejectReason(String rejectReason) {
+        this.rejectReason = rejectReason;
+    }
+
+    public ClinicEntity getSelectedClinicEntityToView() {
+        return selectedClinicEntityToView;
+    }
+
+    public void setSelectedClinicEntityToView(ClinicEntity selectedClinicEntityToView) {
+        this.selectedClinicEntityToView = selectedClinicEntityToView;
     }
 
 }

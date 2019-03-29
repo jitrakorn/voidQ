@@ -3,6 +3,7 @@ package ejb.entity;
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -23,7 +24,11 @@ public class AdminEntity extends UserEntity implements Serializable
     @NotNull
     @Size(max = 32)
     private String lastName;    
-  
+    @Column(nullable = false)
+    @NotNull
+    @Min(1)
+    private Integer phoneNumber;
+    
     
     public AdminEntity()
     {
@@ -32,10 +37,11 @@ public class AdminEntity extends UserEntity implements Serializable
       
     }
 
-    public AdminEntity(String firstName, String lastName, String email, String password) {
+    public AdminEntity(String firstName, String lastName, String email, String password,Integer phoneNumber) {
         super(email, password);
         this.firstName = firstName;
         this.lastName = lastName;
+        this.phoneNumber=phoneNumber;
     }
 
     
@@ -99,6 +105,14 @@ public class AdminEntity extends UserEntity implements Serializable
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public Integer getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(Integer phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
 

@@ -2,10 +2,14 @@ package jsf.managedbean;
 
 import ejb.entity.AdminEntity;
 import ejb.session.stateless.AdministratorSessionBeanLocal;
+import ejb.sms.SMS;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
@@ -46,6 +50,23 @@ public class adminManagementManagedBean implements Serializable {
 
     }
     
+    public void resetPassword(ActionEvent event)
+            
+    {
+         AdminEntity adminEntityToReset = (AdminEntity)event.getComponent().getAttributes().get("adminEntityToReset");
+        try {
+              
+            String password = new Random().ints(10, 33, 122).collect(StringBuilder::new,
+        StringBuilder::appendCodePoint, StringBuilder::append)
+        .toString();
+             adminEntityToReset.setPassword(password);
+            SMS.sendPost(password,adminEntityToReset.getPhoneNumber());
+           
+             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New Password sent to registered phone number successfully", null));
+        } catch (Exception ex) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while resetting password: " + ex.getMessage(), null));
+        }
+    }
      public void updateAdmin(ActionEvent event)
     {
        

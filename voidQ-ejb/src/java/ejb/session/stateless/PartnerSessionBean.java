@@ -20,6 +20,7 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
+import util.enumeration.ApplicationStatus;
 import util.exception.DeletePartnerException;
 import util.exception.InputDataValidationException;
 import util.exception.InvalidLoginCredentialException;
@@ -131,6 +132,17 @@ public class PartnerSessionBean implements PartnerSessionBeanLocal {
         {
             throw new PartnerNotFoundException("Clinic ID " + clinicId + " does not exist!");
         }
+    }
+    
+        @Override
+    public List<ClinicEntity> retrieveUnApprovedApplications() 
+    {
+       Query query = em.createQuery("SELECT c FROM ClinicEntity c where c.applicationStatus = :inEnum");
+       query.setParameter("inEnum",ApplicationStatus.NOTACTIVATED );
+        
+        return query.getResultList();
+        
+      
     }
     
       @Override

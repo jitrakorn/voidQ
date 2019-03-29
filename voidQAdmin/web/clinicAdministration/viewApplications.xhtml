@@ -1,0 +1,104 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                template="/template/defaultTemplate.xhtml"
+                xmlns:p="http://primefaces.org/ui">
+    <ui:define name="content">
+
+        <div>
+            <h3>Approve Application</h3>
+
+              <h:form id ="viewAllApplications">
+                  <p:dataTable id="dataTableAllClinics" widgetVar="dataTableAllClinics" value="#{createNewPartnerManagedBean.unapprovedList}" var="clinicEntity" style="width: 100%;">
+
+                    <p:column headerText="Clinic Id" >			
+
+                        <h:outputText value="#{clinicEntity.clinicId}" />
+                    </p:column>
+
+                    <p:column headerText="Clinic Name" >		 				
+
+                        <h:outputText value="#{clinicEntity.clinicName}" />
+                    </p:column>
+
+                    <p:column headerText="Clinic Description" >					
+
+                        <h:outputText value="#{clinicEntity.description}" />
+                    </p:column>
+
+                    <p:column headerText="Clinic Address" >	 				
+
+                        <h:outputText value="#{clinicEntity.address}" />
+                    </p:column>
+
+                    <p:column headerText="Clinic Consultation Cost" >	 				
+
+                        <h:outputText value="#{clinicEntity.unitPrice}" />
+                    </p:column>
+                      
+                        <p:column headerText="Clinic Application Status" >	 				
+
+                            <h:outputText value="#{clinicEntity.applicationStatus}" />
+                    </p:column>
+
+                    
+
+
+
+
+                    <p:column headerText="Action" >
+
+                        <p:commandButton value="Approve" actionListener="#{viewAllProductsBean.doUpdateProduct}" update="formViewItem" oncomplete="PF('dialogViewItem').show()" icon="ui-icon-pencil" title="Update">
+                       
+                        </p:commandButton>
+                        
+                         <p:commandButton value="Reject" actionListener="#{createNewPartnerManagedBean.doUpdateClinic}" update="formViewReject" oncomplete="PF('dialogViewReject').show()" icon="ui-icon-pencil" title="Reject">
+                            <f:attribute name="clinicEntityToUpdate" value="#{clinicEntity}" />
+                        </p:commandButton>
+
+                    </p:column>
+
+
+                </p:dataTable>
+            </h:form>
+            
+            
+              <h:form id="formViewReject">
+
+                <p:dialog id="dialogViewReject" widgetVar="dialogViewReject" header="Reject Statement" closable="true">
+
+                    <p:messages id="messagesViewItem" redisplay="false" />
+
+                    <p:panelGrid>
+
+                        <p:row>
+                            <p:column>
+                                <h:outputLabel value="Reason : " />
+                            </p:column>
+                            <p:column>
+                                <h:inputText value="#{createNewPartnerManagedBean.rejectReason}" />
+                            </p:column>
+                            <p:column>
+                                &nbsp;
+                            </p:column>
+                        </p:row>
+
+                      
+
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:commandButton value="Send Reject Message" update="@form viewAllApplications:dataTableAllClinics" actionListener="#{createNewPartnerManagedBean.reject}" oncomplete="PF('dialogViewReject').show();" />
+                            </p:column>
+                        </p:row>
+
+                    </p:panelGrid>
+
+                </p:dialog>
+
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>

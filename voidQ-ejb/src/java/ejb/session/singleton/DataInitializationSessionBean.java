@@ -64,9 +64,9 @@ public class DataInitializationSessionBean
     {
         try
         {
-            administratorSessionBeanLocal.createNewAdmin(new AdminEntity("mx","mx","lovemx93@gmail.com","password"));
+            administratorSessionBeanLocal.createNewAdmin(new AdminEntity("mx","mx","lovemx93@gmail.com","password",96658673));
          ClinicEntity ce =   partnerSessionBeanLocal.createNewPartner(new ClinicEntity("mx clinic", "best clinic", "geylang hotel 81", new BigDecimal(100),ApplicationStatus.ACTIVATED));
-             StaffEntity se =  new StaffEntity("lovemx93@gmail.com","password","mx","mx","doctor","not taken",ce);
+             StaffEntity se =  new StaffEntity("lovemx93@gmail.com","password","mx","mx","doctor","not taken",ce,96658673);
             em.persist(se);
             PatientEntity pe = new PatientEntity("lovemx93@gmail.com","password","mx","mx",958673,ce);
             em.persist(pe);

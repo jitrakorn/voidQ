@@ -9,6 +9,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -39,6 +40,11 @@ public class StaffEntity extends UserEntity implements Serializable {
     @JoinColumn(nullable = false)
     private ClinicEntity clinicEntity;
 
+    @Column(nullable = false)
+    @NotNull
+    @Min(1)
+    private Integer phoneNumber;
+    
     @OneToMany(mappedBy = "staffEntity")
     private List<BookingEntity> bookingEntities;
 
@@ -57,7 +63,7 @@ public class StaffEntity extends UserEntity implements Serializable {
 
     }
 
-    public StaffEntity(String email, String password, String firstName, String lastName, String title, String status, ClinicEntity clinicEntity) {
+    public StaffEntity(String email, String password, String firstName, String lastName, String title, String status, ClinicEntity clinicEntity,Integer phoneNumber) {
         
         super(email, password);
 
@@ -66,6 +72,7 @@ public class StaffEntity extends UserEntity implements Serializable {
         this.title = title;
         this.status = status;
         this.clinicEntity = clinicEntity;
+        this.phoneNumber= phoneNumber;
 
     }
 
@@ -159,6 +166,14 @@ public class StaffEntity extends UserEntity implements Serializable {
 
     public void setMessageOfTheDayEntity(MessageOfTheDayEntity messageOfTheDayEntity) {
         this.messageOfTheDayEntity = messageOfTheDayEntity;
+    }
+
+    public Integer getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(Integer phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
 }

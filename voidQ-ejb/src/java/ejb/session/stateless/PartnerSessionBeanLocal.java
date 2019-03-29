@@ -44,5 +44,7 @@ public interface PartnerSessionBeanLocal {
     public StaffEntity retrieveStaffByStaffId(Long staffId) throws PartnerNotFoundException;
 
     public void updateStaff(StaffEntity staff) throws InputDataValidationException, PartnerNotFoundException, UpdatePartnerException;
+
+   public List<ClinicEntity> retrieveUnApprovedApplications() ;
     
 }

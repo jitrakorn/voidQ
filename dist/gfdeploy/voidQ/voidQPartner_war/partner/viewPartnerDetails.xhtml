@@ -39,6 +39,9 @@
 
                         <h:outputLabel style="font-weight: bold;" for="txtLastName" value="Last Name" />
                         <p:inputText id="txtLastName" value="#{updateUserManagedBean.staffToUpdate.lastName}" required="true" requiredMessage="Description is required" readonly="#{updateUserManagedBean.isDisabled}"/>
+                        
+                         <h:outputLabel style="font-weight: bold;" for="txtContactNo" value="Contact Number" />
+                         <p:inputText id="txtContactNo" value="#{updateUserManagedBean.staffToUpdate.phoneNumber}" required="true" requiredMessage="Contact No is required" readonly="#{updateUserManagedBean.isDisabled}"/>
                        
 
                          <h:outputText style="font-weight: bold;" value="Designation"/>

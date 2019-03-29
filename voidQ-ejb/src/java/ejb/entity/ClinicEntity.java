@@ -14,19 +14,17 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import util.enumeration.ApplicationStatus;
 
-
-
-
 @Entity
 
-public class ClinicEntity implements Serializable
-{
+public class ClinicEntity implements Serializable {
+
     private static final long serialVersionUID = 1L;
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long clinicId;
@@ -51,40 +49,31 @@ public class ClinicEntity implements Serializable
     private ApplicationStatus applicationStatus;
     @OneToMany(mappedBy = "clinicEntity")
     private List<StaffEntity> staffEntities;
-    
+
     @OneToMany(mappedBy = "clinicEntity")
     private List<BookingEntity> bookingEntities;
-    
-     @OneToMany(mappedBy = "clinicEntity")
-   private List<PatientEntity> patientEntity;
-    
+
+    @OneToMany(mappedBy = "clinicEntity")
+    private List<PatientEntity> patientEntity;
+
+    @Column(nullable = true, length = 32)
+    @Size(max = 32)
+    private String reason;
 
     public ClinicEntity() {
-        bookingEntities= new ArrayList<>();
-         staffEntities = new ArrayList<>();
-         patientEntity = new ArrayList<>();
+        bookingEntities = new ArrayList<>();
+        staffEntities = new ArrayList<>();
+        patientEntity = new ArrayList<>();
     }
 
-    
-    
-    
-    public ClinicEntity(String clinicName, String description, String address, BigDecimal unitPrice, ApplicationStatus applicationStatus ) {
+    public ClinicEntity(String clinicName, String description, String address, BigDecimal unitPrice, ApplicationStatus applicationStatus) {
         this.clinicName = clinicName;
         this.description = description;
         this.address = address;
         this.unitPrice = unitPrice;
-        this.applicationStatus=applicationStatus;
+        this.applicationStatus = applicationStatus;
     }
-    
 
-    
-    
-   
-    
-    
-   
-    
-    
     public Long getClinicId() {
         return clinicId;
     }
@@ -92,45 +81,35 @@ public class ClinicEntity implements Serializable
     public void setClinicId(Long clinicId) {
         this.clinicId = clinicId;
     }
-    
+
     @Override
-    public int hashCode()
-    {
+    public int hashCode() {
         int hash = 0;
         hash += (this.clinicId != null ? this.clinicId.hashCode() : 0);
-        
+
         return hash;
     }
 
-    
-    
     @Override
-    public boolean equals(Object object)
-    {
-        if (!(object instanceof ClinicEntity)) 
-        {
+    public boolean equals(Object object) {
+        if (!(object instanceof ClinicEntity)) {
             return false;
         }
-        
+
         ClinicEntity other = (ClinicEntity) object;
-        
-        if ((this.clinicId == null && other.clinicId != null) || (this.clinicId != null && !this.clinicId.equals(other.clinicId))) 
-        {
+
+        if ((this.clinicId == null && other.clinicId != null) || (this.clinicId != null && !this.clinicId.equals(other.clinicId))) {
             return false;
         }
-        
+
         return true;
     }
 
-    
-    
     @Override
-    public String toString() 
-    {
+    public String toString() {
         return "ejb.entity.ClinicEntity[ clinicId=" + this.clinicId + " ]";
     }
 
-    
     public ClinicEntity(Long clinicId, String clinicName, String description, String address, BigDecimal unitPrice) {
         this.clinicId = clinicId;
         this.clinicName = clinicName;
@@ -203,11 +182,14 @@ public class ClinicEntity implements Serializable
         this.patientEntity = patientEntity;
     }
 
-  
-    
-    
-   
+    public String getReason() {
+        return reason;
+    }
+
+    public void setReason(String reason) {
+        this.reason = reason;
+    }
+
    
 
-  
 }
