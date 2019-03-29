@@ -22,7 +22,7 @@ public class SMS {
 
     public static void sendPost(String password, Integer phone) throws Exception {
 
-    /*    String url = "https://rest.nexmo.com/sms/json?";
+        String url = "https://rest.nexmo.com/sms/json?";
         URL obj = new URL(url);
         HttpsURLConnection con = (HttpsURLConnection) obj.openConnection();
 
@@ -58,6 +58,6 @@ public class SMS {
         //print result
         System.out.println(response.toString());
 
-    } */
+    
 }
 }

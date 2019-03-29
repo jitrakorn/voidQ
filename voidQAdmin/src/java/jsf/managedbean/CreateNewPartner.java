@@ -11,13 +11,11 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
-import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.model.SelectItem;
-import javax.faces.model.SelectItemGroup;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import org.json.JSONObject;
@@ -44,7 +42,8 @@ public class CreateNewPartner implements Serializable {
     private Integer getUnApproved;
     private List<ClinicEntity> unapprovedList;
     private String rejectReason;
-      private ClinicEntity selectedClinicEntityToView;
+    private ClinicEntity selectedClinicEntityToView;
+
     public CreateNewPartner() {
         newClinic = new ClinicEntity();
         newStaff = new StaffEntity();
@@ -54,28 +53,25 @@ public class CreateNewPartner implements Serializable {
     public void postConstruct() {
         companies = new ArrayList<>();
         companies.add(new SelectItem("hahaha"));
-        unapprovedList= partnerSessionBeanLocal.retrieveUnApprovedApplications();
-        getUnApproved=partnerSessionBeanLocal.retrieveUnApprovedApplications().size();
+        unapprovedList = partnerSessionBeanLocal.retrieveUnApprovedApplications();
+        getUnApproved = partnerSessionBeanLocal.retrieveUnApprovedApplications().size();
 
     }
 
     public void renderFileUpload(AjaxBehaviorEvent Event) {
-      
-      // if selected item == NO
-      //do nothing else 
-        renderFile=true;
-          System.out.println("run" + renderFile);
+
+        // if selected item == NO
+        //do nothing else 
+        renderFile = true;
+        System.out.println("run" + renderFile);
     }
 
-        public void doUpdateClinic(ActionEvent event)
-    {
-      
-        selectedClinicEntityToView = (ClinicEntity)event.getComponent().getAttributes().get("clinicEntityToUpdate");
-          
-        
-       
+    public void doUpdateClinic(ActionEvent event) {
+
+        selectedClinicEntityToView = (ClinicEntity) event.getComponent().getAttributes().get("clinicEntityToUpdate");
+
     }
-    
+
     public UploadedFile getFile() {
         return file;
     }
@@ -84,11 +80,10 @@ public class CreateNewPartner implements Serializable {
         this.file = file;
     }
 
-    
-    public void reject()
-    {
-       //call clicnic entity set message (rejectreason) selectedClinicEntityToView
+    public void reject() {
+        //call clicnic entity set message (rejectreason) selectedClinicEntityToView
     }
+
     public void upload() {
         if (file != null) {
             FacesMessage message = new FacesMessage("Succesful", file.getFileName() + " is uploaded.");
@@ -122,12 +117,11 @@ public class CreateNewPartner implements Serializable {
             String name = locName.getString("formatted_address");
             newClinic.setAddress(name);
         } catch (IOException ex) {
-
+            ex.printStackTrace();
         }
 
     }
 
-    
     public void createNewPartner() {
 
         try {
@@ -138,6 +132,7 @@ public class CreateNewPartner implements Serializable {
 
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New Clinic created successfully (Clinic ID: " + partner.getClinicId() + ")", null));
         } catch (InputDataValidationException ex) {
+            ex.printStackTrace();
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while creating the new partner: " + ex.getMessage(), null));
         }
     }
