@@ -35,7 +35,10 @@ public class IndexManagedBean implements Serializable
     @PostConstruct
     public void postConstruct()
     {
+        System.err.println("********** postConstruct");
         messageOfTheDayEntities = messageOfTheDayControllerLocal.retrieveAllMessagesOfTheDay();
+        
+        System.err.println("********** postConstruct" + messageOfTheDayEntities.size());
     }
    public void redirect(ActionEvent event) throws IOException
     {
@@ -44,6 +47,18 @@ public class IndexManagedBean implements Serializable
         FacesContext.getCurrentInstance().getExternalContext().redirect("news/editAnnouncement.xhtml");
     }
     
+   public void delete(ActionEvent event) 
+   {
+          Long messageIdToDelete = (Long) event.getComponent().getAttributes().get("newsIDa");
+          
+          System.err.println("********** delete: " + messageIdToDelete);
+          
+         MessageOfTheDayEntity motd = messageOfTheDayControllerLocal.retrieveMessageByID(messageIdToDelete);
+         
+         messageOfTheDayControllerLocal.deleteNews(motd);
+         messageOfTheDayEntities.remove(motd);
+       
+   }
     
     public List<MessageOfTheDayEntity> getMessageOfTheDayEntities() {
         return messageOfTheDayEntities;

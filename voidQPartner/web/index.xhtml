@@ -6,11 +6,11 @@
                 template="/template/defaultTemplate.xhtml"
                 xmlns:ez="http://xmlns.jcp.org/jsf/composite/ezcomp"
                 xmlns:p="http://primefaces.org/ui">
-    
+
     <ui:define name="content">
-        
-     
-        
+
+
+
         <h:panelGroup rendered="#{sessionScope.isLogin == false}">
             <article>
                 <h3>Welcome</h3>
@@ -26,32 +26,38 @@
             </article>
         </h:panelGroup>
 
-        <h:panelGroup rendered="#{sessionScope.isLogin == true}">
-            <article>
-                <h3>Announcement</h3>                    
-                <p>                    
-                    <ui:repeat value="#{partnerIndexManagedBean.messageOfTheDayEntities}" var="motd">
-                        
-                        <p:panel header="#{utilManagedBean.formatMotdHeader(motd.messageDate)} - #{motd.title}" toggleable="true">
-                            <h:outputText value="#{motd.message}" />
-                          
-                            <h:outputText value="Posted by : #{motd.staffEntity.firstName} #{motd.staffEntity.lastName} #{motd.messageDate} " style="float:right;" />
-                            <br/>
-                            <h:outputText value="Last edited by : #{motd.lastEditedStaffEntity.firstName} #{motd.lastEditedStaffEntity.lastName} #{motd.lastEditedMessageDate}" rendered="#{motd.lastEditedStaffEntity!=null}" style="float:right;" />
-                             <br/>
-                            <p:commandButton actionListener="#{partnerIndexManagedBean.redirect}" id="iconOnly"  style="margin-right:20px;" icon="pi pi-save" title="Icon Only" >
-                                 <f:attribute name="newsID" value="#{motd.motdId}" />
-                                      </p:commandButton>
-                            
-                             
-                        </p:panel>
-                        <br/>                
+        <h:form id="formMain">
+            <p:panel rendered="#{sessionScope.isLogin == true}">
+                <p:autoUpdate />
+                <article>
+                    <h3>Announcement</h3>                    
+                    <p>                    
+                        <ui:repeat value="#{partnerIndexManagedBean.messageOfTheDayEntities}" var="motd">
 
-                    </ui:repeat>                                                              
-                </p>
-            </article>
-        </h:panelGroup>
-        
+                            <p:panel header="#{utilManagedBean.formatMotdHeader(motd.messageDate)} - #{motd.title}" toggleable="true">
+                                <h:outputText value="#{motd.message}" />
+
+                                <h:outputText value="Posted by : #{motd.staffEntity.firstName} #{motd.staffEntity.lastName} #{motd.messageDate} " style="float:right;" />
+                                <br/>
+                                <h:outputText value="Last edited by : #{motd.lastEditedStaffEntity.firstName} #{motd.lastEditedStaffEntity.lastName} #{motd.lastEditedMessageDate}" rendered="#{motd.lastEditedStaffEntity!=null}" style="float:right;" />
+                                <br/>
+                                <p:commandButton actionListener="#{partnerIndexManagedBean.redirect}" id="iconOnly"  style="margin-right:20px;" icon="fa fa-edit " value ="Edit" title="Icon Only" >
+                                    <f:attribute name="newsID" value="#{motd.motdId}" />
+                                </p:commandButton>
+
+                                <p:commandButton update="formMain" actionListener="#{partnerIndexManagedBean.delete}" rendered="#{sessionScope.currentPartner.userId == motd.staffEntity.userId}" id="iconOnlya" value="Delete" icon="pi pi-times" style="margin-right:20px;"  title="Click to edit" >
+                                    <f:attribute name="newsIDa" value="#{motd.motdId}" />
+                                </p:commandButton>
+
+                            </p:panel>
+                            <br/>                
+
+                        </ui:repeat>                                                              
+                    </p>
+                </article>
+            </p:panel>
+        </h:form>
+
     </ui:define>
 
 </ui:composition>

@@ -68,9 +68,12 @@ public class DataInitializationSessionBean
          ClinicEntity ce =   partnerSessionBeanLocal.createNewPartner(new ClinicEntity("mx clinic", "best clinic", "geylang hotel 81", new BigDecimal(100),ApplicationStatus.ACTIVATED));
              StaffEntity se =  new StaffEntity("lovemx93@gmail.com","password","mx","mx","doctor","not taken",ce);
             em.persist(se);
+             StaffEntity se2 =  new StaffEntity("pam@gmail.com","password","pam","pam","doctor","not taken",ce);
+            em.persist(se2);
             PatientEntity pe = new PatientEntity("lovemx93@gmail.com","password","mx","mx",958673,ce);
             em.persist(pe);
             ce.getPatientEntity().add(pe);
+            ce.getStaffEntities().add(se2);
         
 
             
