@@ -136,4 +136,21 @@ public class MessageOfTheDayController implements MessageOfTheDayControllerLocal
         }
     }
     
+    
+        @Override
+    public void deleteNews(MessageOfTheDayEntity msg) {
+        Set<ConstraintViolation<MessageOfTheDayEntity>> constraintViolations = validator.validate(msg);
+        if (constraintViolations.isEmpty()) {
+            if (msg.getMotdId() != null) {
+                MessageOfTheDayEntity msgToDelete = retrieveMessageByID(msg.getMotdId());
+
+                if (msgToDelete.getMotdId().equals(msg.getMotdId())) {
+                    //entityManager.merge(msgToDelete);
+                    entityManager.remove(msgToDelete);
+                }
+            }
+        }
+
+    }
+    
 }

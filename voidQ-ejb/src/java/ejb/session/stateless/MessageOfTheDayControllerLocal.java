@@ -26,5 +26,7 @@ public interface MessageOfTheDayControllerLocal {
     public MessageOfTheDayEntity retrieveMessageByID(Long msgId);
 
     public void updateNews(MessageOfTheDayEntity msg, StaffEntity staff) throws InputDataValidationException, UpdateNewsException;
+
+    public void deleteNews(MessageOfTheDayEntity msg);
     
 }
