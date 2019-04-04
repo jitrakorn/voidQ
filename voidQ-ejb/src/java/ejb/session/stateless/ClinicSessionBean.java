@@ -31,18 +31,19 @@ import util.exception.StaffEntityNotFoundException;
 @Stateless
 @Local(ClinicSessionBeanLocal.class)
 public class ClinicSessionBean implements ClinicSessionBeanLocal {
-     @PersistenceContext(unitName = "voidQ-ejbPU")
+
+    @PersistenceContext(unitName = "voidQ-ejbPU")
     private EntityManager em;
 
-   private final ValidatorFactory validatorFactory;
+    private final ValidatorFactory validatorFactory;
     private final Validator validator;
- public ClinicSessionBean() 
-    {
+
+    public ClinicSessionBean() {
         validatorFactory = Validation.buildDefaultValidatorFactory();
         validator = validatorFactory.getValidator();
     }
- 
-  @Override
+
+    @Override
     public List<StaffEntity> retrieveStaffByClinicId(Long clinicId) throws StaffEntityNotFoundException {
         Query query = em.createQuery("SELECT c FROM ClinicEntity c WHERE c.staffEntities.title = :isDoctor");
         query.setParameter("isDoctor", "doctor");
@@ -54,16 +55,13 @@ public class ClinicSessionBean implements ClinicSessionBeanLocal {
         }
     }
 
- 
-   private String prepareInputDataValidationErrorsMessage(Set<ConstraintViolation<ClinicEntity>>constraintViolations)
-    {
+    private String prepareInputDataValidationErrorsMessage(Set<ConstraintViolation<ClinicEntity>> constraintViolations) {
         String msg = "Input data validation error!:";
-            
-        for(ConstraintViolation constraintViolation:constraintViolations)
-        {
+
+        for (ConstraintViolation constraintViolation : constraintViolations) {
             msg += "\n\t" + constraintViolation.getPropertyPath() + " - " + constraintViolation.getInvalidValue() + "; " + constraintViolation.getMessage();
         }
-        
+
         return msg;
     }
 }

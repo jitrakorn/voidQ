@@ -12,9 +12,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.validation.constraints.DecimalMin;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import util.enumeration.ApplicationStatus;
@@ -47,14 +45,15 @@ public class ClinicEntity implements Serializable {
     @Column(nullable = false)
     @NotNull
     private ApplicationStatus applicationStatus;
+    
     @OneToMany(mappedBy = "clinicEntity")
     private List<StaffEntity> staffEntities;
 
     @OneToMany(mappedBy = "clinicEntity")
     private List<BookingEntity> bookingEntities;
 
-    @OneToMany(mappedBy = "clinicEntity")
-    private List<PatientEntity> patientEntity;
+    @OneToMany
+    private List<PatientEntity> patientEntities;
 
     @Column(nullable = true, length = 32)
     @Size(max = 32)
@@ -63,15 +62,25 @@ public class ClinicEntity implements Serializable {
     public ClinicEntity() {
         bookingEntities = new ArrayList<>();
         staffEntities = new ArrayList<>();
-        patientEntity = new ArrayList<>();
+        patientEntities = new ArrayList<>();
     }
 
+    // Just use this everytime
     public ClinicEntity(String clinicName, String description, String address, BigDecimal unitPrice, ApplicationStatus applicationStatus) {
         this.clinicName = clinicName;
         this.description = description;
         this.address = address;
         this.unitPrice = unitPrice;
         this.applicationStatus = applicationStatus;
+    }
+    
+    // Don't know what this is for...
+    public ClinicEntity(Long clinicId, String clinicName, String description, String address, BigDecimal unitPrice) {
+        this.clinicId = clinicId;
+        this.clinicName = clinicName;
+        this.description = description;
+        this.address = address;
+        this.unitPrice = unitPrice;
     }
 
     public Long getClinicId() {
@@ -108,14 +117,6 @@ public class ClinicEntity implements Serializable {
     @Override
     public String toString() {
         return "ejb.entity.ClinicEntity[ clinicId=" + this.clinicId + " ]";
-    }
-
-    public ClinicEntity(Long clinicId, String clinicName, String description, String address, BigDecimal unitPrice) {
-        this.clinicId = clinicId;
-        this.clinicName = clinicName;
-        this.description = description;
-        this.address = address;
-        this.unitPrice = unitPrice;
     }
 
     public String getClinicName() {
@@ -174,14 +175,6 @@ public class ClinicEntity implements Serializable {
         this.applicationStatus = applicationStatus;
     }
 
-    public List<PatientEntity> getPatientEntity() {
-        return patientEntity;
-    }
-
-    public void setPatientEntity(List<PatientEntity> patientEntity) {
-        this.patientEntity = patientEntity;
-    }
-
     public String getReason() {
         return reason;
     }
@@ -190,6 +183,11 @@ public class ClinicEntity implements Serializable {
         this.reason = reason;
     }
 
-   
+    public List<PatientEntity> getPatientEntities() {
+        return patientEntities;
+    }
 
+    public void setPatientEntities(List<PatientEntity> patientEntities) {
+        this.patientEntities = patientEntities;
+    }
 }
