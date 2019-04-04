@@ -57,7 +57,6 @@ public class PartnerSessionBean implements PartnerSessionBeanLocal {
         if (constraintViolations.isEmpty()) {
 
             em.persist(newClinic);
-
             em.flush();
 
             return newClinic;

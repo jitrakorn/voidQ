@@ -26,16 +26,16 @@ public class ClinicEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long clinicId;
-    @Column(nullable = false, length = 32)
+    @Column(nullable = false, length = 128)
     @NotNull
-    @Size(max = 32)
+    @Size(max = 128)
     private String clinicName;
-    @Column(nullable = false, length = 32)
-    @Size(max = 32)
+    @Column(nullable = false, length = 128)
+    @Size(max = 128)
     private String description;
-    @Column(nullable = false, length = 64)
+    @Column(nullable = false, length = 128)
     @NotNull
-    @Size(max = 64)
+    @Size(max = 128)
     private String address;
     @Column(nullable = false, precision = 11, scale = 2)
     @NotNull
