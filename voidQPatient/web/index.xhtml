@@ -1,0 +1,36 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                template="/template/defaultTemplate.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+    
+    <ui:define name="content">
+
+        <h:panelGroup rendered="#{sessionScope.isLogin == true}">
+            <h:form>
+                <p:panelGrid columns="2">
+                    <p:outputLabel for="listOfClinics" value="Select Clinic"/>
+                    <p:selectOneMenu id="listOfClinics" var="c" value="#{clinicManagedBean.newBooking.clinicEntity}" converter="clinicConverter">
+                        <f:selectItems value="#{clinicManagedBean.allClinics}" var="clinic" itemLabel="#{clinic.clinicName}" itemValue="#{clinic}"/>
+                        <p:column headerText="Clinic Name">
+                            <h:outputText value="#{c.clinicName}"/>
+                        </p:column>
+                        
+                        <p:column headerText="Consultation Cost">
+                            <h:outputText value="#{c.unitPrice}"/>
+                        </p:column>
+                    </p:selectOneMenu>
+                    
+                    <p:outputLabel for="visitReason" value="Reason for visit"/>
+                    <p:inputTextarea id="visitReason" value="#{clinicManagedBean.newBooking.visitReason}" required="true" requiredMessage="Please enter a reason for visit"/>
+                </p:panelGrid>
+                <p:commandButton update="@form" type="submit" value="Book an appointment" actionListener="#{clinicManagedBean.patientCreateBooking}"/>
+                <p:growl autoUpdate="true"/>
+            </h:form>
+        </h:panelGroup>
+        
+    </ui:define>
+
+</ui:composition>
