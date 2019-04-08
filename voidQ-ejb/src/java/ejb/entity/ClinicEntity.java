@@ -12,9 +12,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.validation.constraints.DecimalMin;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import util.enumeration.ApplicationStatus;
@@ -28,17 +26,20 @@ public class ClinicEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long clinicId;
-    @Column(nullable = false, length = 32)
+    @Column(nullable = false, length = 128)
     @NotNull
-    @Size(max = 32)
+    @Size(max = 128)
     private String clinicName;
-    @Column(nullable = false, length = 32)
-    @Size(max = 32)
+    @Column(nullable = false, length = 128)
+    @Size(max = 128)
     private String description;
-    @Column(nullable = false, length = 64)
+    @Column(nullable = false, length = 128)
     @NotNull
-    @Size(max = 64)
+    @Size(max = 128)
     private String address;
+    @Column(nullable = true, length=10)
+    @Size(max = 10)
+    private String phoneNum;
     @Column(nullable = false, precision = 11, scale = 2)
     @NotNull
     @DecimalMin("0.00")
@@ -47,31 +48,42 @@ public class ClinicEntity implements Serializable {
     @Column(nullable = false)
     @NotNull
     private ApplicationStatus applicationStatus;
+    
     @OneToMany(mappedBy = "clinicEntity")
-    private List<StaffEntity> staffEntities;
-
+    private List<DoctorEntity> doctorEntities;
+    
+    @OneToMany(mappedBy = "clinicEntity")
+    private List<NurseEntity> nurseEntities;
+    
     @OneToMany(mappedBy = "clinicEntity")
     private List<BookingEntity> bookingEntities;
 
-    @OneToMany(mappedBy = "clinicEntity")
-    private List<PatientEntity> patientEntity;
-
-    @Column(nullable = true, length = 32)
-    @Size(max = 32)
-    private String reason;
+    @OneToMany
+    private List<PatientEntity> patientEntities;
 
     public ClinicEntity() {
         bookingEntities = new ArrayList<>();
-        staffEntities = new ArrayList<>();
-        patientEntity = new ArrayList<>();
+        doctorEntities = new ArrayList<>();
+        nurseEntities = new ArrayList<>();
+        patientEntities = new ArrayList<>();
     }
 
+    // Just use this everytime
     public ClinicEntity(String clinicName, String description, String address, BigDecimal unitPrice, ApplicationStatus applicationStatus) {
         this.clinicName = clinicName;
         this.description = description;
         this.address = address;
         this.unitPrice = unitPrice;
         this.applicationStatus = applicationStatus;
+    }
+    
+    // Don't know what this is for...
+    public ClinicEntity(Long clinicId, String clinicName, String description, String address, BigDecimal unitPrice) {
+        this.clinicId = clinicId;
+        this.clinicName = clinicName;
+        this.description = description;
+        this.address = address;
+        this.unitPrice = unitPrice;
     }
 
     public Long getClinicId() {
@@ -110,14 +122,6 @@ public class ClinicEntity implements Serializable {
         return "ejb.entity.ClinicEntity[ clinicId=" + this.clinicId + " ]";
     }
 
-    public ClinicEntity(Long clinicId, String clinicName, String description, String address, BigDecimal unitPrice) {
-        this.clinicId = clinicId;
-        this.clinicName = clinicName;
-        this.description = description;
-        this.address = address;
-        this.unitPrice = unitPrice;
-    }
-
     public String getClinicName() {
         return clinicName;
     }
@@ -150,12 +154,20 @@ public class ClinicEntity implements Serializable {
         this.unitPrice = unitPrice;
     }
 
-    public List<StaffEntity> getStaffEntities() {
-        return staffEntities;
+    public List<DoctorEntity> getDoctorEntities() {
+        return doctorEntities;
     }
 
-    public void setStaffEntities(List<StaffEntity> staffEntities) {
-        this.staffEntities = staffEntities;
+    public void setDoctorEntities(List<DoctorEntity> doctorEntities) {
+        this.doctorEntities = doctorEntities;
+    }
+
+    public List<NurseEntity> getNurseEntities() {
+        return nurseEntities;
+    }
+
+    public void setNurseEntities(List<NurseEntity> nurseEntities) {
+        this.nurseEntities = nurseEntities;
     }
 
     public List<BookingEntity> getBookingEntities() {
@@ -174,22 +186,19 @@ public class ClinicEntity implements Serializable {
         this.applicationStatus = applicationStatus;
     }
 
-    public List<PatientEntity> getPatientEntity() {
-        return patientEntity;
+    public List<PatientEntity> getPatientEntities() {
+        return patientEntities;
     }
 
-    public void setPatientEntity(List<PatientEntity> patientEntity) {
-        this.patientEntity = patientEntity;
+    public void setPatientEntities(List<PatientEntity> patientEntities) {
+        this.patientEntities = patientEntities;
     }
 
-    public String getReason() {
-        return reason;
+    public String getPhoneNum() {
+        return phoneNum;
     }
 
-    public void setReason(String reason) {
-        this.reason = reason;
+    public void setPhoneNum(String phoneNum) {
+        this.phoneNum = phoneNum;
     }
-
-   
-
 }

@@ -34,7 +34,6 @@ public abstract class UserEntity implements Serializable {
 
     public UserEntity() {
         this.salt = CryptographicHelper.getInstance().generateRandomString(32);
-
     }
 
     public UserEntity(String email, String password) {
