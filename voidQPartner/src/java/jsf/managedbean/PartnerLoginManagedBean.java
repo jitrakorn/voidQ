@@ -17,7 +17,7 @@ import util.exception.InvalidLoginCredentialException;
 
 @Named(value = "partnerLoginManagedBean")
 @RequestScoped
-public class partnerLoginManagedBean {
+public class PartnerLoginManagedBean {
 
     @EJB
     private PartnerSessionBeanLocal partnerSessionBeanLocal;
@@ -27,7 +27,7 @@ public class partnerLoginManagedBean {
     
     
     
-    public partnerLoginManagedBean() 
+    public PartnerLoginManagedBean() 
     {
     }
     

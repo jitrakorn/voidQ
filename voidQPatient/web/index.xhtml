@@ -7,6 +7,24 @@
                 xmlns:f="http://xmlns.jcp.org/jsf/core">
     
     <ui:define name="content">
+        <h:panelGroup rendered="#{sessionScope.isLogin == false}">
+            <h:outputText value="LOG-IN" styleClass="title title--big"/>
+
+            <h:form id="loginForm" styleClass="form form--narrow" >
+                <h:inputText id="username" value="#{patientLoginManagedBean.username}" size="16" required="true" requiredMessage="Username is required." maxlength="32" styleClass="text-input__input text-input__input--align-center" >
+                    <f:validateLength minimum="4" />
+                </h:inputText>
+                <h:outputLabel for="username" value="EMAIL" styleClass="text-input__label"/>
+                <br/>
+                <h:inputSecret id="password" value="#{patientLoginManagedBean.password}" size="16" required="true" requiredMessage="Password is required." maxlength="32" styleClass="text-input__input text-input__input--align-center">
+                    <f:validateLength minimum="4" />
+                </h:inputSecret>
+                <h:outputLabel for="password" value="PASSWORD" styleClass="text-input__label"/>
+                <br/>
+                <h:commandButton type="submit" value="LOGIN" actionListener="#{patientLoginManagedBean.login}" styleClass="button" />
+                <br/>
+            </h:form>
+        </h:panelGroup>
 
         <h:panelGroup rendered="#{sessionScope.isLogin == true}">
             <h:form>

@@ -19,8 +19,7 @@ import util.exception.UpdateNewsException;
 
 @Named(value = "editNewsDetailsManagedBean")
 @ViewScoped
-
-public class editNewsDetailsManagedBean implements Serializable {
+public class EditNewsDetailsManagedBean implements Serializable {
 
     @EJB(name = "MessageOfTheDayControllerLocal")
     private MessageOfTheDayControllerLocal messageOfTheDayControllerLocal;
@@ -37,7 +36,7 @@ public class editNewsDetailsManagedBean implements Serializable {
 
     private String textValue = "Enable Edit";
 
-    public editNewsDetailsManagedBean() {
+    public EditNewsDetailsManagedBean() {
       
     }
 
@@ -97,10 +96,7 @@ public class editNewsDetailsManagedBean implements Serializable {
         //  FacesContext.getCurrentInstance().getExternalContext().getFlash().put("adminIdToDelete", adminIdToView);
         // FacesContext.getCurrentInstance().getExternalContext().redirect("deleteAdmin.xhtml");
     }
-
-       
  
-
     public boolean isIsDisabled() {
         return isDisabled;
     }

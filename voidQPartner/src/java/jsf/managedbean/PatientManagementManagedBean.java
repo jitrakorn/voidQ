@@ -17,7 +17,7 @@ import util.exception.PatientNotFoundException;
 
 @Named(value = "patientManagementManagedBean")
 @ViewScoped
-public class patientManagementManagedBean implements Serializable {
+public class PatientManagementManagedBean implements Serializable {
 
     @EJB(name = "PatientSessionBeanLocal")
     private PatientSessionBeanLocal patientSessionBeanLocal;
@@ -29,7 +29,7 @@ public class patientManagementManagedBean implements Serializable {
     private PatientEntity selectedPatientEntityToUpdate;
     private List<PatientEntity> filteredPatientEntities;
 
-    public patientManagementManagedBean() {
+    public PatientManagementManagedBean() {
         newPatient = new PatientEntity();
     }
 

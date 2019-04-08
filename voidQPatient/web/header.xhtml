@@ -9,7 +9,7 @@
 
     <div class="header__bar">
         <h:panelGroup styleClass="header__content" rendered="#{sessionScope.isLogin == true}">
-            <h:outputLink value="/voidQPartner/index.xhtml" styleClass="header__title"><b>voidQ</b>partner</h:outputLink>
+            <h:outputLink value="/voidQPartner/index.xhtml" styleClass="header__title"><b>voidQ</b>patient</h:outputLink>
 
             <h:panelGrid cellpadding="15" columns="4" styleClass="header__menu">
                 <h:outputLink value="/voidQPartner/news/viewAnnouncements.xhtml" styleClass="link">ANNOUNCEMENTS</h:outputLink>
@@ -28,7 +28,7 @@
 
 
         <h:panelGroup styleClass="header__content" rendered="#{sessionScope.isLogin == false}">
-            <h:outputLink value="/voidQPartner/index.xhtml" styleClass="header__title"><b>voidQ</b>partner</h:outputLink>
+            <h:outputLink value="/voidQPatient/index.xhtml" styleClass="header__title"><b>voidQ</b>patient</h:outputLink>
         </h:panelGroup>
 
     </div>
