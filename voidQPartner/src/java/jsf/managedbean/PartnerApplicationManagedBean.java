@@ -1,6 +1,7 @@
 package jsf.managedbean;
 
 import ejb.entity.ClinicEntity;
+import ejb.entity.DoctorEntity;
 import ejb.entity.StaffEntity;
 import ejb.helper.Geocoding;
 import ejb.session.stateless.PartnerSessionBeanLocal;
@@ -10,18 +11,17 @@ import java.io.Serializable;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
-import javax.faces.bean.ApplicationScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.view.ViewScoped;
-import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.json.JSONObject;
 
 import org.primefaces.event.FlowEvent;
 import util.enumeration.ApplicationStatus;
+import util.enumeration.Availability;
 import util.exception.InputDataValidationException;
 
 @Named(value = "partnerApplicationManagedBean")
@@ -36,7 +36,7 @@ public class PartnerApplicationManagedBean implements Serializable {
     private PartnerSessionBeanLocal partnerSessionBeanLocal;
 
     private ClinicEntity newClinic;
-    private StaffEntity newStaff;
+    private DoctorEntity newDoctor;
     private String postalcode;
     private boolean skip;
 
@@ -52,7 +52,7 @@ public class PartnerApplicationManagedBean implements Serializable {
 
     public PartnerApplicationManagedBean() {
         newClinic = new ClinicEntity();
-        newStaff = new StaffEntity();
+        newDoctor = new DoctorEntity();
     }
 
     @PostConstruct
@@ -87,15 +87,13 @@ public class PartnerApplicationManagedBean implements Serializable {
             newClinic.setApplicationStatus(ApplicationStatus.NOTACTIVATED);
 
             ClinicEntity partner = partnerSessionBeanLocal.createNewPartner(newClinic);
-            newStaff.setClinicEntity(partner);
-            newStaff.setTitle("doctor");
-            newStaff.setStatus("not taken");
-            StaffEntity staff = partnerSessionBeanLocal.createNewStaff(newStaff);
-            partner.getStaffEntities().add(staff);
+            newDoctor.setClinicEntity(partner);
+            newDoctor.setStatus(Availability.AVAILABLE);
+            StaffEntity staff = partnerSessionBeanLocal.createNewStaff(newDoctor);
+            partner.getDoctorEntities().add((DoctorEntity)staff);
             newClinic = new ClinicEntity();
-            newStaff = new StaffEntity();
-    //sendMessage("ccb");
-            //sendJMSMessageToQueueCheckoutNotification("New partner application waiting for approval")
+            newDoctor = new DoctorEntity();
+            
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Your account  : " + staff.getEmail() + " is being created and application is being processed", null));
         } catch (InputDataValidationException ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while creating the new partner: " + ex.getMessage(), null));
@@ -103,7 +101,7 @@ public class PartnerApplicationManagedBean implements Serializable {
     }
 
     public void save() {
-        FacesMessage msg = new FacesMessage("Successful", "Welcome :" + newStaff.getFirstName());
+        FacesMessage msg = new FacesMessage("Successful", "Welcome :" + newDoctor.getFirstName());
         FacesContext.getCurrentInstance().addMessage(null, msg);
     }
 
@@ -132,12 +130,12 @@ public class PartnerApplicationManagedBean implements Serializable {
         this.newClinic = newClinic;
     }
 
-    public StaffEntity getNewStaff() {
-        return newStaff;
+    public DoctorEntity getNewDoctor() {
+        return newDoctor;
     }
 
-    public void setNewStaff(StaffEntity newStaff) {
-        this.newStaff = newStaff;
+    public void setNewDoctor(DoctorEntity newDoctor) {
+        this.newDoctor = newDoctor;
     }
 
     public String getPostalcode() {

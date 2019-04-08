@@ -1,31 +1,24 @@
 package jsf.managedbean;
 
-import ejb.entity.AdminEntity;
 import ejb.entity.PatientEntity;
 import ejb.entity.StaffEntity;
-import ejb.session.stateless.AdministratorSessionBeanLocal;
 import ejb.session.stateless.PatientSessionBeanLocal;
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
-import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.view.ViewScoped;
-import util.exception.AdministratorNotFoundException;
-import util.exception.DeleteAdminException;
-import util.exception.InputDataValidationException;
 import util.exception.PatientNotFoundException;
 
 @Named(value = "patientManagementManagedBean")
 @ViewScoped
 
-public class PatientManagementManagedBean implements Serializable {
+public class patientManagementManagedBean implements Serializable {
 
     @EJB(name = "PatientSessionBeanLocal")
     private PatientSessionBeanLocal patientSessionBeanLocal;
@@ -37,14 +30,14 @@ public class PatientManagementManagedBean implements Serializable {
     private PatientEntity selectedPatientEntityToUpdate;
     private List<PatientEntity> filteredPatientEntities;
 
-    public PatientManagementManagedBean() {
+    public patientManagementManagedBean() {
         newPatient = new PatientEntity();
     }
 
     @PostConstruct
     public void postConstruct() {
         StaffEntity se  = (StaffEntity) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("currentPartner");
-        patients = patientSessionBeanLocal.retrieveAllPatientsByClinic(se);
+//        patients = patientSessionBeanLocal.retrieveAllPatientsByClinic(se);
     }
 
     public void doUpdatePatient(ActionEvent event) {

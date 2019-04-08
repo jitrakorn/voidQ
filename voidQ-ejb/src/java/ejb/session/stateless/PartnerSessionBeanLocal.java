@@ -6,6 +6,7 @@
 package ejb.session.stateless;
 
 import ejb.entity.ClinicEntity;
+import ejb.entity.DoctorEntity;
 import ejb.entity.StaffEntity;
 
 import java.util.List;
@@ -33,12 +34,14 @@ public interface PartnerSessionBeanLocal {
     public List<ClinicEntity> retrieveAllPartners();
 
     public ClinicEntity retrievePartnerByPartnerId(Long clinicId) throws PartnerNotFoundException;
+    
+    public ClinicEntity getPartnerById(Long clinicId);
 
     public void updatePartner(ClinicEntity clinic) throws InputDataValidationException, PartnerNotFoundException, UpdatePartnerException;
 
     public void deletePartner(Long clinicId) throws PartnerNotFoundException, DeletePartnerException;
 
-    public StaffEntity createNewStaff(StaffEntity newStaff) throws InputDataValidationException;
+    public StaffEntity createNewStaff(StaffEntity newStaff);
     
     public StaffEntity retrieveStaffByStaffId(Long staffId) throws PartnerNotFoundException;
 

@@ -17,30 +17,19 @@ import util.exception.InvalidLoginCredentialException;
 
 @Named(value = "partnerLoginManagedBean")
 @RequestScoped
-
-public class PartnerLoginManagedBean 
-{
+public class partnerLoginManagedBean {
 
     @EJB
     private PartnerSessionBeanLocal partnerSessionBeanLocal;
-
-
-
-   
-
-    
-    
     
     private String username;
     private String password;
     
     
     
-    public PartnerLoginManagedBean() 
+    public partnerLoginManagedBean() 
     {
     }
-    
-    
     
     public void login(ActionEvent event) throws IOException
     {
@@ -58,16 +47,12 @@ public class PartnerLoginManagedBean
         }
     }
     
-    
-    
     public void logout(ActionEvent event) throws IOException
     {
         ((HttpSession)FacesContext.getCurrentInstance().getExternalContext().getSession(true)).invalidate();
         FacesContext.getCurrentInstance().getExternalContext().redirect(FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath() + "/index.xhtml");
     }
 
-    
-    
     public String getUsername() {
         return username;
     }

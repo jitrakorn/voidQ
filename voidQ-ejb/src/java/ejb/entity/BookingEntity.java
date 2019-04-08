@@ -9,6 +9,8 @@ import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -19,6 +21,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import util.enumeration.BookingStatus;
 
 /**
  *
@@ -31,10 +34,12 @@ public class BookingEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long bookingId;
-    @Column(nullable = false, length = 32)
+    
+    @Column(nullable = false)
     @NotNull
-    @Size(max = 32)
-    private String status;
+    @Enumerated(EnumType.STRING)
+    private BookingStatus status;
+    
     @Column(nullable = false, length = 32)
     @NotNull
     @Size(max = 32)
@@ -42,41 +47,36 @@ public class BookingEntity implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     @Column(nullable = false)
     @NotNull
-    private Date transactionDateTime;  
-    
-    
-       @OneToOne
+    private Date transactionDateTime;
+
+    @OneToOne
     private TransactionEntity transactionEntity;
-       
-        @ManyToOne(optional = false)
+
+    @ManyToOne(optional = false)
     @JoinColumn(nullable = false)
     private ClinicEntity clinicEntity;
-     
-     @ManyToOne(optional = false)
-    @JoinColumn(nullable = false)
-    private StaffEntity staffEntity;
 
-      @ManyToOne(optional = false)
+    @ManyToOne(optional = true)
+    @JoinColumn(nullable = true)
+    private DoctorEntity doctorEntity;
+    
+    @ManyToOne(optional = true)
+    @JoinColumn(nullable = true)
+    private NurseEntity nurseEntity;
+
+    @ManyToOne(optional = false)
     @JoinColumn(nullable = false)
     private PatientEntity patientEntity;
 
-     
     public BookingEntity() {
     }
 
-    public BookingEntity(String status, Date transactionDateTime, TransactionEntity transactionEntity) {
+    public BookingEntity(BookingStatus status, Date transactionDateTime, ClinicEntity clinicEntity, PatientEntity patientEntity) {
         this.status = status;
         this.transactionDateTime = transactionDateTime;
-        this.transactionEntity = transactionEntity;
+        this.clinicEntity = clinicEntity;
+        this.patientEntity = patientEntity;
     }
-
-  
-
-  
-    
-   
-    
-    
 
     public Long getBookingId() {
         return bookingId;
@@ -111,11 +111,11 @@ public class BookingEntity implements Serializable {
         return "ejb.entity.BookingEntity[ id=" + bookingId + " ]";
     }
 
-    public String getStatus() {
+    public BookingStatus getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(BookingStatus status) {
         this.status = status;
     }
 
@@ -143,12 +143,20 @@ public class BookingEntity implements Serializable {
         this.clinicEntity = clinicEntity;
     }
 
-    public StaffEntity getStaffEntity() {
-        return staffEntity;
+    public DoctorEntity getDoctorEntity() {
+        return doctorEntity;
     }
 
-    public void setStaffEntity(StaffEntity staffEntity) {
-        this.staffEntity = staffEntity;
+    public void setDoctorEntity(DoctorEntity doctorEntity) {
+        this.doctorEntity = doctorEntity;
+    }
+
+    public NurseEntity getNurseEntity() {
+        return nurseEntity;
+    }
+
+    public void setNurseEntity(NurseEntity nurseEntity) {
+        this.nurseEntity = nurseEntity;
     }
 
     public PatientEntity getPatientEntity() {
@@ -166,5 +174,5 @@ public class BookingEntity implements Serializable {
     public void setVisitReason(String visitReason) {
         this.visitReason = visitReason;
     }
-    
+
 }

@@ -4,18 +4,16 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Column;
-import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-@Entity
-
-public class StaffEntity extends UserEntity implements Serializable {
+@MappedSuperclass
+public abstract class StaffEntity extends UserEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -27,53 +25,20 @@ public class StaffEntity extends UserEntity implements Serializable {
     @NotNull
     @Size(max = 32)
     private String lastName;
-    @Column(nullable = false, length = 6)
-    @NotNull
-    @Size(max = 6)
-    private String title;
-
-    @Column(nullable = false, length = 32)
-    @NotNull
-    @Size(max = 32)
-    private String status;
     @ManyToOne(optional = false)
     @JoinColumn(nullable = false)
     private ClinicEntity clinicEntity;
 
-    @Column(nullable = false)
-    @NotNull
-    @Min(1)
-    private Integer phoneNumber;
-    
-    @OneToMany(mappedBy = "staffEntity")
-    private List<BookingEntity> bookingEntities;
-
-    @OneToMany(mappedBy = "staffEntity")
-    private List<MessageOfTheDayEntity> messageOfTheDayEntities;
-
-    @OneToOne(mappedBy="lastEditedStaffEntity")
-    private MessageOfTheDayEntity messageOfTheDayEntity;
-
     public StaffEntity() {
-
         super();
-
-        bookingEntities = new ArrayList<>();
-        messageOfTheDayEntities = new ArrayList<>();
-
     }
 
-    public StaffEntity(String email, String password, String firstName, String lastName, String title, String status, ClinicEntity clinicEntity,Integer phoneNumber) {
-        
+    public StaffEntity(String email, String password, String firstName, String lastName, ClinicEntity clinicEntity) {
         super(email, password);
 
         this.firstName = firstName;
         this.lastName = lastName;
-        this.title = title;
-        this.status = status;
         this.clinicEntity = clinicEntity;
-        this.phoneNumber= phoneNumber;
-
     }
 
     @Override
@@ -119,23 +84,7 @@ public class StaffEntity extends UserEntity implements Serializable {
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
+    
     public ClinicEntity getClinicEntity() {
         return clinicEntity;
     }
@@ -143,37 +92,4 @@ public class StaffEntity extends UserEntity implements Serializable {
     public void setClinicEntity(ClinicEntity clinicEntity) {
         this.clinicEntity = clinicEntity;
     }
-
-    public List<BookingEntity> getBookingEntities() {
-        return bookingEntities;
-    }
-
-    public void setBookingEntities(List<BookingEntity> bookingEntities) {
-        this.bookingEntities = bookingEntities;
-    }
-
-    public List<MessageOfTheDayEntity> getMessageOfTheDayEntities() {
-        return messageOfTheDayEntities;
-    }
-
-    public void setMessageOfTheDayEntities(List<MessageOfTheDayEntity> messageOfTheDayEntities) {
-        this.messageOfTheDayEntities = messageOfTheDayEntities;
-    }
-
-    public MessageOfTheDayEntity getMessageOfTheDayEntity() {
-        return messageOfTheDayEntity;
-    }
-
-    public void setMessageOfTheDayEntity(MessageOfTheDayEntity messageOfTheDayEntity) {
-        this.messageOfTheDayEntity = messageOfTheDayEntity;
-    }
-
-    public Integer getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public void setPhoneNumber(Integer phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
-
 }

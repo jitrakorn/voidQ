@@ -1,0 +1,38 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+    <h:outputStylesheet library="css" name="style.css" />
+
+    <div class="header__bar">
+        <h:panelGroup styleClass="header__content" rendered="#{sessionScope.isLogin == true}">
+            <h:outputLink value="/voidQPartner/index.xhtml" styleClass="header__title"><b>voidQ</b>partner</h:outputLink>
+
+            <h:panelGrid cellpadding="15" columns="4" styleClass="header__menu">
+                <h:outputLink value="/voidQPartner/news/viewAnnouncements.xhtml" styleClass="link">ANNOUNCEMENTS</h:outputLink>
+                <h:outputLink value="/voidQPartner/partner/viewStaffDetails.xhtml" styleClass="link">STAFF</h:outputLink>
+                <h:outputLink value="/voidQPartner/partner/viewClinicDetails.xhtml" styleClass="link">CLINIC</h:outputLink>
+                <h:outputLink value="/voidQPartner/partner/patientManagement.xhtml" styleClass="link">BOOKINGS</h:outputLink>
+            </h:panelGrid>
+
+            <h:form id="logoutForm" styleClass="header__user">
+                <h:graphicImage value="/resources/images/user.png" styleClass="header__user__icon" />
+                <h:outputText value="#{sessionScope.currentPartner.firstName}" styleClass="header__user__text" />
+                &nbsp;
+                <h:commandButton styleClass="button" actionListener="#{partnerLoginManagedBean.logout}" value="LOGOUT"/>
+            </h:form>
+        </h:panelGroup>
+
+
+        <h:panelGroup styleClass="header__content" rendered="#{sessionScope.isLogin == false}">
+            <h:outputLink value="/voidQPartner/index.xhtml" styleClass="header__title"><b>voidQ</b>partner</h:outputLink>
+        </h:panelGroup>
+
+    </div>
+
+
+</ui:composition>
+

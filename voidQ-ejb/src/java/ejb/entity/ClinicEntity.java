@@ -37,6 +37,9 @@ public class ClinicEntity implements Serializable {
     @NotNull
     @Size(max = 128)
     private String address;
+    @Column(nullable = true, length=10)
+    @Size(max = 10)
+    private String phoneNum;
     @Column(nullable = false, precision = 11, scale = 2)
     @NotNull
     @DecimalMin("0.00")
@@ -47,21 +50,21 @@ public class ClinicEntity implements Serializable {
     private ApplicationStatus applicationStatus;
     
     @OneToMany(mappedBy = "clinicEntity")
-    private List<StaffEntity> staffEntities;
-
+    private List<DoctorEntity> doctorEntities;
+    
+    @OneToMany(mappedBy = "clinicEntity")
+    private List<NurseEntity> nurseEntities;
+    
     @OneToMany(mappedBy = "clinicEntity")
     private List<BookingEntity> bookingEntities;
 
     @OneToMany
     private List<PatientEntity> patientEntities;
 
-    @Column(nullable = true, length = 32)
-    @Size(max = 32)
-    private String reason;
-
     public ClinicEntity() {
         bookingEntities = new ArrayList<>();
-        staffEntities = new ArrayList<>();
+        doctorEntities = new ArrayList<>();
+        nurseEntities = new ArrayList<>();
         patientEntities = new ArrayList<>();
     }
 
@@ -151,12 +154,20 @@ public class ClinicEntity implements Serializable {
         this.unitPrice = unitPrice;
     }
 
-    public List<StaffEntity> getStaffEntities() {
-        return staffEntities;
+    public List<DoctorEntity> getDoctorEntities() {
+        return doctorEntities;
     }
 
-    public void setStaffEntities(List<StaffEntity> staffEntities) {
-        this.staffEntities = staffEntities;
+    public void setDoctorEntities(List<DoctorEntity> doctorEntities) {
+        this.doctorEntities = doctorEntities;
+    }
+
+    public List<NurseEntity> getNurseEntities() {
+        return nurseEntities;
+    }
+
+    public void setNurseEntities(List<NurseEntity> nurseEntities) {
+        this.nurseEntities = nurseEntities;
     }
 
     public List<BookingEntity> getBookingEntities() {
@@ -175,19 +186,19 @@ public class ClinicEntity implements Serializable {
         this.applicationStatus = applicationStatus;
     }
 
-    public String getReason() {
-        return reason;
-    }
-
-    public void setReason(String reason) {
-        this.reason = reason;
-    }
-
     public List<PatientEntity> getPatientEntities() {
         return patientEntities;
     }
 
     public void setPatientEntities(List<PatientEntity> patientEntities) {
         this.patientEntities = patientEntities;
+    }
+
+    public String getPhoneNum() {
+        return phoneNum;
+    }
+
+    public void setPhoneNum(String phoneNum) {
+        this.phoneNum = phoneNum;
     }
 }
