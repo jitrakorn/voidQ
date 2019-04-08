@@ -117,8 +117,6 @@ public class editNewsDetailsManagedBean implements Serializable {
         this.textValue = textValue;
     }
 
-   
-
     public MessageOfTheDayEntity getSelectedMessageOfTheDayEntity() {
         return selectedMessageOfTheDayEntity;
     }
