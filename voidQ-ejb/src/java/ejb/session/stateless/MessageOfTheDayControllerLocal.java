@@ -5,8 +5,8 @@
  */
 package ejb.session.stateless;
 
+import ejb.entity.DoctorEntity;
 import ejb.entity.MessageOfTheDayEntity;
-import ejb.entity.StaffEntity;
 import java.util.List;
 import javax.ejb.Local;
 import util.exception.InputDataValidationException;
@@ -25,7 +25,7 @@ public interface MessageOfTheDayControllerLocal {
 
     public MessageOfTheDayEntity retrieveMessageByID(Long msgId);
 
-    public void updateNews(MessageOfTheDayEntity msg, StaffEntity staff) throws InputDataValidationException, UpdateNewsException;
+    public void updateNews(MessageOfTheDayEntity msg, DoctorEntity doctor) throws InputDataValidationException, UpdateNewsException;
 
     public void deleteNews(MessageOfTheDayEntity msg);
     

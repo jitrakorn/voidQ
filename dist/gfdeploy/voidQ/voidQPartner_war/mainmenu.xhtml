@@ -14,7 +14,7 @@
                     <p:submenu label="System">
                         <p:menuitem value="Home" outcome="/index" icon="fa fa-home" />
                           <p:menuitem value="Partner Application" outcome="/partner/PartnerApplication.xhtml" icon="fa fa-users" />
-                          <p:menuitem value="Logout" actionListener="#{partnerLoginManagedBean.logout}" icon="fa fa-sign-out" rendered="#{sessionScope.isLogin == true} #{viewClinicDetailsManagedBean.staffToView.title == 'doctor'}" />
+                          <p:menuitem value="Logout" actionListener="#{partnerLoginManagedBean.logout}" icon="fa fa-sign-out" rendered="#{sessionScope.isLogin == true}" />
                     </p:submenu>
                     
                     <p:submenu label="Announcement" rendered="#{sessionScope.isLogin == true}">

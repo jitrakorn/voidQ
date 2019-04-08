@@ -6,6 +6,7 @@
 package ejb.session.stateless;
 
 import ejb.entity.ClinicEntity;
+import ejb.entity.DoctorEntity;
 import ejb.entity.StaffEntity;
 import java.util.List;
 import java.util.Set;
@@ -66,31 +67,30 @@ public class PartnerSessionBean implements PartnerSessionBeanLocal {
     }
 
     @Override
-    public StaffEntity createNewStaff(StaffEntity newStaff) throws InputDataValidationException {
+    public StaffEntity createNewStaff(StaffEntity newStaff) {
+        em.persist(newStaff);
+        em.flush();
 
-        Set<ConstraintViolation<StaffEntity>> constraintViolations = validator.validate(newStaff);
-
-        if (constraintViolations.isEmpty()) {
-
-            em.persist(newStaff);
-
-            em.flush();
-
-            return newStaff;
-        } else {
-            throw new InputDataValidationException(prepareInputDataValidationErrorsMessagea(constraintViolations));
-        }
+        return newStaff;
     }
 
     @Override
     public StaffEntity retrievePartnerByEmail(String email) throws PartnerNotFoundException {
-        Query query = em.createQuery("SELECT s FROM StaffEntity s WHERE s.email = :inEmail");
+        Query query = em.createQuery("SELECT d FROM DoctorEntity d WHERE d.email = :inEmail");
         query.setParameter("inEmail", email);
 
         try {
             return (StaffEntity) query.getSingleResult();
         } catch (NoResultException | NonUniqueResultException ex) {
-            throw new PartnerNotFoundException("Partner Email " + email + " does not exist!");
+            Query query2 = em.createQuery("SELECT n FROM NurseEntity n WHERE n.email = :inEmail");
+            query2.setParameter("inEmail", email);
+            
+            try{
+                return (StaffEntity) query2.getSingleResult();
+            }
+            catch (NoResultException | NonUniqueResultException ex2) {
+                throw new PartnerNotFoundException("Partner Email " + email + " does not exist!");
+            }
         }
     }
 
@@ -111,7 +111,7 @@ public class PartnerSessionBean implements PartnerSessionBeanLocal {
             throw new PartnerNotFoundException("Clinic ID " + clinicId + " does not exist!");
         }
     }
-    
+
     @Override
     public ClinicEntity getPartnerById(Long clinicId) {
         return em.find(ClinicEntity.class, clinicId);

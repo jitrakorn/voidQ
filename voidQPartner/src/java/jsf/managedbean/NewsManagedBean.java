@@ -1,6 +1,8 @@
 package jsf.managedbean;
 
+import ejb.entity.DoctorEntity;
 import ejb.entity.MessageOfTheDayEntity;
+import static ejb.entity.MessageOfTheDayEntity_.doctorEntity;
 import ejb.entity.StaffEntity;
 import ejb.session.stateless.MessageOfTheDayControllerLocal;
 import java.io.Serializable;
@@ -34,7 +36,7 @@ public class NewsManagedBean implements Serializable {
 private PushContext someChannel;
 
 
-    private StaffEntity staffToUpdate;
+    private DoctorEntity doctorToUpdate;
     private MessageOfTheDayEntity messageOfTheDayEntity;
 
     public NewsManagedBean() {
@@ -43,7 +45,7 @@ private PushContext someChannel;
 
     @PostConstruct
     public void postConstruct() {
-        staffToUpdate = (StaffEntity) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("currentPartner");
+        doctorToUpdate = (DoctorEntity) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("currentPartner");
 
     }
 
@@ -58,7 +60,7 @@ public void execute()
 
     public void addAnnouncement() {
         SimpleDateFormat inputDateFormat = new SimpleDateFormat("d/M/y");
-        messageOfTheDayEntity.setStaffEntity(staffToUpdate); //need update to persistence 
+        messageOfTheDayEntity.setDoctorEntity(doctorToUpdate); //need update to persistence 
         Date date = new Date();
         messageOfTheDayEntity.setMessageDate(date);
 
@@ -86,16 +88,12 @@ public void execute()
         this.messageOfTheDayEntity = messageOfTheDayEntity;
     }
 
-    public StaffEntity getStaffToUpdate() {
-        return staffToUpdate;
+    public DoctorEntity getDoctorToUpdate() {
+        return doctorToUpdate;
     }
 
-    public void setStaffToUpdate(StaffEntity staffToUpdate) {
-        this.staffToUpdate = staffToUpdate;
+    public void setDoctorToUpdate(DoctorEntity doctorToUpdate) {
+        this.doctorToUpdate = doctorToUpdate;
     }
-
-  
-
-  
 
 }
