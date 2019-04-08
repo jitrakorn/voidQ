@@ -1,14 +1,19 @@
-/voidQ-ejb/build/
 /build/
+/dist/
+/nbproject/private/
+/voidQ-ejb/build/
 /voidQ-ejb/dist/
-/voidQAdmin-war/build/
+/voidQ-ejb/nbproject/private/
 /voidQPartner/build/
-/voidQAdmin-war/dist/
 /voidQPartner/dist/
-/voidQAdmin/nbproject/private/
+/voidQPartner/nbproject/private/
 /voidQAdmin/build/
 /voidQAdmin/dist/
+<<<<<<< HEAD
+/voidQAdmin/nbproject/private/
+=======
 /dist/
 /voidQPatient/nbproject/private/
 /voidQPatient/dist/
 /voidQPatient/build/
+>>>>>>> master

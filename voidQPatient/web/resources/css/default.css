@@ -1,4 +1,4 @@
-a {
+/*a {
 	text-decoration-line: none;	
 }
 
@@ -9,7 +9,7 @@ a:hover {
 
 
 
-/* PrimeFaces styling elements below this comment */
+ PrimeFaces styling elements below this comment 
 
 .ui-widget {
     font-size: small;
@@ -55,4 +55,14 @@ div.ui-growl {
    left: 10;
 }
 
+ Custom theme 
 
+.header-bar {
+    background-color: #1abc9c;
+}
+
+.header-title {
+    font-size: large;
+    color: white;
+}
+*/
