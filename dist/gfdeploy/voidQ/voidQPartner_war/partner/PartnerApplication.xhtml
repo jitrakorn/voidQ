@@ -5,154 +5,69 @@
                 xmlns:f="http://xmlns.jcp.org/jsf/core"
                 template="/template/defaultTemplate.xhtml"
                 xmlns:p="http://primefaces.org/ui"
-              >
+                >
+
+    <ui:define name="title">Partner Application</ui:define>
+
     <ui:define name="content">
+        <h:panelGroup rendered="#{sessionScope.isLogin == false}" >            
 
-        <div>
-            <h3>Partner Management</h3>
-            <style type="text/css">
-                .label {
-                    width:20%;
-                    padding:4px;
-                }
+            <h:outputLink value="/voidQPartner/index.xhtml" styleClass="link" style="text-align: left">Back to Index</h:outputLink>
+            <h:outputText value="PARTNER APPLICATION" styleClass="title title--big" />
+            <h:outputText value="Applying to voidQ is easy!" styleClass="subtitle" />
+            <h:outputText value="Simply fill up the form below and we will get back to you shortly!" styleClass="subtitle" />
 
-                .value {
-                    width:80%;
-                    padding:4px;
-                }
+            <br/>            
+            <h:form id="partnerApplication" styleClass="form form--wide">
+                <h:outputText value="1" styleClass="section__number" />
+                <h:outputText value="ABOUT YOU" styleClass="section__title" />
+                <br/>
+                <h:inputText id="firstName" value="#{partnerApplicationManagedBean.newStaff.firstName}" required="true" label="First Name" styleClass="text-input__input text-input__input--align-center"/>
+                <h:outputLabel for="firstName" value="FIRST NAME" styleClass="text-input__label"/>
+                <br/>
+                <h:inputText id="lastName" value="#{partnerApplicationManagedBean.newStaff.lastName}" required="true" label="Last Name" styleClass="text-input__input text-input__input--align-center"/>
+                <h:outputLabel for="lastName" value="LAST NAME" styleClass="text-input__label"/>
+                <br/>
+                <h:inputText id="contactNumber" value="#{partnerApplicationManagedBean.newStaff.phoneNumber}" required="true" label="Contact Number" styleClass="text-input__input text-input__input--align-center"/>
+                <h:outputLabel for="contactNumber" value="CONTACT NUMBER" styleClass="text-input__label"/>
+                <br/>
+                <h:inputText id="email" value="#{partnerApplicationManagedBean.newStaff.email}" required="true" label="Email" styleClass="text-input__input text-input__input--align-center"/>
+                <h:outputLabel for="email" value="EMAIL" styleClass="text-input__label"/>
+                <br/>
+                <h:inputSecret id="password" value="#{partnerApplicationManagedBean.newStaff.password}" required="true" label="Password" styleClass="text-input__input text-input__input--align-center"/>
+                <h:outputLabel for="password"  value="PASSWORD" styleClass="text-input__label"/>
 
-                .grid {
-                    width:100%;
-                }
+                <br/>
+                <br/>
+                <br/>
+                
+                <h:outputText value="2" styleClass="section__number" />
+                <h:outputText value="YOUR CLINIC" styleClass="section__title" />
+                <br/>
+                <h:inputText id="clinicName" value="#{partnerApplicationManagedBean.newClinic.clinicName}" styleClass="text-input__input text-input__input--align-center"/>
+                <h:outputLabel for="clinicName" value="CLINIC NAME" styleClass="text-input__label"/>
+                <br/>
+                <h:inputText id="clinicDescription" value="#{partnerApplicationManagedBean.newClinic.description}" styleClass="text-input__input text-input__input--align-center"/>
+                <h:outputLabel for="clinicDescription" value="CLINIC DESCRIPTION" styleClass="text-input__label"/>
+                <br/>
+                <h:inputText id="postalCode" value="#{partnerApplicationManagedBean.postalcode}" styleClass="text-input__input text-input__input--align-center">
+                    <f:ajax listener="#{partnerApplicationManagedBean.loadAddress}" render="clinicAddress" />
+                </h:inputText>
+                <h:outputLabel for="clinicPostalCode" value="POSTAL CODE" styleClass="text-input__label text-input__input--align-center"/>
+                <br/>
 
-                .error {
-                    color: red;
-                }
+                <h:inputText id="clinicAddress" value="#{partnerApplicationManagedBean.newClinic.address}" styleClass="text-input__input text-input__input--align-center"/>
+                <h:outputLabel for="clinicAddress" value="ADDRESS" styleClass="text-input__label"/>
+                <br/>
 
-                .outputLabel {
-                    font-weight: bold;
-                }
-
-                .grid {
-                    width:33%;
-                    padding:4px;
-                }
-            </style>
-
-
-
-
-            <h:form id="mainForm">
-
-               <p:growl id="growl" sticky="true" showDetail="true"/>
-
-                <p:wizard flowListener="#{partnerApplicationManagedBean.onFlowProcess}">
-                    <p:tab id="personal" title="Personal">
-                        <p:panel header="Personal Details">
-                            <p:messages />
-                            <h:panelGrid columns="2" columnClasses="label, value">
-
-                                <h:outputText value="Email *" />
-                                <p:inputText value="#{partnerApplicationManagedBean.newStaff.email}" required="true" label="Email"/>
-
-                                <h:outputText value="Password: *" />
-                                <p:inputText value="#{partnerApplicationManagedBean.newStaff.password}" required="true" label="Firstname"/>
-
-                                <h:outputText value="Firstname: *" />
-                                <p:inputText value="#{partnerApplicationManagedBean.newStaff.firstName}" required="true" label="Firstname"/>
-
-                                <h:outputText value="Lastname: *" />
-                                <p:inputText value="#{partnerApplicationManagedBean.newStaff.lastName}" required="true" label="Lastname"/>
-                                
-                                <h:outputText value="Contact Number: *" />
-                                <p:inputText value="#{partnerApplicationManagedBean.newStaff.phoneNumber}" required="true" label="Contact Number"/>
-
-                                <h:outputText value="Skip to last: " />
-                                <h:selectBooleanCheckbox value="#{partnerApplicationManagedBean.skip}" />
-                            </h:panelGrid>
-                        </p:panel>
-                    </p:tab>
-
-                    <p:tab id="address" title="Clinic">
-                        <p:panel header="Clinic Details">
-                            <p:messages />
-                            <h:panelGrid columns="2" columnClasses="label, value">
-                                <h:outputText value="Clinic Name: " />
-                                <p:inputText value="#{partnerApplicationManagedBean.newClinic.clinicName}" />
-
-                                <h:outputText value="Clinic Description: " />
-                                <p:inputText value="#{partnerApplicationManagedBean.newClinic.description}" />
-
-                                <h:outputText value="Postal Code: " />
-                                <p:inputText value="#{partnerApplicationManagedBean.postalcode}" >
-                                    <f:ajax listener="#{partnerApplicationManagedBean.loadAddress}" render="txtClinicAddress" />
-                                </p:inputText>
-
-                                <h:outputText value="Clinic Address: " />
-                                <p:inputText id="txtClinicAddress" value="#{partnerApplicationManagedBean.newClinic.address}" />
-
-                                <h:outputText value="Clinic Consultation Cost: " />
-                                <p:inputText id="txtClinicCost" value="#{partnerApplicationManagedBean.newClinic.unitPrice}" />
-
-
-
-                            </h:panelGrid>
-                        </p:panel>
-                    </p:tab>
-
-
-                    <p:tab id="confirm" title="Confirmation">
-                        <p:panel header="Confirmation">
-                            <h:panelGrid id="confirmation" columns="3" columnClasses="grid,grid,grid">
-                                <h:panelGrid columns="2" columnClasses="label, value">
-                                    <h:outputText value="Email: " />
-                                    <h:outputText value="#{partnerApplicationManagedBean.newStaff.email}" styleClass="outputLabel" />
-
-                                    <h:outputText value="Password: " />
-                                    <h:outputText value="#{partnerApplicationManagedBean.newStaff.password}" styleClass="outputLabel" />
-
-
-                                    <h:outputText value="Firstname: " />
-                                    <h:outputText value="#{partnerApplicationManagedBean.newStaff.firstName}" styleClass="outputLabel"/>
-
-                                    <h:outputText value="Lastname: " />
-                                    <h:outputText value="#{partnerApplicationManagedBean.newStaff.lastName}" styleClass="outputLabel"/>
-
-                                </h:panelGrid>
-
-                                <h:panelGrid columns="2" columnClasses="label, value">
-                                    <h:outputText value="Clinic Name: " />
-                                    <h:outputText value="#{partnerApplicationManagedBean.newClinic.clinicName}" styleClass="outputLabel"/>
-
-                                    <h:outputText value="Clinic Description: " />
-                                    <h:outputText value="#{partnerApplicationManagedBean.newClinic.description}" styleClass="outputLabel"/>
-
-                                    <h:outputText value="Clinic Address: " />
-                                    <h:outputText value="#{partnerApplicationManagedBean.newClinic.address}" styleClass="outputLabel"/>
-
-                                    <h:outputText value="Clinic Consultation Cost: " />
-                                    <h:outputText value="#{partnerApplicationManagedBean.newClinic.unitPrice}" styleClass="outputLabel"/>
-                                </h:panelGrid>
-
-
-                            </h:panelGrid>
-
-                            <p:commandButton value="Submit" action="#{partnerApplicationManagedBean.createNewPartner}" update="growl" process="@this"/>
-                        </p:panel>
-                    </p:tab>
-                </p:wizard>
-               
-
-
-             
-
-
-
+                <h:inputText id="clinicConsultationCost" value="#{partnerApplicationManagedBean.newClinic.unitPrice}" styleClass="text-input__input text-input__input--align-center"/>
+                <h:outputLabel for="clinicConsultationCost" value="CONSULTATION COST ($)" styleClass="text-input__label"/>
+                <br/>
+                <h:commandButton value="APPLY" actionListener="#{partnerApplicationManagedBean.createNewPartner}" styleClass="button"/>
             </h:form>
+        </h:panelGroup>
 
 
-
-        </div>
     </ui:define>
 
 </ui:composition>

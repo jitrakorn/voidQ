@@ -12,6 +12,7 @@ import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ApplicationScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
@@ -56,7 +57,6 @@ public class PartnerApplicationManagedBean implements Serializable {
 
     @PostConstruct
     public void postConstruct() {
-
     }
 
     public void loadAddress(AjaxBehaviorEvent event) {
@@ -145,9 +145,10 @@ public class PartnerApplicationManagedBean implements Serializable {
     }
 
     public void setPostalcode(String postalcode) {
-
         this.postalcode = postalcode;
     }
+    
+    
 
     /*  private void sendJMSMessageToQueueCheckoutNotification() throws JMSException 
     {

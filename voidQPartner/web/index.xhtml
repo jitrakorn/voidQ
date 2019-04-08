@@ -6,24 +6,28 @@
                 template="/template/defaultTemplate.xhtml"
                 xmlns:ez="http://xmlns.jcp.org/jsf/composite/ezcomp"
                 xmlns:p="http://primefaces.org/ui">
-    
+
+    <ui:define name="title">Index</ui:define>
+
     <ui:define name="content">
-        
-     
-        
         <h:panelGroup rendered="#{sessionScope.isLogin == false}">
-            <article>
-                <h3>Welcome</h3>
-                <p>
-                    fucking lame shit                    
-                </p>
-                <p>
-                    <ul>
-                        <li>fking faster change the ui</li>
-                        <li>ffs @@@!!!!11!!!.</li>
-                    </ul>
-                </p>
-            </article>
+            <h:outputText value="LOG-IN" styleClass="title title--big"/>
+
+            <h:form id="loginForm" styleClass="form form--narrow" >
+                <h:inputText id="username" value="#{partnerLoginManagedBean.username}" size="16" required="true" requiredMessage="Username is required." maxlength="32" styleClass="text-input__input text-input__input--align-center" >
+                    <f:validateLength minimum="4" />
+                </h:inputText>
+                <h:outputLabel for="username" value="EMAIL" styleClass="text-input__label"/>
+                <br/>
+                <h:inputSecret id="password" value="#{partnerLoginManagedBean.password}" size="16" required="true" requiredMessage="Password is required." maxlength="32" styleClass="text-input__input text-input__input--align-center">
+                    <f:validateLength minimum="4" />
+                </h:inputSecret>
+                <h:outputLabel for="password" value="PASSWORD" styleClass="text-input__label"/>
+                <br/>
+                <h:commandButton type="submit" value="LOGIN" actionListener="#{partnerLoginManagedBean.login}" styleClass="button" />
+                <br/>
+                <h:outputLink value="partner/partnerApplication.xhtml" styleClass="link">Apply to be a Partner</h:outputLink>
+            </h:form>
         </h:panelGroup>
 
         <h:panelGroup rendered="#{sessionScope.isLogin == true}">
@@ -31,19 +35,19 @@
                 <h3>Announcement</h3>                    
                 <p>                    
                     <ui:repeat value="#{partnerIndexManagedBean.messageOfTheDayEntities}" var="motd">
-                        
+
                         <p:panel header="#{utilManagedBean.formatMotdHeader(motd.messageDate)} - #{motd.title}" toggleable="true">
                             <h:outputText value="#{motd.message}" />
-                          
+
                             <h:outputText value="Posted by : #{motd.staffEntity.firstName} #{motd.staffEntity.lastName} #{motd.messageDate} " style="float:right;" />
                             <br/>
                             <h:outputText value="Last edited by : #{motd.lastEditedStaffEntity.firstName} #{motd.lastEditedStaffEntity.lastName} #{motd.lastEditedMessageDate}" rendered="#{motd.lastEditedStaffEntity!=null}" style="float:right;" />
-                             <br/>
+                            <br/>
                             <p:commandButton actionListener="#{partnerIndexManagedBean.redirect}" id="iconOnly"  style="margin-right:20px;" icon="pi pi-save" title="Icon Only" >
-                                 <f:attribute name="newsID" value="#{motd.motdId}" />
-                                      </p:commandButton>
-                            
-                             
+                                <f:attribute name="newsID" value="#{motd.motdId}" />
+                            </p:commandButton>
+
+
                         </p:panel>
                         <br/>                
 
@@ -51,7 +55,7 @@
                 </p>
             </article>
         </h:panelGroup>
-        
+
     </ui:define>
 
 </ui:composition>

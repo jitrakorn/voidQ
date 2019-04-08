@@ -8,68 +8,43 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:p="http://primefaces.org/ui"
       xmlns:o="http://omnifaces.org/ui"
-xmlns:of="http://omnifaces.org/functions"
+      xmlns:of="http://omnifaces.org/functions"
       >
+
+    <h:outputStylesheet library="css" name="style.css" />
+
     <h:head>
-        <title>voidQ Partner Administration</title>
-        <h:outputStylesheet library="css" name="default.css" />
+        <title><ui:insert name="title"/> - voidQpartner</title>
     </h:head>
+
     <h:body>
-
-        <p:layout fullPage="true">
-
-            <p:layoutUnit position="north" size="120">
-
-                <script>
-                    function pushListener(message)
-                    {
-                        if (message === "ccb")
-                            rc();
-                    }
-                </script>
-                <h1>voidQ Partner Administration</h1>
+        <header>
+            <ui:include src="/header.xhtml" />
+        </header>
+        
 
 
+        <article>
+            <ui:insert name="content">Content</ui:insert>
+        </article>
 
-                <ui:insert name="header">
-                    <ui:include src="/header.xhtml" />
-                </ui:insert>
-
-            </p:layoutUnit>
-
-            <p:layoutUnit size="240" position="west">
-
-                <ui:insert name="mainmenu">
-                    <ui:include src="/mainmenu.xhtml" />
-                </ui:insert>        
-
-            </p:layoutUnit>
-
-            <p:layoutUnit position="center" >
-
-                <ui:insert name="content">Content</ui:insert>
-
-            </p:layoutUnit>
-
-
-
-            <p:layoutUnit position="south" size="70" >
-
-                <ui:insert name="footer">
+        <!--        <footer>
                     <ui:include src="/footer.xhtml" />
-                </ui:insert>
+                </footer>-->
 
-            </p:layoutUnit>                
+        <script>
+            function pushListener(message) {
+                if (message === "ccb")
+                    rc();
+            }
+        </script>
 
-        </p:layout>
 
-        <h:form id="partnerForm">  <p:growl id="growl" sticky="true" showDetail="true"/>
+        <h:form id="partnerForm">
+            <p:growl id="growl" sticky="true" showDetail="true"/>
             <p:remoteCommand name="rc" update="growl" action="#{newsManagedBean.execute}" />
             <o:socket channel="someChannel" onmessage="pushListener" />
-
         </h:form>
-
-
-       
     </h:body>
+
 </html>

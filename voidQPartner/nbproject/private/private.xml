@@ -2,6 +2,20 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group/>
+        <group>
+            <file>file:/C:/Users/jitra/Documents/GitHub/voidQ/voidQPartner/web/template/defaultTemplate.xhtml</file>
+            <file>file:/C:/Users/jitra/Documents/GitHub/voidQ/voidQPartner/web/footer.xhtml</file>
+            <file>file:/C:/Users/jitra/Documents/GitHub/voidQ/voidQPartner/web/resources/css/default.css</file>
+            <file>file:/C:/Users/jitra/Documents/GitHub/voidQ/voidQPartner/web/partner/partnerApplication.xhtml</file>
+            <file>file:/C:/Users/jitra/Documents/GitHub/voidQ/voidQPartner/web/accessRightError.xhtml</file>
+            <file>file:/C:/Users/jitra/Documents/GitHub/voidQ/voidQPartner/web/partner/patientManagement.xhtml</file>
+            <file>file:/C:/Users/jitra/Documents/GitHub/voidQ/voidQPartner/web/partner/viewPartnerDetails.xhtml</file>
+            <file>file:/C:/Users/jitra/Documents/GitHub/voidQ/voidQPartner/web/partner/viewClinicDetails.xhtml</file>
+            <file>file:/C:/Users/jitra/Documents/GitHub/voidQ/voidQPartner/src/java/web/filter/SecurityFilter.java</file>
+            <file>file:/C:/Users/jitra/Documents/GitHub/voidQ/voidQPartner/src/java/jsf/managedbean/PartnerApplicationManagedBean.java</file>
+            <file>file:/C:/Users/jitra/Documents/GitHub/voidQ/voidQPartner/web/index.xhtml</file>
+            <file>file:/C:/Users/jitra/Documents/GitHub/voidQ/voidQPartner/web/resources/css/style.css</file>
+            <file>file:/C:/Users/jitra/Documents/GitHub/voidQ/voidQPartner/web/header.xhtml</file>
+        </group>
     </open-files>
 </project-private>

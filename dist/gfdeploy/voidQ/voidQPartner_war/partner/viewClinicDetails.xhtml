@@ -5,57 +5,33 @@
                 xmlns:f="http://xmlns.jcp.org/jsf/core"
                 template="/template/defaultTemplate.xhtml"
                 xmlns:p="http://primefaces.org/ui">
+    <ui:define name="title">Clinic Details</ui:define>
+
     <ui:define name="content">
+        <h:outputText value="CLINIC DETAILS" styleClass="title title--big" />
+        #{updateUserManagedBean.foo()}
+        <h:form id="formClinic" styleClass="form form--wide">
+            <h:panelGrid id="clinicPanel" columns="2" rendered="#{viewClinicDetailsManagedBean.staffToView.clinicEntity != null}" cellspacing="10px">
+                <h:outputLabel for="clinicId" value="CLINIC ID" styleClass="text-input__label text-input__label--left"/>
+                <h:inputText id="clinicId" value="#{viewClinicDetailsManagedBean.staffToView.clinicEntity.clinicId}" styleClass="text-input__input" readonly="true" />
 
-        <div>
-            <h3>View Clinic Details</h3>
-            <br></br>
-            #{updateUserManagedBean.foo()}
-            <h:form id="formUser">
-                <p:messages id="messages" redisplay="false" closable="true" />
-                <style type="text/css">
-                    .ui-panelgrid .ui-grid-responsive .ui-panelgrid-cell {
-                        text-align: center;
-                    }
-                </style>
+                <h:outputLabel for="name" value="NAME" styleClass="text-input__label text-input__label--left"/>
+                <h:inputText id="name" value="#{viewClinicDetailsManagedBean.staffToView.clinicEntity.clinicName}" styleClass="text-input__input" />
 
+                <h:outputLabel for="description" value="DESCRIPTION" styleClass="text-input__label text-input__label--left"/>
+                <h:inputText id="description" value="#{viewClinicDetailsManagedBean.staffToView.clinicEntity.description}" styleClass="text-input__input" />
 
-                <p:panelGrid id="userPanel" columns="2" rendered="#{viewClinicDetailsManagedBean.staffToView.clinicEntity != null}">
+                <h:outputLabel for="address" value="ADDRESS" styleClass="text-input__label text-input__label--left"/>
+                <h:inputText id="address" value="#{viewClinicDetailsManagedBean.staffToView.clinicEntity.address}" styleClass="text-input__input" />
 
+                <h:outputLabel for="consultationCost" value="CONSULTATION COST ($)" styleClass="text-input__label text-input__label--left"/>
+                <h:inputText id="consultationCost" value="#{viewClinicDetailsManagedBean.staffToView.clinicEntity.unitPrice}" styleClass="text-input__input" />
 
-                    <h:outputText style="font-weight: bold;" value="Clinic ID"/>
-                    <h:outputText value="#{viewClinicDetailsManagedBean.staffToView.clinicEntity.clinicId}"/>
-
-
-
-                    <h:outputText  style="font-weight: bold;" value="Clinic Name"/>
-                    <p:inputText id="txtClinicName" value="#{viewClinicDetailsManagedBean.staffToView.clinicEntity.clinicName}" required="true" requiredMessage="Clinic Name is required" readonly="#{viewClinicDetailsManagedBean.isDisabled}"/>
-
-
-                    <h:outputText style="font-weight: bold;" value="Clinic Description"/>
-                    <p:inputText id="txtDescription" value="#{viewClinicDetailsManagedBean.staffToView.clinicEntity.description}" required="true" requiredMessage="Clinic Description is required" readonly="#{viewClinicDetailsManagedBean.isDisabled}"/>
-
-
-
-                    <h:outputText style="font-weight: bold;" value="Clinic Address" />
-                    <p:inputText id="txtClinicAddress" value="#{viewClinicDetailsManagedBean.staffToView.clinicEntity.address}" required="true" requiredMessage="Clinic Address is required" readonly="#{viewClinicDetailsManagedBean.isDisabled}"/>
-
-                    <h:outputText style="font-weight: bold;" value="Clinic Consultation Cost" />
-                    <p:inputText id="txtClinicConsultationCost" value="#{viewClinicDetailsManagedBean.staffToView.clinicEntity.unitPrice}" required="true" requiredMessage="Clinic Consultation Cost is required" readonly="#{viewClinicDetailsManagedBean.isDisabled}"/>
-
-                    <h:outputText style="font-weight: bold;" value="Clinic Application Status"/>
-                    <h:outputText value="#{viewClinicDetailsManagedBean.staffToView.clinicEntity.applicationStatus}"/>
-                </p:panelGrid>
-                <br/>
-                <div >    
-                    <p:commandButton type="submit" update="@form formUser" value="#{viewClinicDetailsManagedBean.textValue}" rendered="#{viewClinicDetailsManagedBean.isDisabled == true}" action="#{viewClinicDetailsManagedBean.enableEdit}"/>
-                    <p:commandButton value="Clear" update="@form formUser" process="@this" action="#{viewClinicDetailsManagedBean.enableEdit()}" rendered="#{viewClinicDetailsManagedBean.isDisabled== false}"  style="margin-right:20px;" />&nbsp;
-
-
-                    <p:commandButton value="Update" update="@all" type="submit" action="#{viewClinicDetailsManagedBean.updateClinic}" rendered="#{viewClinicDetailsManagedBean.isDisabled == false}" />
-                </div>
-            </h:form>
-        </div>
+                <h:outputLabel for="applicationStatus" value="APPLICATION STATUS" styleClass="text-input__label text-input__label--left"/>
+                <h:inputText id="applicationStatus" value="#{viewClinicDetailsManagedBean.staffToView.clinicEntity.applicationStatus}" styleClass="text-input__input" readonly="true" />
+            </h:panelGrid>
+            <br/>
+            <h:commandButton value="UPDATE" actionListener="#{viewClinicDetailsManagedBean.updateClinic}" styleClass="button"/>
+        </h:form>
     </ui:define>
-
 </ui:composition>
