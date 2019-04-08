@@ -26,4 +26,6 @@ public interface PatientSessionBeanLocal {
 
     public PatientEntity retrievePatientByPatientId(Long patientId) throws PatientNotFoundException;
     
+    public PatientEntity createNewPatient(PatientEntity newPatient) throws InputDataValidationException;
+    
 }

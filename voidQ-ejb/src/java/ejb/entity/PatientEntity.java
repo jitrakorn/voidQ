@@ -5,10 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -31,23 +28,20 @@ public class PatientEntity extends UserEntity implements Serializable {
     @NotNull
     @Min(1)
     private Integer phoneNumber;
-     @OneToMany(mappedBy = "patientEntity")
+    @OneToMany(mappedBy = "patientEntity")
     private List<BookingEntity> bookingEntities;
-     
-     @ManyToOne
-    private ClinicEntity clinicEntity;
+
     public PatientEntity() {
         super();
-        bookingEntities= new ArrayList<>();
+        bookingEntities = new ArrayList<>();
 
     }
 
-    public PatientEntity(String username, String password, String firstName, String lastName, Integer phoneNumber,ClinicEntity clinicEntity) {
+    public PatientEntity(String username, String password, String firstName, String lastName, Integer phoneNumber) {
         super(username, password);
         this.firstName = firstName;
         this.lastName = lastName;
-        this.phoneNumber=phoneNumber;
-        this.clinicEntity=clinicEntity;
+        this.phoneNumber = phoneNumber;
     }
 
     @Override
@@ -94,7 +88,6 @@ public class PatientEntity extends UserEntity implements Serializable {
         this.lastName = lastName;
     }
 
-  
     public Integer getPhoneNumber() {
         return phoneNumber;
     }
@@ -110,13 +103,4 @@ public class PatientEntity extends UserEntity implements Serializable {
     public void setBookingEntities(List<BookingEntity> bookingEntities) {
         this.bookingEntities = bookingEntities;
     }
-
-    public ClinicEntity getClinicEntity() {
-        return clinicEntity;
-    }
-
-    public void setClinicEntity(ClinicEntity clinicEntity) {
-        this.clinicEntity = clinicEntity;
-    }
-
 }
