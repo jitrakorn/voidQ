@@ -33,6 +33,8 @@ public interface PartnerSessionBeanLocal {
     public List<ClinicEntity> retrieveAllPartners();
 
     public ClinicEntity retrievePartnerByPartnerId(Long clinicId) throws PartnerNotFoundException;
+    
+    public ClinicEntity getPartnerById(Long clinicId);
 
     public void updatePartner(ClinicEntity clinic) throws InputDataValidationException, PartnerNotFoundException, UpdatePartnerException;
 

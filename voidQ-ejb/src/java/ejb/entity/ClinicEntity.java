@@ -8,6 +8,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -54,10 +55,6 @@ public class ClinicEntity implements Serializable {
 
     @OneToMany
     private List<PatientEntity> patientEntities;
-
-    @Column(nullable = true, length = 32)
-    @Size(max = 32)
-    private String reason;
 
     public ClinicEntity() {
         bookingEntities = new ArrayList<>();
@@ -173,14 +170,6 @@ public class ClinicEntity implements Serializable {
 
     public void setApplicationStatus(ApplicationStatus applicationStatus) {
         this.applicationStatus = applicationStatus;
-    }
-
-    public String getReason() {
-        return reason;
-    }
-
-    public void setReason(String reason) {
-        this.reason = reason;
     }
 
     public List<PatientEntity> getPatientEntities() {

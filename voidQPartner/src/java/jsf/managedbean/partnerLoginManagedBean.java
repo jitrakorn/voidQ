@@ -23,13 +23,6 @@ public class partnerLoginManagedBean
 
     @EJB
     private PartnerSessionBeanLocal partnerSessionBeanLocal;
-
-
-
-   
-
-    
-    
     
     private String username;
     private String password;
@@ -39,8 +32,6 @@ public class partnerLoginManagedBean
     public partnerLoginManagedBean() 
     {
     }
-    
-    
     
     public void login(ActionEvent event) throws IOException
     {
@@ -58,16 +49,12 @@ public class partnerLoginManagedBean
         }
     }
     
-    
-    
     public void logout(ActionEvent event) throws IOException
     {
         ((HttpSession)FacesContext.getCurrentInstance().getExternalContext().getSession(true)).invalidate();
         FacesContext.getCurrentInstance().getExternalContext().redirect(FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath() + "/index.xhtml");
     }
 
-    
-    
     public String getUsername() {
         return username;
     }

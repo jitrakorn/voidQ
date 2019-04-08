@@ -42,41 +42,32 @@ public class BookingEntity implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     @Column(nullable = false)
     @NotNull
-    private Date transactionDateTime;  
-    
-    
-       @OneToOne
+    private Date transactionDateTime;
+
+    @OneToOne
     private TransactionEntity transactionEntity;
-       
-        @ManyToOne(optional = false)
+
+    @ManyToOne(optional = false)
     @JoinColumn(nullable = false)
     private ClinicEntity clinicEntity;
-     
-     @ManyToOne(optional = false)
-    @JoinColumn(nullable = false)
+
+    @ManyToOne(optional = true)
+    @JoinColumn(nullable = true)
     private StaffEntity staffEntity;
 
-      @ManyToOne(optional = false)
+    @ManyToOne(optional = false)
     @JoinColumn(nullable = false)
     private PatientEntity patientEntity;
 
-     
     public BookingEntity() {
     }
 
-    public BookingEntity(String status, Date transactionDateTime, TransactionEntity transactionEntity) {
+    public BookingEntity(String status, Date transactionDateTime, ClinicEntity clinicEntity, PatientEntity patientEntity) {
         this.status = status;
         this.transactionDateTime = transactionDateTime;
-        this.transactionEntity = transactionEntity;
+        this.clinicEntity = clinicEntity;
+        this.patientEntity = patientEntity;
     }
-
-  
-
-  
-    
-   
-    
-    
 
     public Long getBookingId() {
         return bookingId;
@@ -166,5 +157,5 @@ public class BookingEntity implements Serializable {
     public void setVisitReason(String visitReason) {
         this.visitReason = visitReason;
     }
-    
+
 }

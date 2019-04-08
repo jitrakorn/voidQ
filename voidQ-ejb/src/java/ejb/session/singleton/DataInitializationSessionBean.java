@@ -26,7 +26,7 @@ import util.exception.InputDataValidationException;
 public class DataInitializationSessionBean {
 
     @EJB
-    private PatientSessionBeanLocal patientSessionBean;
+    private PatientSessionBeanLocal patientSessionBeanLocal;
 
     @EJB(name = "AdministratorSessionBeanLocal")
     private AdministratorSessionBeanLocal administratorSessionBeanLocal;
@@ -82,11 +82,11 @@ public class DataInitializationSessionBean {
             partnerSessionBeanLocal.createNewStaff(new StaffEntity("Staff14@gmail.com", "password", "Staff", "Fourteen", "Nurse", "Available", partnerSessionBeanLocal.retrievePartnerByPartnerId(4L), 81728294));
             partnerSessionBeanLocal.createNewStaff(new StaffEntity("Staff15@gmail.com", "password", "Staff", "Fifteen", "Nurse", "Available", partnerSessionBeanLocal.retrievePartnerByPartnerId(5L), 88771190));
             
-            patientSessionBean.createNewPatient(new PatientEntity("Patient1@gmail.com", "password", "Patient", "One", 91833264));
-            patientSessionBean.createNewPatient(new PatientEntity("Patient2@gmail.com", "password", "Patient", "Two", 90987856));
-            patientSessionBean.createNewPatient(new PatientEntity("Patient3@gmail.com", "password", "Patient", "Three", 80123267));
-            patientSessionBean.createNewPatient(new PatientEntity("Patient4@gmail.com", "password", "Patient", "Four", 98745321));
-            patientSessionBean.createNewPatient(new PatientEntity("Patient5@gmail.com", "password", "Patient", "Five", 99182034));
+            patientSessionBeanLocal.createNewPatient(new PatientEntity("Patient1@gmail.com", "password", "Patient", "One", 91833264));
+            patientSessionBeanLocal.createNewPatient(new PatientEntity("Patient2@gmail.com", "password", "Patient", "Two", 90987856));
+            patientSessionBeanLocal.createNewPatient(new PatientEntity("Patient3@gmail.com", "password", "Patient", "Three", 80123267));
+            patientSessionBeanLocal.createNewPatient(new PatientEntity("Patient4@gmail.com", "password", "Patient", "Four", 98745321));
+            patientSessionBeanLocal.createNewPatient(new PatientEntity("Patient5@gmail.com", "password", "Patient", "Five", 99182034));
 //
 //            ClinicEntity ce = partnerSessionBeanLocal.createNewPartner(new ClinicEntity("mx clinic", "best clinic", "geylang hotel 81", new BigDecimal(100), ApplicationStatus.ACTIVATED));
 //            StaffEntity se = new StaffEntity("lovemx93@gmail.com", "password", "mx", "mx", "doctor", "not taken", ce, 96658673);

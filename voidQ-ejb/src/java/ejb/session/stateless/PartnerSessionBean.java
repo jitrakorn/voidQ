@@ -111,6 +111,11 @@ public class PartnerSessionBean implements PartnerSessionBeanLocal {
             throw new PartnerNotFoundException("Clinic ID " + clinicId + " does not exist!");
         }
     }
+    
+    @Override
+    public ClinicEntity getPartnerById(Long clinicId) {
+        return em.find(ClinicEntity.class, clinicId);
+    }
 
     @Override
     public List<ClinicEntity> retrieveUnApprovedApplications() {
