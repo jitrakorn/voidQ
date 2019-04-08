@@ -38,14 +38,14 @@ public class MessageOfTheDayEntity implements Serializable {
     @Column(nullable = true)
     @Temporal(TemporalType.DATE)
     private Date lastEditedMessageDate;
+    
     @OneToOne
     @JoinColumn
-    private StaffEntity lastEditedStaffEntity;
-    
+    private DoctorEntity lastEditedDoctorEntity;
     
     @ManyToOne(optional = false)
     @JoinColumn
-    private StaffEntity staffEntity;
+    private DoctorEntity doctorEntity;
 
     public MessageOfTheDayEntity() {
     }
@@ -54,7 +54,7 @@ public class MessageOfTheDayEntity implements Serializable {
         this.title = title;
         this.message = message;
         this.messageDate = messageDate;
-        this.staffEntity = staffEntity;
+        this.doctorEntity = doctorEntity;
     }
 
     public Long getMotdId() {
@@ -114,14 +114,6 @@ public class MessageOfTheDayEntity implements Serializable {
         this.messageDate = messageDate;
     }
 
-    public StaffEntity getStaffEntity() {
-        return staffEntity;
-    }
-
-    public void setStaffEntity(StaffEntity staffEntity) {
-        this.staffEntity = staffEntity;
-    }
-
     public Date getLastEditedMessageDate() {
         return lastEditedMessageDate;
     }
@@ -130,11 +122,19 @@ public class MessageOfTheDayEntity implements Serializable {
         this.lastEditedMessageDate = lastEditedMessageDate;
     }
 
-    public StaffEntity getLastEditedStaffEntity() {
-        return lastEditedStaffEntity;
+    public DoctorEntity getLastEditedDoctorEntity() {
+        return lastEditedDoctorEntity;
     }
 
-    public void setLastEditedStaffEntity(StaffEntity lastEditedStaffEntity) {
-        this.lastEditedStaffEntity = lastEditedStaffEntity;
+    public void setLastEditedDoctorEntity(DoctorEntity lastEditedDoctorEntity) {
+        this.lastEditedDoctorEntity = lastEditedDoctorEntity;
+    }
+
+    public DoctorEntity getDoctorEntity() {
+        return doctorEntity;
+    }
+
+    public void setDoctorEntity(DoctorEntity doctorEntity) {
+        this.doctorEntity = doctorEntity;
     }
 }

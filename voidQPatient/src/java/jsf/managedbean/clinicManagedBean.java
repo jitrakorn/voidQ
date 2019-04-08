@@ -18,6 +18,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
+import util.enumeration.BookingStatus;
 
 /**
  *
@@ -60,7 +61,7 @@ public class clinicManagedBean implements Serializable {
         System.out.println(newBooking.getClinicEntity().getClinicName());
 
         newBooking.setPatientEntity((PatientEntity)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("currentPatient"));
-        newBooking.setStatus("BOOKED");
+        newBooking.setStatus(BookingStatus.BOOKED);
         newBooking.setTransactionDateTime(new Date());
         
         newBooking = bookingSessionBeanLocal.createBooking(newBooking);

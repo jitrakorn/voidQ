@@ -1,15 +1,11 @@
 package jsf.managedbean;
 
+import ejb.entity.DoctorEntity;
 import ejb.entity.MessageOfTheDayEntity;
-import ejb.entity.StaffEntity;
 import ejb.session.stateless.MessageOfTheDayControllerLocal;
 import ejb.session.stateless.PartnerSessionBeanLocal;
 import java.io.IOException;
 import java.io.Serializable;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
@@ -58,9 +54,9 @@ public class editNewsDetailsManagedBean implements Serializable {
     }
 
      public void updateNews() {
-     StaffEntity staff =  (StaffEntity) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("currentPartner");
+     DoctorEntity doctor =  (DoctorEntity) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("currentPartner");
         try {
-            messageOfTheDayControllerLocal.updateNews(selectedMessageOfTheDayEntity,staff);
+            messageOfTheDayControllerLocal.updateNews(selectedMessageOfTheDayEntity, doctor);
            
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Announcement updated successfully", null));
             

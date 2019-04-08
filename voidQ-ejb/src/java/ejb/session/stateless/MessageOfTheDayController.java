@@ -5,8 +5,8 @@
  */
 package ejb.session.stateless;
 
+import ejb.entity.DoctorEntity;
 import ejb.entity.MessageOfTheDayEntity;
-import ejb.entity.StaffEntity;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -96,7 +96,7 @@ public class MessageOfTheDayController implements MessageOfTheDayControllerLocal
         return msg;
     }
   @Override
-    public void updateNews(MessageOfTheDayEntity msg,StaffEntity staff) throws InputDataValidationException, UpdateNewsException
+    public void updateNews(MessageOfTheDayEntity msg, DoctorEntity doctor) throws InputDataValidationException, UpdateNewsException
     {
         // Updated in v4.1 to update selective attributes instead of merging the entire state passed in from the client
         // Also check for existing staff before proceeding with the update
@@ -116,8 +116,8 @@ public class MessageOfTheDayController implements MessageOfTheDayControllerLocal
                    msgToUpdate.setMessage(msg.getMessage());
                    msgToUpdate.setTitle(msg.getTitle());
                    msgToUpdate.setLastEditedMessageDate(date);
-                   msgToUpdate.setLastEditedStaffEntity(staff);
-                   staff.setMessageOfTheDayEntity(msgToUpdate);
+                   msgToUpdate.setLastEditedDoctorEntity(doctor);
+                   doctor.setMessageOfTheDayEntity(msgToUpdate);
     
                 }
                 else

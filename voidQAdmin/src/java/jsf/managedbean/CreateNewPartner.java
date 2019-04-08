@@ -1,6 +1,7 @@
 package jsf.managedbean;
 
 import ejb.entity.ClinicEntity;
+import ejb.entity.DoctorEntity;
 import ejb.entity.StaffEntity;
 import ejb.helper.Geocoding;
 import ejb.session.stateless.PartnerSessionBeanLocal;
@@ -33,7 +34,7 @@ public class CreateNewPartner implements Serializable {
     private PartnerSessionBeanLocal partnerSessionBeanLocal;
     private String postalcode;
     private ClinicEntity newClinic;
-    private StaffEntity newStaff;
+    private DoctorEntity newDoctor;
     private boolean skip;
     private String company;
     private List<SelectItem> companies;
@@ -46,7 +47,7 @@ public class CreateNewPartner implements Serializable {
 
     public CreateNewPartner() {
         newClinic = new ClinicEntity();
-        newStaff = new StaffEntity();
+        newDoctor = new DoctorEntity();
     }
 
     @PostConstruct
@@ -127,7 +128,7 @@ public class CreateNewPartner implements Serializable {
         try {
             newClinic.setApplicationStatus(ApplicationStatus.ACTIVATED);
             ClinicEntity partner = partnerSessionBeanLocal.createNewPartner(newClinic);
-            partner.getStaffEntities().add(newStaff);
+            partner.getDoctorEntities().add(newDoctor);
             newClinic = new ClinicEntity();
 
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New Clinic created successfully (Clinic ID: " + partner.getClinicId() + ")", null));
@@ -161,13 +162,14 @@ public class CreateNewPartner implements Serializable {
         this.newClinic = newClinic;
     }
 
-    public StaffEntity getNewStaff() {
-        return newStaff;
+    public DoctorEntity getNewDoctor() {
+        return newDoctor;
     }
 
-    public void setNewStaff(StaffEntity newStaff) {
-        this.newStaff = newStaff;
+    public void setNewDoctor(DoctorEntity newDoctor) {
+        this.newDoctor = newDoctor;
     }
+
 
     public String getCompany() {
         return company;
