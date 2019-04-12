@@ -1,5 +1,7 @@
 package ws.restful;
 
+import datamodel.ws.rest.CreatePatientReq;
+import datamodel.ws.rest.CreatePatientRsp;
 import datamodel.ws.rest.ErrorRsp;
 import datamodel.ws.rest.PatientLoginRsp;
 import ejb.entity.PatientEntity;
@@ -14,11 +16,14 @@ import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.Produces;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
+import util.exception.CreateNewPatientException;
+import util.exception.InputDataValidationException;
 import util.exception.InvalidLoginCredentialException;
 
 
@@ -27,7 +32,7 @@ import util.exception.InvalidLoginCredentialException;
 public class PatientResource 
 {
 
-    PatientSessionBeanLocal patientSessionBean1 = lookupPatientSessionBeanLocal();
+   
 
     PatientSessionBeanLocal patientSessionBean = lookupPatientSessionBeanLocal();
     @Context
@@ -85,6 +90,51 @@ public class PatientResource
             return Response.status(Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
         }
     }
+    
+    
+    
+    
+     @PUT
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response createPatient(CreatePatientReq createPatientReq)
+          
+    {
+       
+        if(createPatientReq != null)
+        {
+             System.out.println("run");
+            try
+            {
+               
+                
+                PatientEntity patientEntity  = patientSessionBeanLocal.createNewPatient(createPatientReq.getPatientEntity());
+                CreatePatientRsp createPatientRsp = new CreatePatientRsp(patientEntity.getUserId());
+                
+                return Response.status(Response.Status.OK).entity(createPatientRsp).build();
+            }
+           
+            catch(InputDataValidationException ex)
+            {
+                ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
+                
+                return Response.status(Response.Status.BAD_REQUEST).entity(errorRsp).build();
+            }
+            catch(Exception ex)
+            {
+                ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
+
+                return Response.status(Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
+            }
+        }
+        else
+        {
+            ErrorRsp errorRsp = new ErrorRsp("Invalid create new patient request");
+            
+            return Response.status(Response.Status.BAD_REQUEST).entity(errorRsp).build();
+        }
+    }
+   
 
     private PatientSessionBeanLocal lookupPatientSessionBeanLocal() {
         try {

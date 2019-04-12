@@ -1,0 +1,12 @@
+{
+  "patientEntity": 
+    {
+      "email": "ogh@gg.com",
+      "password": "password",
+      "firstName": "xxx",
+      "lastName": "aaa",
+      "phoneNumber": "999"
+    }
+}
+
+localhost:8080/voidQRWS/Resources/Patient
