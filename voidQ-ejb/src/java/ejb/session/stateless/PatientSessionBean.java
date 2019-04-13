@@ -100,6 +100,7 @@ public class PatientSessionBean implements PatientSessionBeanLocal {
                 if (patientToUpdate.getEmail().equals(patient.getEmail())) {
                     patientToUpdate.setFirstName(patient.getFirstName());
                     patientToUpdate.setLastName(patient.getLastName());
+                    patientToUpdate.setPhoneNumber(patient.getPhoneNumber());
 
                 } else {
                     throw new UpdatePatientException("Username of patient record to be updated does not match the existing record");

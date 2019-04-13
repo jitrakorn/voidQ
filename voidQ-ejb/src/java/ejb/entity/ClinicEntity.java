@@ -58,14 +58,14 @@ public class ClinicEntity implements Serializable {
     @OneToMany(mappedBy = "clinicEntity")
     private List<BookingEntity> bookingEntities;
 
-    @OneToMany
-    private List<PatientEntity> patientEntities;
+//    @OneToMany
+//    private List<PatientEntity> patientEntities;
 
     public ClinicEntity() {
         bookingEntities = new ArrayList<>();
         doctorEntities = new ArrayList<>();
         nurseEntities = new ArrayList<>();
-        patientEntities = new ArrayList<>();
+       // patientEntities = new ArrayList<>();
     }
 
     // Just use this everytime
@@ -180,13 +180,13 @@ public class ClinicEntity implements Serializable {
         this.applicationStatus = applicationStatus;
     }
 
-    public List<PatientEntity> getPatientEntities() {
-        return patientEntities;
-    }
-
-    public void setPatientEntities(List<PatientEntity> patientEntities) {
-        this.patientEntities = patientEntities;
-    }
+//    public List<PatientEntity> getPatientEntities() {
+//        return patientEntities;
+//    }
+//
+//    public void setPatientEntities(List<PatientEntity> patientEntities) {
+//        this.patientEntities = patientEntities;
+//    }
 
     public String getPhoneNum() {
         return phoneNum;

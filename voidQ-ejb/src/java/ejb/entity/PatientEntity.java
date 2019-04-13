@@ -103,4 +103,7 @@ public class PatientEntity extends UserEntity implements Serializable {
     public void setBookingEntities(List<BookingEntity> bookingEntities) {
         this.bookingEntities = bookingEntities;
     }
+
+    
+
 }
