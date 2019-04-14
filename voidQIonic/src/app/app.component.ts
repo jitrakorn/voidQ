@@ -57,6 +57,11 @@ export class AppComponent
           title: 'Login',
           url: '/login',
           icon: 'lock'
+        },
+        {
+          title: 'New menu',
+          url: '/tabs',
+          icon: 'lock'
         }
       ];
     }
