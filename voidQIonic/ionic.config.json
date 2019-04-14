@@ -1,0 +1,7 @@
+{
+  "name": "voidQIonic",
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "angular"
+}
