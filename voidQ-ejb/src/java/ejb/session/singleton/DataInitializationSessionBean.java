@@ -1,14 +1,18 @@
 package ejb.session.singleton;
 
 import ejb.entity.AdminEntity;
+import ejb.entity.BookingEntity;
 import ejb.entity.ClinicEntity;
 import ejb.entity.DoctorEntity;
 import ejb.entity.PatientEntity;
 import ejb.entity.NurseEntity;
 import ejb.session.stateless.AdministratorSessionBeanLocal;
+import ejb.session.stateless.BookingSessionBeanLocal;
 import ejb.session.stateless.PartnerSessionBeanLocal;
 import ejb.session.stateless.PatientSessionBeanLocal;
 import java.math.BigDecimal;
+import java.util.Calendar;
+import java.util.Date;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.ejb.Singleton;
@@ -16,6 +20,7 @@ import javax.ejb.LocalBean;
 import javax.ejb.Startup;
 import util.enumeration.ApplicationStatus;
 import util.enumeration.Availability;
+import util.enumeration.BookingStatus;
 import util.exception.AdministratorNotFoundException;
 import util.exception.InputDataValidationException;
 
@@ -24,6 +29,9 @@ import util.exception.InputDataValidationException;
 @Startup
 
 public class DataInitializationSessionBean {
+
+    @EJB
+    private BookingSessionBeanLocal bookingSessionBean;
 
     @EJB
     private PatientSessionBeanLocal patientSessionBeanLocal;
@@ -86,6 +94,30 @@ public class DataInitializationSessionBean {
             patientSessionBeanLocal.createNewPatient(new PatientEntity("Patient3@gmail.com", "password", "Patient", "Three", 80123267));
             patientSessionBeanLocal.createNewPatient(new PatientEntity("Patient4@gmail.com", "password", "Patient", "Four", 98745321));
             patientSessionBeanLocal.createNewPatient(new PatientEntity("Patient5@gmail.com", "password", "Patient", "Five", 99182034));
+            patientSessionBeanLocal.createNewPatient(new PatientEntity("Patient6@gmail.com", "password", "Patient", "Six", 91833265));
+            patientSessionBeanLocal.createNewPatient(new PatientEntity("Patient7@gmail.com", "password", "Patient", "Seven", 90987856));
+            patientSessionBeanLocal.createNewPatient(new PatientEntity("Patient8@gmail.com", "password", "Patient", "Eight", 80123265));
+            patientSessionBeanLocal.createNewPatient(new PatientEntity("Patient9@gmail.com", "password", "Patient", "Nine", 98745325));
+            patientSessionBeanLocal.createNewPatient(new PatientEntity("Patient0@gmail.com", "password", "Patient", "Ten", 99182534));
+
+            bookingSessionBean.createBooking(new BookingEntity(BookingStatus.BOOKED, new Date(), partnerSessionBeanLocal.retrievePartnerByPartnerId(1L), patientSessionBeanLocal.retrievePatientByPatientId(1L), "Fever"));
+            bookingSessionBean.createBooking(new BookingEntity(BookingStatus.BOOKED, new Date(), partnerSessionBeanLocal.retrievePartnerByPartnerId(1L), patientSessionBeanLocal.retrievePatientByPatientId(2L), "Stomach Flu"));
+            bookingSessionBean.createBooking(new BookingEntity(BookingStatus.BOOKED, new Date(), partnerSessionBeanLocal.retrievePartnerByPartnerId(1L), patientSessionBeanLocal.retrievePatientByPatientId(3L), "Headache"));
+            bookingSessionBean.createBooking(new BookingEntity(BookingStatus.BOOKED, new Date(), partnerSessionBeanLocal.retrievePartnerByPartnerId(1L), patientSessionBeanLocal.retrievePatientByPatientId(4L), "Cramps"));
+            bookingSessionBean.createBooking(new BookingEntity(BookingStatus.BOOKED, new Date(), partnerSessionBeanLocal.retrievePartnerByPartnerId(1L), patientSessionBeanLocal.retrievePatientByPatientId(5L), "Suspected Influenza A"));
+
+            // Simulating past bookings
+            Calendar yesterday = Calendar.getInstance();
+            yesterday.add(Calendar.DATE, -1);
+            yesterday.set(Calendar.HOUR_OF_DAY, 0);
+            yesterday.set(Calendar.MINUTE, 0);
+            yesterday.set(Calendar.SECOND, 0);
+
+            bookingSessionBean.createBooking(new BookingEntity(BookingStatus.PAID, yesterday.getTime(), partnerSessionBeanLocal.retrievePartnerByPartnerId(1L), patientSessionBeanLocal.retrievePatientByPatientId(6L), "Fever"));
+            bookingSessionBean.createBooking(new BookingEntity(BookingStatus.PAID, yesterday.getTime(), partnerSessionBeanLocal.retrievePartnerByPartnerId(1L), patientSessionBeanLocal.retrievePatientByPatientId(7L), "Stomach Flu"));
+            bookingSessionBean.createBooking(new BookingEntity(BookingStatus.PAID, yesterday.getTime(), partnerSessionBeanLocal.retrievePartnerByPartnerId(1L), patientSessionBeanLocal.retrievePatientByPatientId(8L), "Headache"));
+            bookingSessionBean.createBooking(new BookingEntity(BookingStatus.PAID, yesterday.getTime(), partnerSessionBeanLocal.retrievePartnerByPartnerId(1L), patientSessionBeanLocal.retrievePatientByPatientId(9L), "Cramps"));
+            bookingSessionBean.createBooking(new BookingEntity(BookingStatus.PAID, yesterday.getTime(), partnerSessionBeanLocal.retrievePartnerByPartnerId(1L), patientSessionBeanLocal.retrievePatientByPatientId(10L), "Suspected Influenza A"));
 
         } catch (InputDataValidationException ex) {
             System.err.println("********** DataInitializationSessionBean.initializeData(): " + ex.getMessage());

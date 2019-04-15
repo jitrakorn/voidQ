@@ -5,7 +5,7 @@
                 template="/template/defaultTemplate.xhtml"
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:f="http://xmlns.jcp.org/jsf/core">
-    
+
     <ui:define name="content">
         <h:panelGroup rendered="#{sessionScope.isLogin == false}">
             <h:outputText value="LOG-IN" styleClass="title title--big"/>
@@ -35,20 +35,20 @@
                         <p:column headerText="Clinic Name">
                             <h:outputText value="#{c.clinicName}"/>
                         </p:column>
-                        
+
                         <p:column headerText="Consultation Cost">
                             <h:outputText value="#{c.unitPrice}"/>
                         </p:column>
                     </p:selectOneMenu>
-                    
+
                     <p:outputLabel for="visitReason" value="Reason for visit"/>
                     <p:inputTextarea id="visitReason" value="#{clinicManagedBean.newBooking.visitReason}" required="true" requiredMessage="Please enter a reason for visit"/>
                 </p:panelGrid>
-                <p:commandButton update="@form" type="submit" value="Book an appointment" actionListener="#{clinicManagedBean.patientCreateBooking}"/>
+                <p:commandButton type="submit" value="Book an appointment" actionListener="#{clinicManagedBean.patientCreateBooking}"/>
                 <p:growl autoUpdate="true"/>
             </h:form>
         </h:panelGroup>
-        
+
     </ui:define>
 
 </ui:composition>
