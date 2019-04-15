@@ -5,7 +5,6 @@ import datamodel.ws.rest.CreatePatientRsp;
 import datamodel.ws.rest.ErrorRsp;
 import datamodel.ws.rest.PatientLoginRsp;
 import datamodel.ws.rest.UpdatePatientReq;
-import ejb.entity.BookingEntity;
 import ejb.entity.PatientEntity;
 import ejb.session.stateless.PatientSessionBeanLocal;
 
@@ -25,7 +24,6 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
-import util.exception.CreateNewPatientException;
 import util.exception.InputDataValidationException;
 import util.exception.InvalidLoginCredentialException;
 import util.exception.PatientNotFoundException;
