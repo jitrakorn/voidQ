@@ -48,6 +48,9 @@ public class ClinicEntity implements Serializable {
     @Column(nullable = false)
     @NotNull
     private ApplicationStatus applicationStatus;
+    @Column(nullable = false, length = 128)
+    @Size(max = 128)
+    private String latlng;
     
     @OneToMany(mappedBy = "clinicEntity")
     private List<DoctorEntity> doctorEntities;
@@ -69,12 +72,13 @@ public class ClinicEntity implements Serializable {
     }
 
     // Just use this everytime
-    public ClinicEntity(String clinicName, String description, String address, String phoneNum, BigDecimal unitPrice, ApplicationStatus applicationStatus) {
+    public ClinicEntity(String clinicName, String description, String address, String phoneNum, BigDecimal unitPrice,String latlng, ApplicationStatus applicationStatus) {
         this.clinicName = clinicName;
         this.description = description;
         this.address = address;
         this.phoneNum= phoneNum;
         this.unitPrice = unitPrice;
+        this.latlng=latlng;
         this.applicationStatus = applicationStatus;
     }
     
@@ -194,5 +198,13 @@ public class ClinicEntity implements Serializable {
 
     public void setPhoneNum(String phoneNum) {
         this.phoneNum = phoneNum;
+    }
+
+    public String getLatlng() {
+        return latlng;
+    }
+
+    public void setLatlng(String latlng) {
+        this.latlng = latlng;
     }
 }
