@@ -39,7 +39,7 @@ export class HomePage implements OnInit
     this.loadMap();
   }
 
-	
+	 
 	constructor(public sessionService: SessionService,public toastCtrl: ToastController,
 		private platform: Platform,private clinicService: ClinicService)
 	{
