@@ -6,6 +6,7 @@
 package ejb.session.stateless;
 
 import ejb.entity.BookingEntity;
+import ejb.entity.ClinicEntity;
 import java.util.List;
 
 /**
@@ -20,4 +21,7 @@ public interface BookingSessionBeanLocal {
 
     public Integer getCurrentQueue(Long clinicId);
     
+    public BookingEntity updateBooking(BookingEntity bookingEntity);
+    
+    public List<BookingEntity> getClinicCurrentDayBookings(ClinicEntity selectedClinic);
 }

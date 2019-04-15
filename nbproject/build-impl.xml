@@ -236,8 +236,13 @@ exists or setup the property manually. For example like this:
         <copyfiles files="${reference.voidQ-ejb.dist-ear}" todir="${build.dir}//"/>
         <copyfiles files="${reference.voidQAdmin.dist-ear}" todir="${build.dir}//"/>
         <copyfiles files="${reference.voidQPartner.dist-ear}" todir="${build.dir}//"/>
+<<<<<<< HEAD
         <copyfiles files="${reference.voidQPatient.dist-ear}" todir="${build.dir}//"/>
         <copyfiles files="${reference.voidQRWS.dist-ear}" todir="${build.dir}//"/>
+=======
+        <copyfiles files="${reference.voidQRWS.dist-ear}" todir="${build.dir}//"/>
+        <copyfiles files="${reference.voidQPatient.dist-ear}" todir="${build.dir}//"/>
+>>>>>>> cd30f09985cd920e47360fc8cfc21d9de96f834d
     </target>
     <target name="post-compile">
         <!-- Empty placeholder for easier customization. -->

@@ -5,6 +5,7 @@
  */
 package ejb.session.stateless;
 
+import ejb.entity.BookingEntity;
 import ejb.entity.ClinicEntity;
 import ejb.entity.DoctorEntity;
 import ejb.entity.StaffEntity;
@@ -47,6 +48,12 @@ public interface PartnerSessionBeanLocal {
 
     public void updateStaff(StaffEntity staff) throws InputDataValidationException, PartnerNotFoundException, UpdatePartnerException;
 
-   public List<ClinicEntity> retrieveUnApprovedApplications() ;
+   public List<ClinicEntity> retrieveUnApprovedApplications();
+   
+   public Boolean hasAvailableDoctors(ClinicEntity currentClinic);
+   
+   public DoctorEntity appointAvailableDoctor(ClinicEntity currentClinic, BookingEntity booking);
+   
+   public DoctorEntity availDoctor(DoctorEntity appointedDoctor);
     
 }

@@ -1,0 +1,38 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./template/defaultTemplate.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:define name="content">
+        <h:form>
+            <p:growl autoUpdate="true"/>
+            <br/>
+            <p:dataTable id="bookingTable" value="#{viewQueueManagedBean.currentDayBookings}" var="booking">
+                <f:facet name="header">
+                    <h:outputText value="#{viewQueueManagedBean.currentBooking.clinicEntity.clinicName}'s Queue"/>
+                </f:facet>
+                <p:column headerText="Patient Name">
+                    <h:outputText value="#{booking.patientEntity.firstName} #{booking.patientEntity.lastName}"/>
+                </p:column>
+                <p:column headerText="Booking Status">
+                    <h:outputText value="#{booking.status}"/>
+                </p:column>
+                <p:column headerText="Booking Date">
+                    <h:outputText value="#{booking.transactionDateTime}"/>
+                </p:column>
+            </p:dataTable>
+            <br/>
+            <h:outputText value="You are currently at position #{viewQueueManagedBean.currentPatientCurrentPosition} in #{viewQueueManagedBean.currentBooking.clinicEntity.clinicName}'s queue."/>
+            <br/>
+            <h:outputText value="Check in at #{viewQueueManagedBean.currentBooking.clinicEntity.clinicName} now to get immediate treatment!" rendered="#{viewQueueManagedBean.currentPatientCurrentPosition == 1}"/>
+            <h:outputText value="Check in at #{viewQueueManagedBean.currentBooking.clinicEntity.clinicName} in another #{(viewQueueManagedBean.currentPatientCurrentPosition-1)*10} minutes to get immediate treatment!" rendered="#{viewQueueManagedBean.currentPatientCurrentPosition != 1}"/>
+            <br/>
+            <p:commandButton value="Check-In" actionListener="#{viewQueueManagedBean.checkin}" update="@form"/>
+            <p:commandButton value="Pay" actionListener="#{viewQueueManagedBean.pay}" update="@form"/>
+        </h:form>
+    </ui:define>
+
+</ui:composition>

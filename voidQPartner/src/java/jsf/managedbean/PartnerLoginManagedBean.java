@@ -39,6 +39,7 @@ public class PartnerLoginManagedBean {
             FacesContext.getCurrentInstance().getExternalContext().getSession(true);
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("isLogin", true);
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("currentPartner", currentPartner);
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("partnerClass", currentPartner.getClass());
             FacesContext.getCurrentInstance().getExternalContext().redirect(FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath() + "/index.xhtml");
         }
         catch(InvalidLoginCredentialException ex)

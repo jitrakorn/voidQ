@@ -5,6 +5,7 @@
  */
 package ejb.session.stateless;
 
+import ejb.entity.BookingEntity;
 import ejb.entity.ClinicEntity;
 import ejb.entity.DoctorEntity;
 import ejb.entity.StaffEntity;
@@ -22,6 +23,7 @@ import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 import util.enumeration.ApplicationStatus;
+import util.enumeration.Availability;
 import util.exception.DeletePartnerException;
 import util.exception.InputDataValidationException;
 import util.exception.InvalidLoginCredentialException;
@@ -84,11 +86,10 @@ public class PartnerSessionBean implements PartnerSessionBeanLocal {
         } catch (NoResultException | NonUniqueResultException ex) {
             Query query2 = em.createQuery("SELECT n FROM NurseEntity n WHERE n.email = :inEmail");
             query2.setParameter("inEmail", email);
-            
-            try{
+
+            try {
                 return (StaffEntity) query2.getSingleResult();
-            }
-            catch (NoResultException | NonUniqueResultException ex2) {
+            } catch (NoResultException | NonUniqueResultException ex2) {
                 throw new PartnerNotFoundException("Partner Email " + email + " does not exist!");
             }
         }
@@ -224,6 +225,49 @@ public class PartnerSessionBean implements PartnerSessionBeanLocal {
         }*/
         // have to check if partner is associated with something 
         em.remove(partner);
+    }
+
+    @Override
+    public Boolean hasAvailableDoctors(ClinicEntity currentClinic) {
+        List<DoctorEntity> doctors = em.createQuery("SELECT d FROM DoctorEntity d WHERE d.status = :status AND d.clinicEntity = :clinic")
+                .setParameter("status", Availability.AVAILABLE)
+                .setParameter("clinic", currentClinic)
+                .getResultList();
+
+        if (doctors.size() == 0) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    @Override
+    public DoctorEntity appointAvailableDoctor(ClinicEntity currentClinic, BookingEntity booking) {
+        List<DoctorEntity> doctors = em.createQuery("SELECT d FROM DoctorEntity d WHERE d.status = :status AND d.clinicEntity = :clinic")
+                .setParameter("status", Availability.AVAILABLE)
+                .setParameter("clinic", currentClinic)
+                .getResultList();
+        
+        DoctorEntity appointedDoctor = doctors.get(0);
+
+        booking.setDoctorEntity(appointedDoctor);
+        appointedDoctor.setStatus(Availability.BUSY);
+
+        em.merge(booking);
+        em.merge(currentClinic);
+        em.merge(appointedDoctor);
+        em.flush();
+
+        return appointedDoctor;
+    }
+    
+    @Override
+    public DoctorEntity availDoctor(DoctorEntity appointedDoctor) {
+        appointedDoctor.setStatus(Availability.AVAILABLE);
+        em.merge(appointedDoctor);
+        em.flush();
+        
+        return appointedDoctor;
     }
 
     private String prepareInputDataValidationErrorsMessage(Set<ConstraintViolation<ClinicEntity>> constraintViolations) {
