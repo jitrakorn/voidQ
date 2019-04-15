@@ -17,4 +17,10 @@
         <local>ejb.session.stateless.ClinicSessionBeanLocal</local>
         <ejb-link>voidQ-ejb.jar#ClinicSessionBean</ejb-link>
     </ejb-local-ref>
+    <ejb-local-ref>
+        <ejb-ref-name>BookingSessionBeanLocal</ejb-ref-name>
+        <ejb-ref-type>Session</ejb-ref-type>
+        <local>ejb.session.stateless.BookingSessionBeanLocal</local>
+        <ejb-link>voidQ-ejb.jar#BookingSessionBean</ejb-link>
+    </ejb-local-ref>
 </web-app>
