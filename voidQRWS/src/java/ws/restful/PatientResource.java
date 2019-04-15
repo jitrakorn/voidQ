@@ -4,14 +4,10 @@ import datamodel.ws.rest.CreatePatientReq;
 import datamodel.ws.rest.CreatePatientRsp;
 import datamodel.ws.rest.ErrorRsp;
 import datamodel.ws.rest.PatientLoginRsp;
-import datamodel.ws.rest.RetrieveAllActivatedClinicsRsp;
 import datamodel.ws.rest.UpdatePatientReq;
 
-import ejb.entity.ClinicEntity;
 import ejb.entity.PatientEntity;
-import ejb.session.stateless.ClinicSessionBeanLocal;
 import ejb.session.stateless.PatientSessionBeanLocal;
-import java.util.List;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;

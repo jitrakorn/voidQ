@@ -6,10 +6,6 @@
 package datamodel.ws.rest;
 
 import ejb.entity.PatientEntity;
-import javax.persistence.Column;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 /**
  *
@@ -52,9 +48,4 @@ public class CreateBookingReq {
     public void setPatientEntity(PatientEntity patientEntity) {
         this.patientEntity = patientEntity;
     }
-
-  
-
-    
-    
 }
