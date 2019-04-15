@@ -10,6 +10,7 @@ import ejb.entity.ClinicEntity;
 import ejb.entity.PatientEntity;
 import ejb.session.stateless.BookingSessionBeanLocal;
 import ejb.session.stateless.PartnerSessionBeanLocal;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -35,14 +36,14 @@ public class clinicManagedBean implements Serializable {
     private PartnerSessionBeanLocal partnerSessionBeanLocal;
 
     private BookingEntity newBooking;
-    
+
     /**
      * Creates a new instance of clinicManagedBean
      */
     public clinicManagedBean() {
         newBooking = new BookingEntity();
     }
-    
+
     public List<ClinicEntity> getAllClinics() {
         return partnerSessionBeanLocal.retrieveAllPartners();
     }
@@ -54,21 +55,19 @@ public class clinicManagedBean implements Serializable {
     public void setNewBooking(BookingEntity newBooking) {
         this.newBooking = newBooking;
     }
-    
-    public void patientCreateBooking() {
-        System.out.println("clinicManagedBean - createBooking:");
-        System.out.println(newBooking.getVisitReason());
-        System.out.println(newBooking.getClinicEntity().getClinicName());
 
-        newBooking.setPatientEntity((PatientEntity)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("currentPatient"));
+    public void patientCreateBooking() throws IOException {
+
+        newBooking.setPatientEntity((PatientEntity) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("currentPatient"));
         newBooking.setStatus(BookingStatus.BOOKED);
         newBooking.setTransactionDateTime(new Date());
-        
-        newBooking = bookingSessionBeanLocal.createBooking(newBooking);
-        
-        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("currentBooking", newBooking);
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Your booking with " + newBooking.getClinicEntity().getClinicName() + " is complete! Your current queue number is " + bookingSessionBeanLocal.getCurrentQueue(newBooking.getClinicEntity().getClinicId()), null));
 
+        newBooking = bookingSessionBeanLocal.createBooking(newBooking);
+
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("currentBooking", newBooking);
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Your booking with " + newBooking.getClinicEntity().getClinicName() + " is complete!", null));
         newBooking.setVisitReason("");
+
+        FacesContext.getCurrentInstance().getExternalContext().redirect(FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath() + "/viewQueue.xhtml");
     }
 }

@@ -12,8 +12,8 @@ package util.enumeration;
 public enum BookingStatus {
     BOOKED,
     CHECKED_IN,
+    VISITING,
     VISITED,
     PAID,
     NO_SHOW,
-    CANCELLED
 }

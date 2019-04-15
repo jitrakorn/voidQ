@@ -71,11 +71,12 @@ public class BookingEntity implements Serializable {
     public BookingEntity() {
     }
 
-    public BookingEntity(BookingStatus status, Date transactionDateTime, ClinicEntity clinicEntity, PatientEntity patientEntity) {
+    public BookingEntity(BookingStatus status, Date transactionDateTime, ClinicEntity clinicEntity, PatientEntity patientEntity, String visitReason) {
         this.status = status;
         this.transactionDateTime = transactionDateTime;
         this.clinicEntity = clinicEntity;
         this.patientEntity = patientEntity;
+        this.visitReason = visitReason;
     }
 
     public Long getBookingId() {
