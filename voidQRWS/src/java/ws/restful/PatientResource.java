@@ -6,11 +6,9 @@ import datamodel.ws.rest.ErrorRsp;
 import datamodel.ws.rest.PatientLoginRsp;
 import datamodel.ws.rest.RetrieveAllActivatedClinicsRsp;
 import datamodel.ws.rest.UpdatePatientReq;
-<<<<<<< HEAD
-=======
+
 import ejb.entity.BookingEntity;
 import ejb.entity.ClinicEntity;
->>>>>>> pam2
 import ejb.entity.PatientEntity;
 import ejb.session.stateless.ClinicSessionBeanLocal;
 import ejb.session.stateless.PatientSessionBeanLocal;
@@ -32,11 +30,6 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
-<<<<<<< HEAD
-=======
-import static util.enumeration.ApplicationStatus.ACTIVATED;
-import util.exception.CreateNewPatientException;
->>>>>>> pam2
 import util.exception.InputDataValidationException;
 import util.exception.InvalidLoginCredentialException;
 import util.exception.PatientNotFoundException;
