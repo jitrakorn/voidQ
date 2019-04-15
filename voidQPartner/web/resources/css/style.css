@@ -146,9 +146,7 @@ article {
 .header__user {
     align-items: center;
     display: flex;
-    height: 30px;
     justify-content: flex-end;
-    margin-right: 0;
     width: 250px;
 }
 
@@ -166,4 +164,11 @@ article {
 
 .footer__bar {
     height: 50px;
+}
+
+
+
+/* BOOKING */
+
+.calendar {
 }

@@ -19,13 +19,15 @@
                 <h:outputLink value="/voidQPartner/partner/bookingManagement.xhtml" styleClass="link">BOOKINGS</h:outputLink>
             </h:panelGrid>
 
-            <h:form id="logoutForm" styleClass="header__user">
-                <h:graphicImage value="/resources/images/user.png" styleClass="header__user__icon" />
-                <h:outputText value="#{sessionScope.currentPartner.firstName}" styleClass="header__user__text" />
-                &nbsp;
-                <h:commandButton styleClass="button" actionListener="#{partnerLoginManagedBean.logout}" value="LOGOUT"/>
-                
-            </h:form>
+            <h:panelGrid styleClass="header__user">
+                <h:form id="logoutForm">
+                    <h:graphicImage value="/resources/images/user.png" styleClass="header__user__icon" />
+                    <h:outputText value="#{sessionScope.currentPartner.firstName}" styleClass="header__user__text" />
+                    &nbsp;
+                    <h:commandButton styleClass="button" actionListener="#{partnerLoginManagedBean.logout}" value="LOGOUT"/>
+                </h:form>
+
+            </h:panelGrid>
         </h:panelGroup>
 
 

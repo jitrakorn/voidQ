@@ -20,7 +20,7 @@
                 </style>
 
 
-                    <p:panelGrid id="userPanel" columns="2" rendered="#{newsManagedBean.staffToUpdate.title== 'doctor'}">
+                   
 
 
                      <h:outputText value="Title *" />
@@ -30,7 +30,6 @@
                      <h:outputText value="Message *" />
                      <p:inputTextarea  rows="10" cols="50" value="#{newsManagedBean.messageOfTheDayEntity.message}" required="true" label="message"/>
                    
-                </p:panelGrid>
                 <br/>
                 <div >    
                      <p:commandButton value="Clear" update="@form formNews" process="@this" action="#{newsManagedBean.reset}"  style="margin-right:20px;" />
