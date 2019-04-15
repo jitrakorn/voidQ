@@ -47,4 +47,16 @@
         <local>ejb.session.stateless.PartnerSessionBeanLocal</local>
         <ejb-link>voidQ-ejb.jar#PartnerSessionBean</ejb-link>
     </ejb-local-ref>
+    <ejb-local-ref>
+        <ejb-ref-name>PartnerSessionBean1</ejb-ref-name>
+        <ejb-ref-type>Session</ejb-ref-type>
+        <local>ejb.session.stateless.PartnerSessionBeanLocal</local>
+        <ejb-link>voidQ-ejb.jar#PartnerSessionBean</ejb-link>
+    </ejb-local-ref>
+    <ejb-local-ref>
+        <ejb-ref-name>PatientSessionBean</ejb-ref-name>
+        <ejb-ref-type>Session</ejb-ref-type>
+        <local>ejb.session.stateless.PatientSessionBeanLocal</local>
+        <ejb-link>voidQ-ejb.jar#PatientSessionBean</ejb-link>
+    </ejb-local-ref>
 </web-app>
