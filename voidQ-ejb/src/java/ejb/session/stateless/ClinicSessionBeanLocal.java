@@ -5,6 +5,7 @@
  */
 package ejb.session.stateless;
 
+import ejb.entity.ClinicEntity;
 import ejb.entity.StaffEntity;
 import java.util.List;
 import javax.ejb.Local;
@@ -18,5 +19,7 @@ import util.exception.StaffEntityNotFoundException;
 public interface ClinicSessionBeanLocal {
 
     public List<StaffEntity> retrieveStaffByClinicId(Long clinicId) throws StaffEntityNotFoundException;
+
+    public List<ClinicEntity> retrieveALlActivatedClinics();
     
 }
