@@ -1,0 +1,30 @@
+PUT (Create Patient Record)
+
+{
+  "patientEntity": 
+    {
+      "email": "ogh@gg.com",
+      "password": "password",
+      "firstName": "xxx",
+      "lastName": "aaa",
+      "phoneNumber": "999"
+    }
+}
+
+localhost:8080/voidQRWS/Resources/Patient
+
+POST (Update Patient Details)
+{
+    "email": "xx@gg.com",
+    "password": "password",
+    "patientEntity": {
+        "userId": "6",
+        "email": "xx@gg.com",
+        "password": "password",
+        "firstName": "PAM",
+        "lastName": "mx",
+        "phoneNumber": "999"
+    }
+}
+
+http://localhost:8090/voidQRWS/Resources/Patient

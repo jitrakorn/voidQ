@@ -58,33 +58,27 @@ public class ClinicEntity implements Serializable {
     @OneToMany(mappedBy = "clinicEntity")
     private List<BookingEntity> bookingEntities;
 
-    @OneToMany
-    private List<PatientEntity> patientEntities;
+//    @OneToMany
+//    private List<PatientEntity> patientEntities;
 
     public ClinicEntity() {
         bookingEntities = new ArrayList<>();
         doctorEntities = new ArrayList<>();
         nurseEntities = new ArrayList<>();
-        patientEntities = new ArrayList<>();
+       // patientEntities = new ArrayList<>();
     }
 
     // Just use this everytime
-    public ClinicEntity(String clinicName, String description, String address, BigDecimal unitPrice, ApplicationStatus applicationStatus) {
+    public ClinicEntity(String clinicName, String description, String address, String phoneNum, BigDecimal unitPrice, ApplicationStatus applicationStatus) {
         this.clinicName = clinicName;
         this.description = description;
         this.address = address;
+        this.phoneNum= phoneNum;
         this.unitPrice = unitPrice;
         this.applicationStatus = applicationStatus;
     }
     
-    // Don't know what this is for...
-    public ClinicEntity(Long clinicId, String clinicName, String description, String address, BigDecimal unitPrice) {
-        this.clinicId = clinicId;
-        this.clinicName = clinicName;
-        this.description = description;
-        this.address = address;
-        this.unitPrice = unitPrice;
-    }
+ 
 
     public Long getClinicId() {
         return clinicId;
@@ -186,13 +180,13 @@ public class ClinicEntity implements Serializable {
         this.applicationStatus = applicationStatus;
     }
 
-    public List<PatientEntity> getPatientEntities() {
-        return patientEntities;
-    }
-
-    public void setPatientEntities(List<PatientEntity> patientEntities) {
-        this.patientEntities = patientEntities;
-    }
+//    public List<PatientEntity> getPatientEntities() {
+//        return patientEntities;
+//    }
+//
+//    public void setPatientEntities(List<PatientEntity> patientEntities) {
+//        this.patientEntities = patientEntities;
+//    }
 
     public String getPhoneNum() {
         return phoneNum;

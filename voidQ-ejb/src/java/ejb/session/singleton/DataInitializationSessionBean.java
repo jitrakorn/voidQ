@@ -53,11 +53,11 @@ public class DataInitializationSessionBean {
             administratorSessionBeanLocal.createNewAdmin(new AdminEntity("Jitrakorn", "Tan", "Jitrakorntan@gmail.com", "password", 81132795));
             administratorSessionBeanLocal.createNewAdmin(new AdminEntity("Pamela", "Teo", "Pamelameteo@gmail.com", "password", 98198418));
 
-            partnerSessionBeanLocal.createNewPartner(new ClinicEntity("Etern Medical Clinic", "General Medical Practioner", "70 Punggol Central, #01–05, Punggol Mrt Station, Singapore – 828868", new BigDecimal(10), ApplicationStatus.ACTIVATED));
-            partnerSessionBeanLocal.createNewPartner(new ClinicEntity("Healthmark Medical Clinic", "General Medical Practioner", "639 Punggol Drive, #01–06, Singapore – 820639", new BigDecimal(20), ApplicationStatus.ACTIVATED));
-            partnerSessionBeanLocal.createNewPartner(new ClinicEntity("Healthway Medical Clinic", "General Medical Practioner", "273c Punggol Place, #01–874, Singapore – 823273", new BigDecimal(30), ApplicationStatus.ACTIVATED));
-            partnerSessionBeanLocal.createNewPartner(new ClinicEntity("Mutual Healthcare Medical Clinic (Punggol)", "General Medical Practioner", "106A Punggol Field, #01–546, Singapore – 821106", new BigDecimal(40), ApplicationStatus.ACTIVATED));
-            partnerSessionBeanLocal.createNewPartner(new ClinicEntity("My Family Clinic (Punggol Central)", "General Medical Practioner", "301 Punggol Central, #01–02, Singapore – 820301", new BigDecimal(50), ApplicationStatus.ACTIVATED));
+            partnerSessionBeanLocal.createNewPartner(new ClinicEntity("Etern Medical Clinic", "General Medical Practioner", "70 Punggol Central, #01–05, Punggol Mrt Station, Singapore – 828868","999", new BigDecimal(10), ApplicationStatus.ACTIVATED));
+            partnerSessionBeanLocal.createNewPartner(new ClinicEntity("Healthmark Medical Clinic", "General Medical Practioner", "639 Punggol Drive, #01–06, Singapore – 820639", "999", new BigDecimal(20), ApplicationStatus.ACTIVATED));
+            partnerSessionBeanLocal.createNewPartner(new ClinicEntity("Healthway Medical Clinic", "General Medical Practioner", "273c Punggol Place, #01–874, Singapore – 823273","999", new BigDecimal(30), ApplicationStatus.ACTIVATED));
+            partnerSessionBeanLocal.createNewPartner(new ClinicEntity("Mutual Healthcare Medical Clinic (Punggol)", "General Medical Practioner", "106A Punggol Field, #01–546, Singapore – 821106", "999", new BigDecimal(40), ApplicationStatus.ACTIVATED));
+            partnerSessionBeanLocal.createNewPartner(new ClinicEntity("My Family Clinic (Punggol Central)", "General Medical Practioner", "301 Punggol Central, #01–02, Singapore – 820301", "999", new BigDecimal(50), ApplicationStatus.ACTIVATED));
 
             partnerSessionBeanLocal.createNewStaff(new DoctorEntity("Doctor1A@gmail.com", "password", "Doctor", "OneA", partnerSessionBeanLocal.retrievePartnerByPartnerId(1L), Availability.AVAILABLE));
             partnerSessionBeanLocal.createNewStaff(new DoctorEntity("Doctor1B@gmail.com", "password", "Doctor", "OneB", partnerSessionBeanLocal.retrievePartnerByPartnerId(1L), Availability.AVAILABLE));
