@@ -73,4 +73,9 @@ public class BookingSessionBean implements BookingSessionBeanLocal {
         em.flush();
         return bookingEntity;
     }
+    
+    @Override
+    public BookingEntity getBookingById(Long bookingId) {
+        return em.find(BookingEntity.class, bookingId);   
+    }
 }
