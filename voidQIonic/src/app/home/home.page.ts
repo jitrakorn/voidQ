@@ -32,7 +32,7 @@ export class HomePage implements OnInit
     // Since ngOnInit() is executed before `deviceready` event,
 		// you have to wait the event.
 		
-
+	
 
 
     this.platform.ready();
@@ -67,42 +67,66 @@ export class HomePage implements OnInit
 			response => {
 				this.clinics = response.clinicEntities;
 				console.log(this.clinics);
+
+				var clinicLocations = 
+				{
+						"lat": response.clinicEntities.lat,
+						"lng": response.clinicEntities.lng
+					
+				};
+
+				
+
+
 			},
 			error => {
 				console.log('********** homepage.ts: ' + error);
 			}
 		);
 
-	
-		// Get the location of you
-		this.map.getMyLocation().then((location: MyLocation) => {
-		  console.log(JSON.stringify(location, null ,2));
-	
-		  // Move the map camera to the location with animation
-		  this.map.animateCamera({
-			target: location.latLng,
-			zoom: 14,
-			duration: 1000
-		  });
-	
-		  //add a marker
-		  let marker: Marker = this.map.addMarkerSync({
-			title: 'HealthWay Clinic!',
+
+	// Get the location of you
+	this.map.getMyLocation().then((location: MyLocation) => {
+		console.log(JSON.stringify(location, null ,2));
+
+		// Move the map camera to the location with animation
+		this.map.animateCamera({
+		target: location.latLng,
+		zoom: 14,
+		duration: 1000
+		});
+		
+		this.clinicService.retrieveClinics().subscribe(
+			response => {
+				this.clinics = response.clinicEntities;
+				console.log(this.clinics);
+
+				var clinicLocations = 
+				{
+						"lat": response.clinicEntities.lat,
+						"lng": response.clinicEntities.lng
+					
+				};
+					//add a marker
+		let marker: Marker = this.map.addMarkerSync({
+			title:  response.clinicEntities.clinicName,
 			snippet: '3km away',
-			position: location.latLng,
+			position: clinicLocations,
 			animation: GoogleMapsAnimation.DROP
-		  });
-	
-			this.map.
-		  //show the infoWindow
-		  marker.showInfoWindow();
+			});
 	
 		
-		  this.map.on(GoogleMapsEvent.MAP_READY).subscribe(
-			(data) => {
-				console.log("Click MAP",data);
+			//show the infoWindow
+			marker.showInfoWindow();
+		
+
+			},
+			error => {
+				console.log('********** homepage.ts: ' + error);
 			}
-		  );
+		);
+			
+
 		})
 		.catch(err => {
 		  //this.loading.dismiss();
@@ -110,14 +134,84 @@ export class HomePage implements OnInit
 		});
 	  }
 	
-	  async showToast(message: string) {
-		let toast = await this.toastCtrl.create({
-		  message: message,
-		  duration: 2000,
-		  position: 'middle'
-		});
-		toast.present();
-	  }
+	
+		async showToast(message: string) {
+			let toast = await this.toastCtrl.create({
+				message: message,
+				duration: 2000,
+				position: 'middle'
+			});
+			toast.present();
+			}
+
+
+
+		
+
+			// goToMyLocation(){
+			// 	this.map.clear();
+		
+		
+			// 	this.clinicService.retrieveClinics().subscribe(
+			// 		response => {
+			// 			this.clinics = response.clinicEntities;
+			// 			console.log(this.clinics);
+			// 		},
+			// 		error => {
+			// 			console.log('********** homepage.ts: ' + error);
+			// 		}
+			// 	);
+		
+			
+			// 	// Get the location of you
+			// 	this.map.getMyLocation().then((location: MyLocation) => {
+			// 		console.log(JSON.stringify(location, null ,2));
+			
+			// 		// Move the map camera to the location with animation
+			// 		this.map.animateCamera({
+			// 		target: location.latLng,
+			// 		zoom: 14,
+			// 		duration: 1000
+			// 		});
+			
+			// 		//add a marker
+			// 		let marker: Marker = this.map.addMarkerSync({
+			// 		title: 'HealthWay Clinic!',
+			// 		snippet: '3km away',
+			// 		position: location.latLng,
+			// 		animation: GoogleMapsAnimation.DROP
+			// 		});
+			
+			// 		this.map.
+			// 		//show the infoWindow
+			// 		marker.showInfoWindow();
+			
+				
+			// 		this.map.on(GoogleMapsEvent.MAP_READY).subscribe(
+			// 		(data) => {
+			// 			console.log("Click MAP",data);
+			// 		}
+			// 		);
+			// 	})
+			// 	.catch(err => {
+			// 		//this.loading.dismiss();
+			// 		this.showToast(err.error_message);
+			// 	});
+			// 	}
+			
+			// 	async showToast(message: string) {
+			// 	let toast = await this.toastCtrl.create({
+			// 		message: message,
+			// 		duration: 2000,
+			// 		position: 'middle'
+			// 	});
+			// 	toast.present();
+			// 	}
+			
+	
+
+	
+	 
 	
 	}
 	

@@ -1,4 +1,4 @@
 export class ApplicationStatus {
-    ACTIVATED,
+    ACTIVATED
     NOTACTIVATED
 }
