@@ -7,7 +7,6 @@ import datamodel.ws.rest.PatientLoginRsp;
 import datamodel.ws.rest.RetrieveAllActivatedClinicsRsp;
 import datamodel.ws.rest.UpdatePatientReq;
 
-import ejb.entity.BookingEntity;
 import ejb.entity.ClinicEntity;
 import ejb.entity.PatientEntity;
 import ejb.session.stateless.ClinicSessionBeanLocal;
