@@ -1,17 +1,14 @@
 package ws.restful;
 
-import datamodel.ws.rest.CreatePatientReq;
-import datamodel.ws.rest.CreatePatientRsp;
 import datamodel.ws.rest.ErrorRsp;
-import datamodel.ws.rest.PatientLoginRsp;
 import datamodel.ws.rest.RetrieveAllActivatedClinicsRsp;
-import datamodel.ws.rest.UpdatePatientReq;
-
 import ejb.entity.BookingEntity;
 import ejb.entity.ClinicEntity;
-import ejb.entity.PatientEntity;
+import ejb.entity.DoctorEntity;
+import ejb.entity.NurseEntity;
+import ejb.session.stateless.BookingSessionBeanLocal;
 import ejb.session.stateless.ClinicSessionBeanLocal;
-import ejb.session.stateless.PatientSessionBeanLocal;
+import ejb.session.stateless.PartnerSessionBeanLocal;
 import java.util.List;
 
 import java.util.logging.Level;
@@ -23,75 +20,49 @@ import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.Produces;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
-import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
-import util.exception.InputDataValidationException;
-import util.exception.InvalidLoginCredentialException;
-import util.exception.PatientNotFoundException;
-import util.exception.UpdatePatientException;
 
 @Path("Clinic")
 public class ClinicResource {
 
     ClinicSessionBeanLocal clinicSessionBean = lookupClinicSessionBeanLocal();
 
-   
-    
     @Context
     private UriInfo context;
 
-    
     private final ClinicSessionBeanLocal clinicSessionBeanLocal;
 
     public ClinicResource() {
-       
+
         clinicSessionBeanLocal = lookupClinicSessionBeanLocal();
     }
 
-   
     @Path("retrieveAllActivatedClinics")
     @GET
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response retrieveAllClinics()
-    {
-        try
-        {
-               
-//            PatientEntity patientEntity = patientSessionBeanLocal.patientLogin(username, password);
-//            System.out.println("********** PatientResource.retrieveAllClinics(): Patient " + patientEntity.getFirstName()+ " login remotely via web service");
-
+    public Response retrieveAllClinics() {
+        try {
             List<ClinicEntity> clinicEntities = clinicSessionBeanLocal.retrieveAllActivatedClinics();
-             System.out.println("******ran retrieveAllActivatedClinic****");
-            for(ClinicEntity clinicEntity:clinicEntities)
-            {
-//                if(clinicEntity.getApplicationStatus() == ACTIVATED)
-//                {
-                    clinicEntity.getBookingEntities().clear();
-                    clinicEntity.getDoctorEntities().clear();
-                    clinicEntity.getNurseEntities().clear();
-                    clinicEntity.getApplicationStatus();
-                //}
-                
+            System.out.println("****** ran retrieveAllActivatedClinic****");
+            for (ClinicEntity clinicEntity : clinicEntities) {
+                // Unable to set the opposite side to null instead due to the one-to-many relationship foreign key
+                clinicEntity.getBookingEntities().clear();
+                clinicEntity.getDoctorEntities().clear();
+                clinicEntity.getNurseEntities().clear();
             }
-            
+
             return Response.status(Status.OK).entity(new RetrieveAllActivatedClinicsRsp(clinicEntities)).build();
-        }
-        catch(Exception ex)
-        {
+        } catch (Exception ex) {
             System.out.println("*****ERROR LA****");
             ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
-            
+
             return Response.status(Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
         }
     }
-
-   
 
     private ClinicSessionBeanLocal lookupClinicSessionBeanLocal() {
         try {
@@ -102,7 +73,4 @@ public class ClinicResource {
             throw new RuntimeException(ne);
         }
     }
-    
-    
-
 }

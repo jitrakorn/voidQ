@@ -4,15 +4,10 @@ import datamodel.ws.rest.CreatePatientReq;
 import datamodel.ws.rest.CreatePatientRsp;
 import datamodel.ws.rest.ErrorRsp;
 import datamodel.ws.rest.PatientLoginRsp;
-import datamodel.ws.rest.RetrieveAllActivatedClinicsRsp;
 import datamodel.ws.rest.UpdatePatientReq;
 
-import ejb.entity.BookingEntity;
-import ejb.entity.ClinicEntity;
 import ejb.entity.PatientEntity;
-import ejb.session.stateless.ClinicSessionBeanLocal;
 import ejb.session.stateless.PatientSessionBeanLocal;
-import java.util.List;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -122,19 +117,13 @@ public class PatientResource {
         if (updatePatientReq != null) {
             try {
                 System.out.println("**********  " );
+                PatientEntity patient = patientSessionBean.retrievePatientByEmail(updatePatientReq.getEmail());
                 
-                PatientEntity patientEntity = patientSessionBeanLocal.patientLogin(updatePatientReq.getEmail(), updatePatientReq.getPassword());
-                
-                System.out.println("********** PatientResource.updatePatientDetails(): Patient " + patientEntity.getFirstName() + " login remotely via web service");
                 patientSessionBeanLocal.updatePatient(updatePatientReq.getPatientEntity());
 
                 return Response.status(Response.Status.OK).build();
 
-            } catch (InvalidLoginCredentialException ex) {
-                ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
-
-                return Response.status(Status.UNAUTHORIZED).entity(errorRsp).build();
-            } catch (InputDataValidationException ex) {
+            }  catch (InputDataValidationException ex) {
                 ErrorRsp errorRsp = new ErrorRsp("Invalid data vaidation exception");
 
                 return Response.status(Response.Status.BAD_REQUEST).entity(errorRsp).build();

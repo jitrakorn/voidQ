@@ -5,7 +5,6 @@
  */
 package ejb.session.stateless;
 
-import ejb.entity.AdminEntity;
 import ejb.entity.ClinicEntity;
 import ejb.entity.StaffEntity;
 import java.util.List;
@@ -22,7 +21,6 @@ import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 import util.enumeration.ApplicationStatus;
-import util.exception.AdministratorNotFoundException;
 import util.exception.StaffEntityNotFoundException;
 
 /**

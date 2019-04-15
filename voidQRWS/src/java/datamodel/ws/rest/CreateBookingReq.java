@@ -6,10 +6,6 @@
 package datamodel.ws.rest;
 
 import ejb.entity.PatientEntity;
-import javax.persistence.Column;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 /**
  *
@@ -17,16 +13,16 @@ import javax.validation.constraints.Size;
  */
 public class CreateBookingReq {
     private String email;
-    private String password;
-    private PatientEntity patientEntity;
+    private String visitReason;
+    private String clinicId;
 
     public CreateBookingReq() {
     }
 
-    public CreateBookingReq(String email, String password, PatientEntity patientEntity) {
+    public CreateBookingReq(String email, String visitReason, String clinicId) {
         this.email = email;
-        this.password = password;
-        this.patientEntity = patientEntity;
+        this.visitReason = visitReason;
+        this.clinicId = clinicId;
     }
 
     public String getEmail() {
@@ -37,24 +33,20 @@ public class CreateBookingReq {
         this.email = email;
     }
 
-    public String getPassword() {
-        return password;
+    public String getVisitReason() {
+        return visitReason;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setVisitReason(String visitReason) {
+        this.visitReason = visitReason;
     }
 
-    public PatientEntity getPatientEntity() {
-        return patientEntity;
+    public String getClinicId() {
+        return clinicId;
     }
 
-    public void setPatientEntity(PatientEntity patientEntity) {
-        this.patientEntity = patientEntity;
+    public void setClinicId(String clinicId) {
+        this.clinicId = clinicId;
     }
-
-  
-
-    
     
 }
