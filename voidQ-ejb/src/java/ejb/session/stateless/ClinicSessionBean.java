@@ -21,6 +21,7 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
+import util.enumeration.ApplicationStatus;
 import util.exception.AdministratorNotFoundException;
 import util.exception.StaffEntityNotFoundException;
 
@@ -54,6 +55,26 @@ public class ClinicSessionBean implements ClinicSessionBeanLocal {
             throw new StaffEntityNotFoundException("List of doctors from clinic Id" + clinicId + " does not exist!"); //weird
         }
     }
+    
+    @Override
+    public List<ClinicEntity> retrieveALlActivatedClinics () {
+        Query query = em.createQuery("SELECT c FROM ClinicEntity c WHERE c.applicationStatus = :status ORDER BY c.clinicName ASC")
+                .setParameter("status", ApplicationStatus.ACTIVATED);
+
+// Query query = em.createQuery("SELECT c FROM ClinicEntity c ORDER BY c.clinicName ASC");
+        List<ClinicEntity> clinicEntities = query.getResultList();
+        
+        for(ClinicEntity ce:clinicEntities)
+        {
+            ce.getBookingEntities().size();
+            ce.getDoctorEntities().size();
+            ce.getNurseEntities().size();
+            ce.getApplicationStatus();
+        }
+        
+        return clinicEntities;
+    }
+    
 
     private String prepareInputDataValidationErrorsMessage(Set<ConstraintViolation<ClinicEntity>> constraintViolations) {
         String msg = "Input data validation error!:";
