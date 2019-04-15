@@ -57,7 +57,7 @@ public class ClinicSessionBean implements ClinicSessionBeanLocal {
     }
     
     @Override
-    public List<ClinicEntity> retrieveALlActivatedClinics () {
+    public List<ClinicEntity> retrieveAllActivatedClinics () {
         Query query = em.createQuery("SELECT c FROM ClinicEntity c WHERE c.applicationStatus = :status ORDER BY c.clinicName ASC")
                 .setParameter("status", ApplicationStatus.ACTIVATED);
 

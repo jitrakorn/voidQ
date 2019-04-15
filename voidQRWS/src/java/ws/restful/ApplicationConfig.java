@@ -21,6 +21,7 @@ public class ApplicationConfig extends Application
     
     private void addRestResourceClasses(Set<Class<?>> resources) 
     {
+        resources.add(ws.restful.ClinicResource.class);
         resources.add(ws.restful.PatientResource.class);
        
     }    
