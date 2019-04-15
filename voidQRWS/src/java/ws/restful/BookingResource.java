@@ -1,10 +1,12 @@
 package ws.restful;
 
+import datamodel.ws.rest.CheckInReq;
 import datamodel.ws.rest.CreateBookingReq;
 import datamodel.ws.rest.ErrorRsp;
 import datamodel.ws.rest.GetAllBookingsByClinicRsp;
 import ejb.entity.BookingEntity;
 import ejb.entity.ClinicEntity;
+import ejb.entity.DoctorEntity;
 import ejb.entity.PatientEntity;
 import ejb.session.stateless.BookingSessionBeanLocal;
 import ejb.session.stateless.PartnerSessionBeanLocal;
@@ -14,11 +16,14 @@ import java.util.List;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.Path;
@@ -28,7 +33,6 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import util.enumeration.BookingStatus;
-import util.exception.InvalidLoginCredentialException;
 import util.exception.PatientNotFoundException;
 
 @Path("Booking")
@@ -92,6 +96,29 @@ public class BookingResource {
                 return Response.status(Status.NOT_FOUND).entity(errorRsp).build();
             }
         } 
+        else {
+            ErrorRsp errorRsp = new ErrorRsp("Invalid create new booking");
+
+            return Response.status(Response.Status.BAD_REQUEST).entity(errorRsp).build(); 
+        }
+    }
+    
+    @Path("checkIn")
+    @PUT
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)    
+    public Response checkin(CheckInReq checkInReq) {
+        if (checkInReq != null) {
+            BookingEntity currentBooking = bookingSessionBean.getBookingById(Long.parseLong(checkInReq.getBookingId()));
+            
+            if (partnerSessionBean.hasAvailableDoctors(currentBooking.getClinicEntity())) {
+                currentBooking.setStatus(BookingStatus.VISITING);
+                partnerSessionBean.appointAvailableDoctor(currentBooking.getClinicEntity(), currentBooking);
+            }
+
+            bookingSessionBean.updateBooking(currentBooking);
+            return Response.status(Status.OK).build();
+        }
         else {
             ErrorRsp errorRsp = new ErrorRsp("Invalid create new booking");
 

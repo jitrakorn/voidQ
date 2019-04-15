@@ -24,4 +24,6 @@ public interface BookingSessionBeanLocal {
     public BookingEntity updateBooking(BookingEntity bookingEntity);
     
     public List<BookingEntity> getClinicCurrentDayBookings(ClinicEntity selectedClinic);
+    
+    public BookingEntity getBookingById(Long bookingId);
 }
