@@ -20,6 +20,6 @@ public interface ClinicSessionBeanLocal {
 
     public List<StaffEntity> retrieveStaffByClinicId(Long clinicId) throws StaffEntityNotFoundException;
 
-    public List<ClinicEntity> retrieveALlActivatedClinics();
+    public List<ClinicEntity> retrieveAllActivatedClinics();
     
 }
