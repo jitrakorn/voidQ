@@ -1,4 +1,3 @@
-
 import { Component, OnInit } from '@angular/core';
 import {
   ToastController,
@@ -11,9 +10,11 @@ import {
   Marker,
   GoogleMapsAnimation,
   MyLocation
-} from '@ionic-native/google-maps';
+} from '@ionic-native/google-maps/';
 
+import { ClinicService } from '../clinic.service';
 import { SessionService } from '../session.service';
+import { Clinic } from '../clinic';
 
 @Component({
   selector: 'app-home',
@@ -23,27 +24,27 @@ import { SessionService } from '../session.service';
 
 export class HomePage implements OnInit
 {
+	clinics: Clinic[];
+  
 	map: GoogleMap;
 	loading: any;
-	
-	
-	async ngOnInit() {
+  async ngOnInit() {
     // Since ngOnInit() is executed before `deviceready` event,
-    // you have to wait the event.
+		// you have to wait the event.
+		
+
+
+
     this.platform.ready();
     this.loadMap();
   }
-	
-	constructor(public sessionService: SessionService,public toastCtrl: ToastController,
-		private platform: Platform)
-	{
-	}
 
 	
-	
-	
-	
-	loadMap() {
+	constructor(public sessionService: SessionService,public toastCtrl: ToastController,
+		private platform: Platform,private clinicService: ClinicService)
+	{
+	}
+  loadMap() {
 		this.map = GoogleMaps.create('map_canvas', {
 		  // camera: {
 		  //   target: {
@@ -60,6 +61,18 @@ export class HomePage implements OnInit
 	
 	  goToMyLocation(){
 		this.map.clear();
+
+
+		this.clinicService.retrieveClinics().subscribe(
+			response => {
+				this.clinics = response.clinicEntities;
+				console.log(this.clinics);
+			},
+			error => {
+				console.log('********** homepage.ts: ' + error);
+			}
+		);
+
 	
 		// Get the location of you
 		this.map.getMyLocation().then((location: MyLocation) => {
@@ -68,8 +81,8 @@ export class HomePage implements OnInit
 		  // Move the map camera to the location with animation
 		  this.map.animateCamera({
 			target: location.latLng,
-			zoom: 17,
-			duration: 5000
+			zoom: 14,
+			duration: 1000
 		  });
 	
 		  //add a marker
@@ -77,17 +90,14 @@ export class HomePage implements OnInit
 			title: 'HealthWay Clinic!',
 			snippet: '3km away',
 			position: location.latLng,
-			animation: GoogleMapsAnimation.BOUNCE
+			animation: GoogleMapsAnimation.DROP
 		  });
 	
+			this.map.
 		  //show the infoWindow
 		  marker.showInfoWindow();
 	
-		  //If clicked it, display the alert
-		  marker.on(GoogleMapsEvent.MARKER_CLICK).subscribe(() => {
-			this.showToast('clicked!');
-		  });
-	
+		
 		  this.map.on(GoogleMapsEvent.MAP_READY).subscribe(
 			(data) => {
 				console.log("Click MAP",data);
@@ -111,8 +121,3 @@ export class HomePage implements OnInit
 	
 	}
 	
-	 
-
-	
-
-

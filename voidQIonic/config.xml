@@ -82,7 +82,8 @@
     <plugin name="cordova-plugin-splashscreen" spec="5.0.2" />
     <plugin name="cordova-plugin-ionic-webview" spec="^3.0.0" />
     <plugin name="cordova-plugin-ionic-keyboard" spec="^2.0.5" />
-    <plugin name="cordova-plugin-googlemaps" spec="https://github.com/mapsplugin/cordova-plugin-googlemaps">
+    <plugin name="com.paypal.cordova.mobilesdk" spec="3.5.0" />
+    <plugin name="cordova-plugin-googlemaps" spec="https://github.com/mapsplugin/cordova-plugin-googlemaps#multiple_maps">
         <variable name="API_KEY_FOR_ANDROID" value="AIzaSyBzvYLqwGw52vbHGWqZw2sCOtzAoZ4fxc0" />
         <variable name="API_KEY_FOR_IOS" value="AIzaSyBzvYLqwGw52vbHGWqZw2sCOtzAoZ4fxc0" />
         <variable name="PLAY_SERVICES_VERSION" value="15.0.1" />

@@ -62,6 +62,11 @@ export class AppComponent
           title: 'New menu',
           url: '/tabs',
           icon: 'lock'
+        },
+        {
+          title: 'Payment Page',
+          url: '/paymentpage',
+          icon: 'lock'
         }
       ];
     }
