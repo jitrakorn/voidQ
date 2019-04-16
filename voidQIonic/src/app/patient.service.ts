@@ -21,9 +21,9 @@ export class PatientService {
   constructor(private httpClient: HttpClient) { }
 
 
-  patientLogin(email: string, password: string): Observable<any>
+  patientLogin(username: string, password: string): Observable<any>
   {
-    return this.httpClient.get<any>(this.baseUrl + "/patientLogin?email=" + email + "&password=" + password).pipe
+    return this.httpClient.get<any>(this.baseUrl + "/patientLogin?username=" + username + "&password=" + password).pipe
     (
         catchError(this.handleError)
     );
