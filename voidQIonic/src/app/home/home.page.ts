@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 
-import { NavController } from '@ionic/angular';
-
 import { Router } from '@angular/router';
 import { NgForm } from '@angular/forms';
 
 import { SessionService } from '../session.service';
 import { PatientService } from '../patient.service';
 import { Patient } from '../patient';
+
+import { NavController } from '@ionic/angular';
 
 @Component({
 	selector: 'app-home',
@@ -26,7 +26,7 @@ export class HomePage implements OnInit {
 	constructor(private router: Router,
 		public sessionService: SessionService,
 		private patientService: PatientService,
-		private navCtrl:NavController) {
+		private navigationCtrl: NavController) {
 		this.submitted = false;
 	}
 
@@ -47,7 +47,7 @@ export class HomePage implements OnInit {
 						this.sessionService.setIsLogin(true);
 						this.sessionService.setCurrentPatient(patient);
 						this.loginError = false;
-						this.navCtrl.navigateForward('appointments');
+						this.navigationCtrl.navigateForward('/landing');
 					}
 					else {
 						this.loginError = true;
@@ -58,6 +58,12 @@ export class HomePage implements OnInit {
 					this.errorMessage = error;
 				}
 			);
+		} else {
+
 		}
+	}
+
+	goToRegister() {
+		this.navigationCtrl.navigateForward('/register');
 	}
 }

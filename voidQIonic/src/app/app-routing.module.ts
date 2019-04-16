@@ -13,7 +13,9 @@ const routes: Routes = [
   },
   { path: 'login', loadChildren: './login/login.module#LoginPageModule' },
   { path: 'tabs', loadChildren: './pages/tabs/tabs.module#TabsPageModule' },
-  { path: 'paymentpage', loadChildren: './paymentpage/paymentpage.module#PaymentpagePageModule' }
+  { path: 'paymentpage', loadChildren: './paymentpage/paymentpage.module#PaymentpagePageModule' },  { path: 'landing', loadChildren: './landing/landing.module#LandingPageModule' },
+  { path: 'register', loadChildren: './register/register.module#RegisterPageModule' }
+
  
 ];
 @NgModule({

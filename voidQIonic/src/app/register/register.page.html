@@ -1,0 +1,114 @@
+<ion-content>
+	<div class="content">
+		<span class="title">REGISTER</span>
+
+		<form class="form" #patientLoginForm="ngForm" (ngSubmit)="patientRegister(patientRegisterForm)">
+			<div *ngIf="loginError == true" style="color: red;">
+				{{errorMessage}}
+			</div>
+			<div *ngIf="loginErrorMessage" style="color: red;">
+				{{loginErrorMessage}}
+			</div>
+
+			<ion-list>
+				<ion-item>
+					<ion-label fixed class="label">EMAIL</ion-label>
+					<ion-input type="text" id="email" name="email" [(ngModel)]="newPatient.email" minlength="4"
+						maxlength="32" required="true" #inusername="ngModel"></ion-input>
+				</ion-item>
+				<div *ngIf="inusername.invalid && (inusername.dirty || inusername.touched || submitted)"
+					style="color: red;">
+					<div *ngIf="inusername.errors.required">
+						Email is required.
+					</div>
+					<div *ngIf="inusername.errors.minlength">
+						Email must be at least 4 characters long.
+					</div>
+					<div *ngIf="inusername.errors.maxlength">
+						Email cannot exceed 32 characters.
+					</div>
+				</div>
+
+				<ion-item>
+					<ion-label fixed class="label">FIRST NAME</ion-label>
+					<ion-input type="text" id="firstName" name="firstName" [(ngModel)]="newPatient.firstName"
+						minlength="3" maxlength="32" required="true" #infirstname="ngModel"></ion-input>
+				</ion-item>
+				<div *ngIf="infirstname.invalid && (infirstname.dirty || infirstname.touched || submitted)"
+					class="errorText">
+					<div *ngIf="infirstname.errors.required">
+						First Name is required.
+					</div>
+					<div *ngIf="infirstname.errors.minlength">
+						First Name must be at least 3 characters long.
+					</div>
+					<div *ngIf="infirstname.errors.maxlength">
+						First Name cannot exceed 32 characters.
+					</div>
+				</div>
+
+				<ion-item>
+					<ion-label fixed class="label">LAST NAME</ion-label>
+					<ion-input type="text" id="lastName" name="lastName" [(ngModel)]="newPatient.lastName" minlength="2"
+						maxlength="32" required="true" #inlastname="ngModel"></ion-input>
+				</ion-item>
+				<div *ngIf="inlastname.invalid && (inlastname.dirty || inlastname.touched || submitted)"
+					class="errorText">
+					<div *ngIf="inlastname.errors.required">
+						Last Name is required.
+					</div>
+					<div *ngIf="inlastname.errors.minlength">
+						Last Name must be at least 2 characters long.
+					</div>
+					<div *ngIf="inlastname.errors.maxlength">
+						Last Name cannot exceed 32 characters.
+					</div>
+				</div>
+
+
+				<ion-item>
+					<ion-label fixed class="label">PHONE</ion-label>
+					<ion-input type="text" id="phoneNumber" name="phoneNumber" [(ngModel)]="newPatient.phoneNumber"
+						minlength="8" maxlength="8" required="true" #inphonenumber="ngModel"></ion-input>
+				</ion-item>
+				<div *ngIf="inphonenumber.invalid && (inphonenumber.dirty || inphonenumber.touched || submitted)"
+					class="errorText">
+					<div *ngIf="inphonenumber.errors.required">
+						Phone Number is required.
+					</div>
+					<div *ngIf="inphonenumber.errors.minlength">
+						Phone Number must be exactly 8 characters long.
+					</div>
+					<div *ngIf="inphonenumber.errors.maxlength">
+						Phone Number must be exactly 8 characters long.
+					</div>
+				</div>
+
+				<ion-item>
+					<ion-label fixed class="label">PASSWORD</ion-label>
+					<ion-input type="password" id="password" name="password" [(ngModel)]="password" minlength="4"
+						maxlength="32" required="true" #inpassword="ngModel"></ion-input>
+				</ion-item>
+				<div *ngIf="inpassword.invalid && (inpassword.dirty || inpassword.touched || submitted)"
+					style="color: red;">
+					<div *ngIf="inpassword.errors.required">
+						Password is required.
+					</div>
+					<div *ngIf="inpassword.errors.minlength">
+						Password must be at least 4 characters long.
+					</div>
+					<div *ngIf="inpassword.errors.maxlength">
+						Password cannot exceed 32 characters.
+					</div>
+				</div>
+			</ion-list>
+
+			<ion-button class="login-button" type="submit" shape="round">REGISTER</ion-button>
+			<ion-button (click)="goBack()" fill="clear">BACK TO LOGIN</ion-button>
+		</form>
+
+	</div>
+
+
+
+</ion-content>
