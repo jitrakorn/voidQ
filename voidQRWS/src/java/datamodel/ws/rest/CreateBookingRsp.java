@@ -1,33 +1,31 @@
 package datamodel.ws.rest;
 
-import ejb.entity.PatientEntity;
 
 
 
-
-public class PatientLoginRsp
+public class CreateBookingRsp
 {
-    private PatientEntity patientEntity;
+    private Long bookingId;
 
     
     
-    public PatientLoginRsp()
+    public CreateBookingRsp()
     {
     }
 
     
     
-    public PatientLoginRsp(PatientEntity patientEntity)
+    public CreateBookingRsp(Long bookingId)
     {
-        this.patientEntity = patientEntity;
+        this.bookingId = bookingId;
     }
 
-    public PatientEntity getPatientEntity() {
-        return patientEntity;
+    public Long getBookingId() {
+        return bookingId;
     }
 
-    public void setPatientEntity(PatientEntity patientEntity) {
-        this.patientEntity = patientEntity;
+    public void setBookingId(Long bookingId) {
+        this.bookingId = bookingId;
     }
 
     

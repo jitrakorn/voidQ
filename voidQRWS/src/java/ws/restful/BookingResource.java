@@ -1,6 +1,7 @@
 package ws.restful;
 
 import datamodel.ws.rest.CreateBookingReq;
+import datamodel.ws.rest.CreateBookingRsp;
 import datamodel.ws.rest.ErrorRsp;
 import datamodel.ws.rest.GetAllBookingsByClinicRsp;
 import datamodel.ws.rest.MakePaymentReq;
@@ -30,7 +31,6 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import util.enumeration.BookingStatus;
-import util.exception.InvalidLoginCredentialException;
 import util.exception.PatientNotFoundException;
 
 @Path("Booking")
@@ -85,9 +85,9 @@ public class BookingResource {
             try {
                 PatientEntity patient = patientSessionBean.retrievePatientByEmail(createBookingReq.getEmail());
                 ClinicEntity clinic = partnerSessionBean.getPartnerById(Long.parseLong(createBookingReq.getClinicId()));
-                bookingSessionBean.createBooking(new BookingEntity(BookingStatus.BOOKED, new Date(), clinic, patient, createBookingReq.getVisitReason()));
+                BookingEntity booking = bookingSessionBean.createBooking(new BookingEntity(BookingStatus.BOOKED, new Date(), clinic, patient, createBookingReq.getVisitReason()));
 
-                return Response.status(Status.OK).build();
+                return Response.status(Status.OK).entity(new CreateBookingRsp(booking.getBookingId())).build();
             } catch (PatientNotFoundException ex) {
                 ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
                 return Response.status(Status.NOT_FOUND).entity(errorRsp).build();

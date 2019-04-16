@@ -5,7 +5,11 @@
  */
 package ejb.session.stateless;
 
+import ejb.entity.BookingEntity;
+import ejb.entity.ClinicEntity;
 import ejb.entity.PatientEntity;
+import java.util.Calendar;
+import java.util.List;
 import java.util.Set;
 import javax.ejb.Local;
 import javax.ejb.Stateless;
@@ -13,10 +17,12 @@ import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.NonUniqueResultException;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TemporalType;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
+import util.enumeration.BookingStatus;
 import util.exception.InputDataValidationException;
 import util.exception.InvalidLoginCredentialException;
 import util.exception.PatientNotFoundException;
@@ -61,7 +67,6 @@ public class PatientSessionBean implements PatientSessionBeanLocal {
 //        query.setParameter("inClinic", staffEntity.getClinicEntity());
 //        return query.getResultList();
 //    }
-
     @Override
     public PatientEntity retrievePatientByPatientId(Long patientId) throws PatientNotFoundException {
         PatientEntity patient = em.find(PatientEntity.class, patientId);
@@ -72,15 +77,14 @@ public class PatientSessionBean implements PatientSessionBeanLocal {
             throw new PatientNotFoundException("Patient ID " + patientId + " does not exist!");
         }
     }
-    
+
     @Override
     public PatientEntity retrievePatientByEmail(String email) throws PatientNotFoundException {
         try {
             return (PatientEntity) em.createQuery("SELECT p FROM PatientEntity p WHERE p.email = :email")
-                .setParameter("email", email)
-                .getSingleResult();
-        } 
-        catch (NonUniqueResultException | NoResultException ex) {
+                    .setParameter("email", email)
+                    .getSingleResult();
+        } catch (NonUniqueResultException | NoResultException ex) {
             throw new PatientNotFoundException("Patient does not exist!");
         }
     }
@@ -112,7 +116,7 @@ public class PatientSessionBean implements PatientSessionBeanLocal {
             throw new InputDataValidationException(prepareInputDataValidationErrorsMessage(constraintViolations));
         }
     }
-    
+
     @Override
     public PatientEntity patientLogin(String email, String password) throws InvalidLoginCredentialException {
         try {
@@ -127,6 +131,34 @@ public class PatientSessionBean implements PatientSessionBeanLocal {
         } catch (PatientNotFoundException ex) {
             throw new InvalidLoginCredentialException("Email does not exist or invalid password!");
         }
+    }
+
+    @Override
+    public Integer retrieveCurrentBookingQueuePosition(Long bookingId, Long clinicId) {
+        Calendar today = Calendar.getInstance();
+        today.set(Calendar.HOUR_OF_DAY, 0);
+        today.set(Calendar.MINUTE, 0);
+        today.set(Calendar.SECOND, 0);
+        today.set(Calendar.MILLISECOND, 0);
+
+        ClinicEntity clinic = em.find(ClinicEntity.class, clinicId);
+        List<BookingEntity> bookings = em.createQuery("SELECT b FROM BookingEntity b WHERE b.clinicEntity = :clinic AND b.transactionDateTime > :date ORDER BY b.transactionDateTime ASC")
+                .setParameter("clinic", clinic)
+                .setParameter("date", today.getTime(), TemporalType.TIMESTAMP)
+                .getResultList();
+
+        Integer position = 1;
+        BookingEntity currentBooking = em.find(BookingEntity.class, bookingId);
+        for (BookingEntity booking : bookings) {
+            if (booking.getBookingId().equals(currentBooking.getBookingId())) {
+                break;
+            }
+            if (booking.getStatus().equals(BookingStatus.CHECKED_IN)) {
+                position++;
+            }
+        }
+
+        return position;
     }
 
     private String prepareInputDataValidationErrorsMessage(Set<ConstraintViolation<PatientEntity>> constraintViolations) {

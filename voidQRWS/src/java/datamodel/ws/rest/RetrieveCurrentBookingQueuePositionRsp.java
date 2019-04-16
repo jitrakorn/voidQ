@@ -9,14 +9,14 @@ package datamodel.ws.rest;
  *
  * @author terencetay
  */
-public class RetrieveCurrentClinicCurrentDayCurrentQueueRsp {
+public class RetrieveCurrentBookingQueuePositionRsp {
     private Integer queueNumber;
     
-    public RetrieveCurrentClinicCurrentDayCurrentQueueRsp(){
+    public RetrieveCurrentBookingQueuePositionRsp(){
         
     }
     
-    public RetrieveCurrentClinicCurrentDayCurrentQueueRsp(Integer queueNumber) {
+    public RetrieveCurrentBookingQueuePositionRsp(Integer queueNumber) {
         this.queueNumber = queueNumber;
     }
 
