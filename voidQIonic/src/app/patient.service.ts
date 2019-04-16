@@ -16,14 +16,27 @@ const httpOptions = {
   providedIn: 'root'
 })
 export class PatientService {
-  baseUrl: string = "/api/Patient";
+  baseUrl: string = "http://localhost:8090/voidQRWS/Resources/Patient";
 
   constructor(private httpClient: HttpClient) { }
 
 
-  patientLogin(username: string, password: string): Observable<any>
+  patientLogin(email: string, password: string): Observable<any>
   {
-    return this.httpClient.get<any>(this.baseUrl + "/patientLogin?username=" + username + "&password=" + password).pipe
+    return this.httpClient.get<any>(this.baseUrl + "/patientLogin?email=" + email + "&password=" + password).pipe
+    (
+        catchError(this.handleError)
+    );
+  }
+
+  patientRegister(newPatient: Patient): Observable<any>
+  {
+
+    let createPatientReq = {
+      "patientEntity": newPatient 
+    };
+
+    return this.httpClient.put<any>(this.baseUrl + "/createPatient"  , createPatientReq, httpOptions).pipe
     (
         catchError(this.handleError)
     );

@@ -19,7 +19,7 @@ import { Patient } from '../patient';
 export class LoginPage implements OnInit 
 {
 	submitted: boolean;
-	username: string;
+	email: string;
 	password: string;
 	loginError: boolean;
 	errorMessage: string;
@@ -43,7 +43,7 @@ export class LoginPage implements OnInit
 	
 	clear()
 	{
-		this.username = "";
+		this.email = "";
 		this.password = "";
 	}
 	
@@ -55,10 +55,10 @@ export class LoginPage implements OnInit
 		
 		if (patientLoginForm.valid)
 		{
-			this.sessionService.setUsername(this.username);
+			this.sessionService.setEmail(this.email);
 			this.sessionService.setPassword(this.password);
 						
-			this.patientService.patientLogin(this.username, this.password).subscribe(
+			this.patientService.patientLogin(this.email, this.password).subscribe(
 				response => {										
 					let patient: Patient = response.patientEntity;
 					

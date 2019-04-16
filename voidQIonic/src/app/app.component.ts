@@ -54,6 +54,11 @@ export class AppComponent
           icon: 'home'
         },
         {
+          title: 'Register',
+          url: '/register',
+          icon: 'person-add'
+        },
+        {
           title: 'Login',
           url: '/login',
           icon: 'lock'
