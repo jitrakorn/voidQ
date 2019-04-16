@@ -1,7 +1,7 @@
 {
-  "name": "voidQIonic",
-  "integrations": {
-    "cordova": {}
-  },
-  "type": "angular"
+	"name": "voidQIonic",
+	"integrations": {
+		"cordova": {}
+	},
+	"type": "angular"
 }
