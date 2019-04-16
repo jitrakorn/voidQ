@@ -50,7 +50,10 @@ public class ClinicEntity implements Serializable {
     private ApplicationStatus applicationStatus;
     @Column(nullable = false, length = 128)
     @Size(max = 128)
-    private String latlng;
+    private String lat;
+    @Column(nullable = false, length = 128)
+    @Size(max = 128)
+    private String lng;
     
     @OneToMany(mappedBy = "clinicEntity")
     private List<DoctorEntity> doctorEntities;
@@ -72,13 +75,14 @@ public class ClinicEntity implements Serializable {
     }
 
     // Just use this everytime
-    public ClinicEntity(String clinicName, String description, String address, String phoneNum, BigDecimal unitPrice,String latlng, ApplicationStatus applicationStatus) {
+    public ClinicEntity(String clinicName, String description, String address, String phoneNum, BigDecimal unitPrice,String lat,String lng, ApplicationStatus applicationStatus) {
         this.clinicName = clinicName;
         this.description = description;
         this.address = address;
         this.phoneNum= phoneNum;
         this.unitPrice = unitPrice;
-        this.latlng=latlng;
+       this.lat = lat;
+       this.lng= lng;
         this.applicationStatus = applicationStatus;
     }
     
@@ -200,11 +204,20 @@ public class ClinicEntity implements Serializable {
         this.phoneNum = phoneNum;
     }
 
-    public String getLatlng() {
-        return latlng;
+   
+    public String getLat() {
+        return lat;
     }
 
-    public void setLatlng(String latlng) {
-        this.latlng = latlng;
+    public void setLat(String lat) {
+        this.lat = lat;
+    }
+
+    public String getLng() {
+        return lng;
+    }
+
+    public void setLng(String lng) {
+        this.lng = lng;
     }
 }
