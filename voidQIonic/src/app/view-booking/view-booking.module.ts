@@ -7,6 +7,9 @@ import { IonicModule } from '@ionic/angular';
 
 import { ViewBookingPage } from './view-booking.page';
 
+import { PayPal, PayPalPayment, PayPalConfiguration } from '@ionic-native/paypal/ngx';
+
+
 const routes: Routes = [
   {
     path: '',
@@ -20,6 +23,9 @@ const routes: Routes = [
     FormsModule,
     IonicModule,
     RouterModule.forChild(routes)
+  ],
+  providers: [
+	  PayPal
   ],
   declarations: [ViewBookingPage]
 })

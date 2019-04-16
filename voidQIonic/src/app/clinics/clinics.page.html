@@ -1,9 +1,27 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>clinics</ion-title>
-  </ion-toolbar>
+	<ion-toolbar>
+		<ion-title>Clinics</ion-title>
+	</ion-toolbar>
 </ion-header>
 
 <ion-content>
+	<div id="map_canvas"></div>
 
+	<ion-list>
+		<ion-list-header>
+			<ion-label>Clinic</ion-label>
+			<ion-label>Current Queue</ion-label>
+		</ion-list-header>
+		<ion-item *ngFor="let clinic of clinicsWithQueue">
+			<ion-button (click)="goBook(clinic)">
+				<ion-label>{{clinic.clinicName}}</ion-label>
+				<ion-label>{{clinic.queueNum}}</ion-label>
+			</ion-button>
+		</ion-item>
+	</ion-list>
+
+	<ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)">
+		<ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
+		</ion-infinite-scroll-content>
+	</ion-infinite-scroll>
 </ion-content>
