@@ -22,7 +22,7 @@ export class HomePage implements OnInit {
 	username: string;
 	password: string;
 	loginError: boolean;
-	errorMessage: string;
+	loginErrorMessage: string;
 
 	constructor(private router: Router,
 		public sessionService: SessionService,
@@ -48,7 +48,7 @@ export class HomePage implements OnInit {
 						this.sessionService.setIsLogin(true);
 						this.sessionService.setCurrentPatient(patient);
 						this.loginError = false;
-						this.navigationCtrl.navigateForward('/clinics');
+						this.navigationCtrl.navigateRoot('/clinics');
 					}
 					else {
 						this.loginError = true;
@@ -56,7 +56,7 @@ export class HomePage implements OnInit {
 				},
 				error => {
 					this.loginError = true;
-					this.errorMessage = error;
+					this.loginErrorMessage = error;
 				}
 			);
 		} else {
