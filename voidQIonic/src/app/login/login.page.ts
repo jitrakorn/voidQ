@@ -6,6 +6,7 @@ import { NgForm } from '@angular/forms';
 import { SessionService } from '../session.service';
 import { PatientService } from '../patient.service';
 import { Patient } from '../patient';
+import { NavController } from '@ionic/angular';
 
 
 
@@ -28,7 +29,8 @@ export class LoginPage implements OnInit
 	
 	constructor(private router: Router,
 				public sessionService: SessionService,
-				private patientService: PatientService)
+				private patientService: PatientService,
+				private navigationCtrl: NavController)
 	{
 		this.submitted = false;
 	}
@@ -70,7 +72,7 @@ export class LoginPage implements OnInit
 						this.sessionService.setCurrentPatient(patient);
 						this.loginError = false;					
 						
-						window.location.reload();						
+						this.navigationCtrl.navigateForward("/home");										
 					}
 					else
 					{
@@ -95,6 +97,6 @@ export class LoginPage implements OnInit
 		this.sessionService.setIsLogin(false);
 		this.sessionService.setCurrentPatient(null);
 		
-		window.location.reload();		
+		this.navigationCtrl.navigateForward("/home");	
 	}
 }

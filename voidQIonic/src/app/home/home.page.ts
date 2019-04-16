@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { IonInfiniteScroll } from '@ionic/angular';
+import { IonInfiniteScroll, NavController } from '@ionic/angular';
 
 import {
 	ToastController,
@@ -27,7 +27,7 @@ import { Clinic } from '../clinic';
 export class HomePage implements OnInit {
 	@ViewChild(IonInfiniteScroll) infiniteScroll: IonInfiniteScroll;
 	clinics: Clinic[];
-	clinicsWithQueue: any;
+	clinicsWithQueue: Object[];
 
 	map: GoogleMap;
 	loading: any;
@@ -70,7 +70,13 @@ export class HomePage implements OnInit {
 	}
 
 	constructor(public sessionService: SessionService, public toastCtrl: ToastController,
-		private platform: Platform, private clinicService: ClinicService) {
+		private platform: Platform, private clinicService: ClinicService, private navigationCtrl: NavController) {
+	}
+
+	goBook(clinic:Object) {
+		console.log(clinic);
+		this.sessionService.setClinicObj(clinic);
+		this.navigationCtrl.navigateForward("/clinic-details");
 	}
 
 	// this is to retrieve and load all clinics for infinite scrolling
@@ -140,8 +146,6 @@ export class HomePage implements OnInit {
 			});
 
 			//add a marker
-
-
 			for (let clinic of this.clinics) {
 				var clinicLocations =
 				{
@@ -149,9 +153,6 @@ export class HomePage implements OnInit {
 					"lng": Number(clinic.lng)
 
 				};
-
-
-
 
 				let marker: Marker = this.map.addMarkerSync({
 					title: String(clinic.clinicName),
