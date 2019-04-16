@@ -1,51 +1,24 @@
-<ion-header>
-
-  <ion-toolbar>
-	<ion-buttons slot="start">
-      <ion-menu-button></ion-menu-button>
-    </ion-buttons>
-    <ion-title>voidQ (Ionic v1.0)</ion-title>
-  </ion-toolbar>
-  
-</ion-header>
-
 <ion-content>
+	<div class="home-content">
+		<span class="home-logo">voidQ</span>
 
-	<ion-card *ngIf="sessionService.getIsLogin() == false">
-	
-      <ion-card-header>        
-        <ion-card-title>voidQ</ion-card-title>
-      </ion-card-header>
-	  
-      <ion-card-content >
-        <p>
-			SELECT A NEARBY CLINIC
-		</p>
+		<form class="login-form" #patientLoginForm="ngForm" (ngSubmit)="patientLogin(patientLoginForm)">
+			<ion-item>
+				<ion-label fixed>Email</ion-label>
+				<ion-input class="login-input" type="email" id="username" [(ngModel)]="username" minlength="4"
+					maxlength="32" required="true" #inusername="ngModel"></ion-input>
+			</ion-item>
+
+			<ion-item>
+				<ion-label fixed>Password</ion-label>
+				<ion-input type="password" id="password" name="password" [(ngModel)]="password" minlength="4"
+					maxlength="32" required="true" #inpassword="ngModel"></ion-input>
+			</ion-item>
+
+			<ion-button class="login-button" type="submit" expand="block" shape="round">LOG-IN</ion-button>
+		</form>
+	</div>
 
 
-		
-      </ion-card-content>
-		
-		</ion-card>	
-
-		<ion-card-content>
-		
-			
-			<div id="map_canvas"></div>
-		</ion-card-content>
-	
-	<ion-card *ngIf="sessionService.getIsLogin() == true">
-	
-		<ion-card-header>        
-			<ion-card-title>Message Of The Day</ion-card-title>
-		</ion-card-header>
-		
-		<ion-card-content>
-			<ion-list>
-
-			</ion-list>
-		</ion-card-content>
-	
-	</ion-card>
 
 </ion-content>
