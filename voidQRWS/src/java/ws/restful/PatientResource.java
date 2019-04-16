@@ -4,6 +4,7 @@ import datamodel.ws.rest.CreatePatientReq;
 import datamodel.ws.rest.CreatePatientRsp;
 import datamodel.ws.rest.ErrorRsp;
 import datamodel.ws.rest.PatientLoginRsp;
+import datamodel.ws.rest.RetrieveCurrentBookingQueuePositionRsp;
 import datamodel.ws.rest.UpdatePatientReq;
 
 import ejb.entity.PatientEntity;
@@ -147,6 +148,17 @@ public class PatientResource {
         }
     }
     
+    @Path("retrieveCurrentBookingQueuePosition")
+    @GET
+    @Consumes(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response retrieveCurrentBookingQueuePosition(@QueryParam("bookingId") String bookingId, @QueryParam("clinicId") String clinicId) {
+        System.out.println("****** ran retrieveCurrentBookingQueuePosition****");
+        Long longBookingId = Long.parseLong(bookingId);
+        Long longClinicId = Long.parseLong(clinicId);
+        
+        return Response.status(Status.OK).entity(new RetrieveCurrentBookingQueuePositionRsp(patientSessionBean.retrieveCurrentBookingQueuePosition(longBookingId, longClinicId))).build();
+    }
     
 
     private PatientSessionBeanLocal lookupPatientSessionBeanLocal() {

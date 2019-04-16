@@ -22,6 +22,6 @@ lng: String;
      this.unitPrice = unitPrice;
      this.applicationStatus = applicationStatus;
      this.lat=lat;
-    this.lng=lng;
+     this.lng=lng;
     }
 }

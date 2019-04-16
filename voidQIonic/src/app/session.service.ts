@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import { Patient } from './patient';
+import { Clinic } from './clinic';
 
 
 
@@ -43,8 +44,6 @@ export class SessionService
 		return JSON.parse(sessionStorage.currentPatient);
 	}
 
-
-
 	setCurrentPatient(currentPatient: Patient): void
 	{		 
 		sessionStorage.currentPatient = JSON.stringify(currentPatient);
@@ -62,27 +61,33 @@ export class SessionService
 		sessionStorage.email = email;
 	}
 	
-	
-	
 	getPassword(): string
 	{
 		return sessionStorage.password;
 	}
-
-
 
 	setPassword(password: string): void
 	{
 		sessionStorage.password = password;
 	}
 	
-	
-	
+	getClinicObj(): Object
+	{
+		return JSON.parse(sessionStorage.clinicObj);
+	}	
 
-
-
+	setClinicObj(clinicObj: Object): void
+	{
+		sessionStorage.clinicObj = JSON.stringify(clinicObj);
+	}	
 	
+	getBookingId(): number{
+		return sessionStorage.bookingId;
+	}
 	
+	setBookingId(bookingId:number) : void {
+		sessionStorage.bookingId = bookingId;
+	}
 	
 
 }

@@ -1,0 +1,68 @@
+<ion-header>
+    <ion-toolbar>
+      <ion-buttons slot="viewClinicDetails">
+        <ion-button href="/home">
+          <ion-icon slot="start" name="arrow-back"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+      <ion-title>viewClinicDetails</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  
+  <ion-content>
+    
+      <ion-list>
+  
+  
+        <ion-item>
+          <ion-label fixed>Clinic Name</ion-label>
+          {{clinic.clinicName}}
+         </ion-item>
+  
+        <ion-item>
+          <ion-label fixed>Address</ion-label>
+          {{clinic.address}}
+           </ion-item>
+  
+        <ion-item>
+          <ion-label fixed>Description</ion-label>
+        {{clinic.description}}  
+        </ion-item>
+  
+  
+        <ion-item>
+          <ion-label fixed>Phone Number</ion-label>
+          {{clinic.phoneNum}}
+           </ion-item>
+  
+        <ion-item>
+          <ion-label fixed>Consultation Fee</ion-label>
+         {{clinic.unitPrice}}
+         </ion-item>
+
+         <ion-item>
+            <ion-label fixed>Current Queue</ion-label>
+           {{clinic.queueNum}}
+           </ion-item>
+  
+         <form #makeBookingForm="ngForm" (ngSubmit)="makeBooking(makeBookingForm)" >
+           <ion-list>
+  
+            <ion-item>
+              <ion-label fixed>Visit Reason</ion-label>
+              <ion-input type="text" id="visitreason" name="visitreason" [(ngModel)]="visitreason" minlength="4" maxlength="32" required="true" #invisitreason="ngModel"></ion-input>
+            </ion-item>
+           </ion-list>
+           
+    
+  
+        <ion-item>
+          <ion-button type="submit" ion-button block>
+            Book
+          </ion-button>
+        </ion-item>
+      </form>
+      </ion-list>
+  
+  
+  </ion-content>

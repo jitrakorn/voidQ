@@ -22,4 +22,5 @@ public interface ClinicSessionBeanLocal {
 
     public List<ClinicEntity> retrieveAllActivatedClinics();
     
+    public Integer retrieveCurrentClinicCurrentDayCurrentQueue(Long clinicId);
 }

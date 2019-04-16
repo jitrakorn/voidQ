@@ -5,10 +5,13 @@
  */
 package ejb.session.stateless;
 
+import ejb.entity.BookingEntity;
 import ejb.entity.ClinicEntity;
 import ejb.entity.StaffEntity;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import javax.ejb.EJB;
 import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -21,6 +24,7 @@ import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 import util.enumeration.ApplicationStatus;
+import util.enumeration.BookingStatus;
 import util.exception.StaffEntityNotFoundException;
 
 /**
@@ -30,6 +34,9 @@ import util.exception.StaffEntityNotFoundException;
 @Stateless
 @Local(ClinicSessionBeanLocal.class)
 public class ClinicSessionBean implements ClinicSessionBeanLocal {
+
+    @EJB
+    private BookingSessionBeanLocal bookingSessionBean;
 
     @PersistenceContext(unitName = "voidQ-ejbPU")
     private EntityManager em;
@@ -71,6 +78,19 @@ public class ClinicSessionBean implements ClinicSessionBeanLocal {
         }
         
         return clinicEntities;
+    }
+    
+    @Override
+    public Integer retrieveCurrentClinicCurrentDayCurrentQueue(Long clinicId) {
+        ClinicEntity clinic = em.find(ClinicEntity.class, clinicId);
+        List<BookingEntity> bookings = bookingSessionBean.getClinicCurrentDayBookings(clinic);
+        List<BookingEntity> checkedInBookings = new ArrayList<>();
+        for(BookingEntity booking : bookings) {
+            if(booking.getStatus().equals(BookingStatus.CHECKED_IN)) {
+                checkedInBookings.add(booking);
+            }
+        } 
+        return checkedInBookings.size();
     }
     
 

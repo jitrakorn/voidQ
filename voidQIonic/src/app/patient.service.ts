@@ -41,6 +41,13 @@ export class PatientService {
 	}
 
 
+	retrieveCurrentBookingQueuePosition(bookingId: string, clinicId: string): Observable<any> {
+		return this.httpClient.get<any>(this.baseUrl + "/retrieveCurrentBookingQueuePosition?bookingId=" + bookingId + "&clinicId=" + clinicId).pipe
+			(
+				catchError(this.handleError)
+			)
+	}
+
 	private handleError(error: HttpErrorResponse) {
 		let errorMessage: string = "";
 

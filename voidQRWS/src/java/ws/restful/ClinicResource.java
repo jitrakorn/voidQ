@@ -2,13 +2,9 @@ package ws.restful;
 
 import datamodel.ws.rest.ErrorRsp;
 import datamodel.ws.rest.RetrieveAllActivatedClinicsRsp;
-import ejb.entity.BookingEntity;
+import datamodel.ws.rest.RetrieveCurrentClinicCurrentDayCurrentQueueRsp;
 import ejb.entity.ClinicEntity;
-import ejb.entity.DoctorEntity;
-import ejb.entity.NurseEntity;
-import ejb.session.stateless.BookingSessionBeanLocal;
 import ejb.session.stateless.ClinicSessionBeanLocal;
-import ejb.session.stateless.PartnerSessionBeanLocal;
 import java.util.List;
 
 import java.util.logging.Level;
@@ -21,6 +17,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
@@ -62,6 +59,16 @@ public class ClinicResource {
 
             return Response.status(Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
         }
+    }
+    
+    @Path("retrieveCurrentClinicCurrentDayCurrentQueue")
+    @GET
+    @Consumes(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response retrieveCurrentClinicCurrentDayCurrentQueue(@QueryParam("clinicId") String clinicId) {
+        System.out.println("****** ran retrieveCurrentClinicCurrentDayCurrentQueue****");
+        Long id = Long.parseLong(clinicId);
+        return Response.status(Status.OK).entity(new RetrieveCurrentClinicCurrentDayCurrentQueueRsp(clinicSessionBean.retrieveCurrentClinicCurrentDayCurrentQueue(id))).build();
     }
 
     private ClinicSessionBeanLocal lookupClinicSessionBeanLocal() {

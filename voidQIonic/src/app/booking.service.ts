@@ -1,9 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
+import { HttpHeaders, HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { ErrorObservable } from 'rxjs/observable/ErrorObservable';
-
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -12,26 +10,23 @@ const httpOptions = {
 @Injectable({
   providedIn: 'root'
 })
-export class ClinicService {
-  baseUrl: string = "/api/Clinic";
+export class BookingService {
+  baseUrl: string = "http://localhost:8080/voidQRWS/Resources/Booking";
+
   constructor(private httpClient: HttpClient) { }
 
-  retrieveClinics(): Observable<any>
+  createBooking(email:String, visitReason:String, clinicId:String) : Observable<any> 
   {
-    return this.httpClient.get<any>(this.baseUrl + "/retrieveAllActivatedClinics").pipe
+    let createBookingReq  = {
+      "email" : email,
+      "visitReason" : visitReason,
+      "clinicId": clinicId
+    }
+    return this.httpClient.post<any>(this.baseUrl + "/createBooking", createBookingReq, httpOptions).pipe
     (
         catchError(this.handleError)
     );
   }
-
-  retrieveCurrentClinicCurrentDayCurrentQueue(clinicId:string): Observable<any>
-  {
-    return this.httpClient.get<any>(this.baseUrl + "/retrieveCurrentClinicCurrentDayCurrentQueue?clinicId=" + clinicId).pipe
-    (
-        catchError(this.handleError)
-    );
-  }
-
 
   private handleError(error: HttpErrorResponse)
   {
