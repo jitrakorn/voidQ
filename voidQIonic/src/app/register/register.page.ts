@@ -17,14 +17,14 @@ import { Patient } from '../patient';
 export class RegisterPage implements OnInit {
 
 	submitted: boolean;
-	email: string;
-	firstName: string;
-	lastName: string;
-	phoneNumber: string;
-	password: string;
+	// email: string;
+	// firstName: string;
+	// lastName: string;
+	// phoneNumber: string;
+	// password: string;
 	newPatient: Patient;
-	loginError: boolean;
-	errorMessage: string;
+	registerError: boolean;
+	registerErrorMessage: string;
 	message: string;
 	toast: any;
 
@@ -32,6 +32,7 @@ export class RegisterPage implements OnInit {
 		public sessionService: SessionService,
 		private patientService: PatientService,) {
 		this.submitted = false;
+		this.registerError = false;
 		this.newPatient = new Patient();
 	}
 
@@ -71,8 +72,8 @@ export class RegisterPage implements OnInit {
 					// }
 				},
 				error => {
-					this.loginError = true;
-					this.errorMessage = error
+					this.registerError = true;
+					this.registerErrorMessage = error
 				}
 			);
 		}

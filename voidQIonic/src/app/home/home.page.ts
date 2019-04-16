@@ -36,7 +36,7 @@ export class HomePage implements OnInit {
 	patientLogin(patientLoginForm: NgForm) {
 		this.submitted = true;
 		if (patientLoginForm.valid) {
-			this.sessionService.setUsername(this.username);
+			this.sessionService.setEmail(this.username);
 			this.sessionService.setPassword(this.password);
 
 			this.patientService.patientLogin(this.username, this.password).subscribe(
@@ -63,7 +63,8 @@ export class HomePage implements OnInit {
 		}
 	}
 
-	goToRegister() {
+	goToRegisterPage() {
+		console.log("AAA")
 		this.navigationCtrl.navigateForward('/register');
 	}
 }

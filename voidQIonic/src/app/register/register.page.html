@@ -1,13 +1,14 @@
 <ion-content>
+	<ion-title>register</ion-title>
 	<div class="content">
 		<span class="title">REGISTER</span>
 
-		<form class="form" #patientLoginForm="ngForm" (ngSubmit)="patientRegister(patientRegisterForm)">
-			<div *ngIf="loginError == true" style="color: red;">
+		<form class="form" #patientRegisterForm="ngForm" (ngSubmit)="patientRegister(patientRegisterForm)">
+			<div *ngIf="registerError == true" class="message">
 				{{errorMessage}}
 			</div>
-			<div *ngIf="loginErrorMessage" style="color: red;">
-				{{loginErrorMessage}}
+			<div *ngIf="registerErrorMessage" class="message">
+				{{registerErrorMessage}}
 			</div>
 
 			<ion-list>
@@ -17,7 +18,7 @@
 						maxlength="32" required="true" #inusername="ngModel"></ion-input>
 				</ion-item>
 				<div *ngIf="inusername.invalid && (inusername.dirty || inusername.touched || submitted)"
-					style="color: red;">
+					class="message">
 					<div *ngIf="inusername.errors.required">
 						Email is required.
 					</div>
@@ -35,7 +36,7 @@
 						minlength="3" maxlength="32" required="true" #infirstname="ngModel"></ion-input>
 				</ion-item>
 				<div *ngIf="infirstname.invalid && (infirstname.dirty || infirstname.touched || submitted)"
-					class="errorText">
+					class="message">
 					<div *ngIf="infirstname.errors.required">
 						First Name is required.
 					</div>
@@ -53,7 +54,7 @@
 						maxlength="32" required="true" #inlastname="ngModel"></ion-input>
 				</ion-item>
 				<div *ngIf="inlastname.invalid && (inlastname.dirty || inlastname.touched || submitted)"
-					class="errorText">
+					class="message">
 					<div *ngIf="inlastname.errors.required">
 						Last Name is required.
 					</div>
@@ -68,33 +69,33 @@
 
 				<ion-item>
 					<ion-label fixed class="label">PHONE</ion-label>
-						minlength="8" maxlength="8" required="true" #inphonenumber="ngModel"></ion-input>
+					minlength="8" maxlength="8" required="true" #inphonenumber="ngModel"></ion-input>
 				</ion-item>
 				<div *ngIf="inphonenumber.invalid && (inphonenumber.dirty || inphonenumber.touched || submitted)"
-					class="errorText">
+					class="message">
 					<div *ngIf="inphonenumber.errors.required">
-					<div *ngIf="inphonenumber.errors.maxlength">
-						Phone Number must be exactly 8 characters long.
+						<div *ngIf="inphonenumber.errors.maxlength">
+							Phone Number must be exactly 8 characters long.
+						</div>
 					</div>
-				</div>
 
-				<ion-item>
-					<ion-label fixed class="label">PASSWORD</ion-label>
-					<ion-input type="password" id="password" name="password" [(ngModel)]="password" minlength="4"
-						maxlength="32" required="true" #inpassword="ngModel"></ion-input>
-				</ion-item>
-				<div *ngIf="inpassword.invalid && (inpassword.dirty || inpassword.touched || submitted)"
-					style="color: red;">
-					<div *ngIf="inpassword.errors.required">
-						Password is required.
+					<ion-item>
+						<ion-label fixed class="label">PASSWORD</ion-label>
+						<ion-input type="password" id="password" name="password" [(ngModel)]="password" minlength="4"
+							maxlength="32" required="true" #inpassword="ngModel"></ion-input>
+					</ion-item>
+					<div *ngIf="inpassword.invalid && (inpassword.dirty || inpassword.touched || submitted)"
+						class="message">
+						<div *ngIf="inpassword.errors.required">
+							Password is required.
+						</div>
+						<div *ngIf="inpassword.errors.minlength">
+							Password must be at least 4 characters long.
+						</div>
+						<div *ngIf="inpassword.errors.maxlength">
+							Password cannot exceed 32 characters.
+						</div>
 					</div>
-					<div *ngIf="inpassword.errors.minlength">
-						Password must be at least 4 characters long.
-					</div>
-					<div *ngIf="inpassword.errors.maxlength">
-						Password cannot exceed 32 characters.
-					</div>
-				</div>
 			</ion-list>
 
 			<ion-button class="login-button" type="submit" shape="round">REGISTER</ion-button>

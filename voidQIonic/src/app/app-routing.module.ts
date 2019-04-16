@@ -7,15 +7,11 @@ const routes: Routes = [
     redirectTo: 'home',
     pathMatch: 'full'
   },
-  {
-    path: 'home',
-    loadChildren: './home/home.module#HomePageModule'
-  },
-  { path: 'login', loadChildren: './login/login.module#LoginPageModule' },
+  { path: 'home', loadChildren: './home/home.module#HomePageModule' },
+  { path: 'register', loadChildren: './register/register.module#RegisterPageModule' },
   { path: 'tabs', loadChildren: './pages/tabs/tabs.module#TabsPageModule' },
   { path: 'paymentpage', loadChildren: './paymentpage/paymentpage.module#PaymentpagePageModule' },
-  { path: 'landing', loadChildren: './landing/landing.module#LandingPageModule' },
-  { path: 'register', loadChildren: './register/register.module#RegisterPageModule' }
+  { path: 'landing', loadChildren: './landing/landing.module#LandingPageModule' }
 
  
 ];
