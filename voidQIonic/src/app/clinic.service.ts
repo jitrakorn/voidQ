@@ -24,6 +24,14 @@ export class ClinicService {
     );
   }
 
+  retrieveCurrentClinicCurrentDayCurrentQueue(clinicId:string): Observable<any>
+  {
+    return this.httpClient.get<any>(this.baseUrl + "/retrieveCurrentClinicCurrentDayCurrentQueue?clinicId=" + clinicId).pipe
+    (
+        catchError(this.handleError)
+    );
+  }
+
 
   private handleError(error: HttpErrorResponse)
   {

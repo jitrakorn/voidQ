@@ -11,8 +11,15 @@
 	<div id ="map_canvas"></div>
 
 		<ion-list>
-			<ion-item *ngFor="let clinic of clinics">
+			<ion-list-header>
+				<ion-label>Clinic</ion-label>
+				<ion-label>Current Queue</ion-label>				
+				<ion-label>Distance</ion-label>				
+			</ion-list-header>
+			<ion-item *ngFor="let clinic of clinicsWithQueue">
 				<ion-label>{{clinic.clinicName}}</ion-label>
+				<ion-label>{{clinic.queueNum}}</ion-label>
+				<ion-label>{{clinic.distance}}</ion-label>
 			</ion-item>
 		</ion-list>
 		

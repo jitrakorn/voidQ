@@ -5,10 +5,12 @@
  */
 package ejb.session.stateless;
 
+import ejb.entity.BookingEntity;
 import ejb.entity.ClinicEntity;
 import ejb.entity.StaffEntity;
 import java.util.List;
 import java.util.Set;
+import javax.ejb.EJB;
 import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -30,6 +32,9 @@ import util.exception.StaffEntityNotFoundException;
 @Stateless
 @Local(ClinicSessionBeanLocal.class)
 public class ClinicSessionBean implements ClinicSessionBeanLocal {
+
+    @EJB
+    private BookingSessionBeanLocal bookingSessionBean;
 
     @PersistenceContext(unitName = "voidQ-ejbPU")
     private EntityManager em;
@@ -71,6 +76,13 @@ public class ClinicSessionBean implements ClinicSessionBeanLocal {
         }
         
         return clinicEntities;
+    }
+    
+    @Override
+    public Integer retrieveCurrentClinicCurrentDayCurrentQueue(Long clinicId) {
+        ClinicEntity clinic = em.find(ClinicEntity.class, clinicId);
+        List<BookingEntity> bookings = bookingSessionBean.getClinicCurrentDayBookings(clinic);
+        return bookings.size();
     }
     
 
