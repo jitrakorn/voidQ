@@ -16,7 +16,7 @@ const httpOptions = {
   providedIn: 'root'
 })
 export class PatientService {
-  baseUrl: string = "/api/Patient";
+  baseUrl: string = "http://localhost:8080/voidQRWS/Resources/Patient";
 
   constructor(private httpClient: HttpClient) { }
 
