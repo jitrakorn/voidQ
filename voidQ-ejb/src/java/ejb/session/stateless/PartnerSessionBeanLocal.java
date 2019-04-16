@@ -54,6 +54,5 @@ public interface PartnerSessionBeanLocal {
    
    public DoctorEntity appointAvailableDoctor(ClinicEntity currentClinic, BookingEntity booking);
    
-   public DoctorEntity availDoctor(DoctorEntity appointedDoctor);
-    
+   public DoctorEntity availDoctor(DoctorEntity appointedDoctor);  
 }

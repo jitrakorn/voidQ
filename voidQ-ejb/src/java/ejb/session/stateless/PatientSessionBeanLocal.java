@@ -31,4 +31,6 @@ public interface PatientSessionBeanLocal {
     
     public PatientEntity patientLogin(String email, String password) throws InvalidLoginCredentialException;
     
+    public Integer retrieveCurrentBookingQueuePosition(Long bookingId, Long clinicId);
+    
 }

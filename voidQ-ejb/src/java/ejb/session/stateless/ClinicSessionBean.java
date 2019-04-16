@@ -8,6 +8,7 @@ package ejb.session.stateless;
 import ejb.entity.BookingEntity;
 import ejb.entity.ClinicEntity;
 import ejb.entity.StaffEntity;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import javax.ejb.EJB;
@@ -23,6 +24,7 @@ import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 import util.enumeration.ApplicationStatus;
+import util.enumeration.BookingStatus;
 import util.exception.StaffEntityNotFoundException;
 
 /**
@@ -82,7 +84,13 @@ public class ClinicSessionBean implements ClinicSessionBeanLocal {
     public Integer retrieveCurrentClinicCurrentDayCurrentQueue(Long clinicId) {
         ClinicEntity clinic = em.find(ClinicEntity.class, clinicId);
         List<BookingEntity> bookings = bookingSessionBean.getClinicCurrentDayBookings(clinic);
-        return bookings.size();
+        List<BookingEntity> checkedInBookings = new ArrayList<>();
+        for(BookingEntity booking : bookings) {
+            if(booking.getStatus().equals(BookingStatus.CHECKED_IN)) {
+                checkedInBookings.add(booking);
+            }
+        } 
+        return checkedInBookings.size();
     }
     
 
