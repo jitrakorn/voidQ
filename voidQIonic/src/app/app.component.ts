@@ -27,15 +27,17 @@ export class AppComponent
   {
     this.initializeApp();
     
-  
-
-    
     if(this.sessionService.getIsLogin())
     {
       this.appPages  = [
         {
           title: 'Home',
           url: '/home',
+          icon: 'home'
+        },
+        {
+          title: 'View Current Booking',
+          url: '/view-booking',
           icon: 'home'
         },
         {

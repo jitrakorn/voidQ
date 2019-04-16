@@ -1,32 +1,30 @@
 <ion-header>
-  <ion-toolbar>
-	<ion-buttons slot="start">
-      <ion-menu-button></ion-menu-button>
-    </ion-buttons>
-    <ion-title>voidQ (Ionic v1.0)</ion-title>
-  </ion-toolbar>
+	<ion-toolbar>
+		<ion-buttons slot="start">
+			<ion-menu-button></ion-menu-button>
+		</ion-buttons>
+		<ion-title>voidQ (Ionic v1.0)</ion-title>
+	</ion-toolbar>
 </ion-header>
 
 <ion-content *ngIf="sessionService.getIsLogin() == true">
-	<div id ="map_canvas"></div>
+	<div id="map_canvas"></div>
 
-		<ion-list>
-			<ion-list-header>
-				<ion-label>Clinic</ion-label>
-				<ion-label>Current Queue</ion-label>				
-				<ion-label>Distance</ion-label>				
-			</ion-list-header>
-			<ion-item *ngFor="let clinic of clinicsWithQueue">
+	<ion-list>
+		<ion-list-header>
+			<ion-label>Clinic</ion-label>
+			<ion-label>Current Queue</ion-label>
+		</ion-list-header>
+		<ion-item *ngFor="let clinic of clinicsWithQueue">
+			<ion-button (click)="goBook(clinic)">
 				<ion-label>{{clinic.clinicName}}</ion-label>
 				<ion-label>{{clinic.queueNum}}</ion-label>
-				<ion-label>{{clinic.distance}}</ion-label>
-			</ion-item>
-		</ion-list>
-		
-		<ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)">
-			<ion-infinite-scroll-content
-				loadingSpinner="bubbles"
-				loadingText="Loading more data...">
-			</ion-infinite-scroll-content>
-		</ion-infinite-scroll>
+			</ion-button>
+		</ion-item>
+	</ion-list>
+
+	<ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)">
+		<ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
+		</ion-infinite-scroll-content>
+	</ion-infinite-scroll>
 </ion-content>
