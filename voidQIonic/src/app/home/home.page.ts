@@ -44,10 +44,9 @@ export class HomePage implements OnInit {
 		);
 
 
-		this.platform.ready();
-		this.loadMap();
+		await this.platform.ready();
+		await this.loadMap();
 	}
-
 
 	constructor(public sessionService: SessionService, public toastCtrl: ToastController,
 		private platform: Platform, private clinicService: ClinicService) {
