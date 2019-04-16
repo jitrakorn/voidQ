@@ -48,7 +48,7 @@ export class HomePage implements OnInit {
 						this.sessionService.setIsLogin(true);
 						this.sessionService.setCurrentPatient(patient);
 						this.loginError = false;
-						this.navigationCtrl.navigateForward('/landing');
+						this.navigationCtrl.navigateForward('/clinics');
 					}
 					else {
 						this.loginError = true;

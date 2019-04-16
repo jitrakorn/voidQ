@@ -13,7 +13,7 @@
 			<ion-list>
 				<ion-item>
 					<ion-label fixed class="label">EMAIL</ion-label>
-					<ion-input type="text" id="email" name="email" [(ngModel)]="newPatient.email" minlength="4"
+					<ion-input class="input" type="text" id="email" name="email" [(ngModel)]="newPatient.email" minlength="4"
 						maxlength="32" required="true" #inusername="ngModel"></ion-input>
 				</ion-item>
 				<div *ngIf="inusername.invalid && (inusername.dirty || inusername.touched || submitted)"
@@ -31,7 +31,7 @@
 
 				<ion-item>
 					<ion-label fixed class="label">FIRST NAME</ion-label>
-					<ion-input type="text" id="firstName" name="firstName" [(ngModel)]="newPatient.firstName"
+					<ion-input class="input" type="text" id="firstName" name="firstName" [(ngModel)]="newPatient.firstName"
 						minlength="3" maxlength="32" required="true" #infirstname="ngModel"></ion-input>
 				</ion-item>
 				<div *ngIf="infirstname.invalid && (infirstname.dirty || infirstname.touched || submitted)"
@@ -49,7 +49,7 @@
 
 				<ion-item>
 					<ion-label fixed class="label">LAST NAME</ion-label>
-					<ion-input type="text" id="lastName" name="lastName" [(ngModel)]="newPatient.lastName" minlength="2"
+					<ion-input class="input" type="text" id="lastName" name="lastName" [(ngModel)]="newPatient.lastName" minlength="2"
 						maxlength="32" required="true" #inlastname="ngModel"></ion-input>
 				</ion-item>
 				<div *ngIf="inlastname.invalid && (inlastname.dirty || inlastname.touched || submitted)"
@@ -68,7 +68,7 @@
 
 				<ion-item>
 					<ion-label fixed class="label">PHONE</ion-label>
-					<ion-input type="text" id="phoneNumber" name="phoneNumber" [(ngModel)]="newPatient.phoneNumber"
+					<ion-input class="input" type="text" id="phoneNumber" name="phoneNumber" [(ngModel)]="newPatient.phoneNumber"
 						minlength="8" maxlength="8" required="true" #inphonenumber="ngModel"></ion-input>
 				</ion-item>
 				<div *ngIf="inphonenumber.invalid && (inphonenumber.dirty || inphonenumber.touched || submitted)"
@@ -82,7 +82,7 @@
 
 				<ion-item>
 					<ion-label fixed class="label">PASSWORD</ion-label>
-					<ion-input type="password" id="password" name="password" [(ngModel)]="newPatient.password" minlength="4"
+					<ion-input class="input" type="password" id="password" name="password" [(ngModel)]="newPatient.password" minlength="4"
 						maxlength="32" required="true" #inpassword="ngModel"></ion-input>
 				</ion-item>
 				<div *ngIf="inpassword.invalid && (inpassword.dirty || inpassword.touched || submitted)"

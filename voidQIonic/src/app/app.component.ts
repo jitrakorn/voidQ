@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 
 import { Platform } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
@@ -14,7 +14,6 @@ import { Environment } from '@ionic-native/google-maps/ngx';
 })
 
 export class AppComponent {
-	public appPages;
 
 
 
@@ -28,44 +27,44 @@ export class AppComponent {
 
 
 
-		if (this.sessionService.getIsLogin()) {
-			this.appPages = [
-				{
-					title: 'Home',
-					url: '/home',
-					icon: 'home'
-				},
-				{
-					title: 'Logout',
-					url: '/login',
-					icon: 'exit'
-				}
-			];
-		}
-		else {
-			this.appPages = [
-				{
-					title: 'Home',
-					url: '/home',
-					icon: 'home'
-				},
-				{
-					title: 'Login',
-					url: '/login',
-					icon: 'lock'
-				},
-				{
-					title: 'New menu',
-					url: '/tabs',
-					icon: 'lock'
-				},
-				{
-					title: 'Payment Page',
-					url: '/paymentpage',
-					icon: 'lock'
-				}
-			];
-		}
+		// if (this.sessionService.getIsLogin()) {
+		// 	this.appPages = [
+		// 		{
+		// 			title: 'Home',
+		// 			url: '/home',
+		// 			icon: 'home'
+		// 		},
+		// 		{
+		// 			title: 'Logout',
+		// 			url: '/login',
+		// 			icon: 'exit'
+		// 		}
+		// 	];
+		// }
+		// else {
+		// 	this.appPages = [
+		// 		{
+		// 			title: 'Home',
+		// 			url: '/home',
+		// 			icon: 'home'
+		// 		},
+		// 		{
+		// 			title: 'Login',
+		// 			url: '/login',
+		// 			icon: 'lock'
+		// 		},
+		// 		{
+		// 			title: 'New menu',
+		// 			url: '/tabs',
+		// 			icon: 'lock'
+		// 		},
+		// 		{
+		// 			title: 'Payment Page',
+		// 			url: '/paymentpage',
+		// 			icon: 'lock'
+		// 		}
+		// 	];
+		// }
 	}
 
 

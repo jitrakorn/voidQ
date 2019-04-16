@@ -1,20 +1,21 @@
 <ion-app>
 	<ion-router-outlet main></ion-router-outlet>
-	<ion-card *ngIf="sessionService.getIsLogin() == false">
-		<ion-tabs>
-			<ion-tab-bar slot="bottom">
-				<ion-tab-button tab="healthbook">
-					<ion-icon name="sunny">
-						<ion-label>Booking</ion-label>
-					</ion-icon>
-				</ion-tab-button>
+	<ion-tabs *ngIf="sessionService.getIsLogin() == true">
+		<ion-tab-bar slot="bottom">
+			<ion-tab-button tab="clinics">
+				<ion-label>Clinics</ion-label>
+				<ion-icon name="add"></ion-icon>
+			</ion-tab-button>
 
-				<ion-tab-button tab="appointments">
-					<ion-icon name="moon">
-						<ion-label>tab2</ion-label>
-					</ion-icon>
-				</ion-tab-button>
-			</ion-tab-bar>
-		</ion-tabs>
-	</ion-card>
+			<ion-tab-button tab="bookings">
+				<ion-label>Bookings</ion-label>
+				<ion-icon name="sunny"></ion-icon>
+			</ion-tab-button>
+
+			<ion-tab-button tab="profile">
+				<ion-label>Profile</ion-label>
+				<ion-icon name="person"></ion-icon>
+			</ion-tab-button>
+		</ion-tab-bar>
+	</ion-tabs>
 </ion-app>

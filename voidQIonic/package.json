@@ -29,7 +29,8 @@
     "@ionic/angular": "^4.1.0",
     "card.io.cordova.mobilesdk": "^2.1.0",
     "com.paypal.cordova.mobilesdk": "^3.5.0",
-    "cordova-android": "7.1.4",
+    "cordova": "^8.1.2",
+    "cordova-android": "8.0.0",
     "cordova-browser": "5.0.4",
     "cordova-plugin-device": "^2.0.2",
     "cordova-plugin-googlemaps": "git+https://github.com/mapsplugin/cordova-plugin-googlemaps.git#multiple_maps",
@@ -89,8 +90,8 @@
       "com.paypal.cordova.mobilesdk": {}
     },
     "platforms": [
-      "android",
-      "browser"
+      "browser",
+      "android"
     ]
   }
 }
