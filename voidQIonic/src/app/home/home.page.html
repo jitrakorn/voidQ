@@ -13,13 +13,13 @@
 			<ion-list>
 
 				<ion-item>
-					<ion-label fixed>EMAIL</ion-label>
+					<ion-label fixed class="label">EMAIL</ion-label>
 					<ion-input class="input" type="email" id="username" name="username" [(ngModel)]="username"
 						minlength="4" maxlength="32" required="true" #inusername="ngModel"></ion-input>
 				</ion-item>
 
 				<div *ngIf="inusername.invalid && (inusername.dirty || inusername.touched || submitted)"
-					style="color: red;">
+					class="message">
 					<div *ngIf="inusername.errors.required">
 						Username is required.
 					</div>
@@ -32,13 +32,13 @@
 				</div>
 
 				<ion-item>
-					<ion-label fixed>PASS</ion-label>
+					<ion-label fixed class="label">PASS</ion-label>
 					<ion-input type="password" id="password" name="password" [(ngModel)]="password" minlength="4"
 						maxlength="32" required="true" #inpassword="ngModel"></ion-input>
 				</ion-item>
 
 				<div *ngIf="inpassword.invalid && (inpassword.dirty || inpassword.touched || submitted)"
-					style="color: red;">
+					class="message">
 					<div *ngIf="inpassword.errors.required">
 						Password is required.
 					</div>

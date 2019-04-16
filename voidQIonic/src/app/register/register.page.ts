@@ -6,6 +6,7 @@ import { NgForm } from '@angular/forms';
 import { SessionService } from '../session.service';
 import { PatientService } from '../patient.service';
 import { Patient } from '../patient';
+import { NavController } from '@ionic/angular';
 
 
 @Component({
@@ -17,11 +18,6 @@ import { Patient } from '../patient';
 export class RegisterPage implements OnInit {
 
 	submitted: boolean;
-	// email: string;
-	// firstName: string;
-	// lastName: string;
-	// phoneNumber: string;
-	// password: string;
 	newPatient: Patient;
 	registerError: boolean;
 	registerErrorMessage: string;
@@ -30,7 +26,8 @@ export class RegisterPage implements OnInit {
 
 	constructor(private router: Router,
 		public sessionService: SessionService,
-		private patientService: PatientService,) {
+		private patientService: PatientService,
+		private navigationCtrl: NavController) {
 		this.submitted = false;
 		this.registerError = false;
 		this.newPatient = new Patient();
@@ -48,28 +45,12 @@ export class RegisterPage implements OnInit {
 		this.submitted = true;
 
 		if (patientRegisterForm.valid) {
-			// this.sessionService.setEmail(this.email);
-			// this.sessionService.setFirstName(this.firstName);
-			// this.sessionService.setLastName(this.lastName);
-			// this.sessionService.setPhoneNumber(this.phoneNumber);
-			// this.sessionService.setPassword(this.password);
 
 			this.patientService.patientRegister(this.newPatient).subscribe(
 				response => {
 					let newPatientId: number = response.userId;
 					this.message = "Patient " + newPatientId + "successfully registered";
-
-					// if(newPatientId != null)
-					// {
-					// 	this.sessionService.setIsLogin(true);
-					// 	this.sessionService.setCurrentPatient(this.newPatient);
-					// 	this.loginError = false;					
-					// 	window.location.reload();						
-					// }
-					// else
-					// {
-					// 	this.loginError = true;
-					// }
+					alert('Patient sucessfully registered!');
 				},
 				error => {
 					this.registerError = true;
@@ -80,5 +61,9 @@ export class RegisterPage implements OnInit {
 		else {
 
 		}
+	}
+
+	goBack() {
+		this.navigationCtrl.navigateBack('/home');
 	}
 }

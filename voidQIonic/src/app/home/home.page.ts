@@ -9,6 +9,7 @@ import { Patient } from '../patient';
 
 import { NavController } from '@ionic/angular';
 
+
 @Component({
 	selector: 'app-home',
 	templateUrl: 'home.page.html',
@@ -64,7 +65,6 @@ export class HomePage implements OnInit {
 	}
 
 	goToRegisterPage() {
-		console.log("AAA")
 		this.navigationCtrl.navigateForward('/register');
 	}
 }

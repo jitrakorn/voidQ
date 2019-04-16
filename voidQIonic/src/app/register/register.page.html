@@ -1,5 +1,4 @@
 <ion-content>
-	<ion-title>register</ion-title>
 	<div class="content">
 		<span class="title">REGISTER</span>
 
@@ -69,7 +68,8 @@
 
 				<ion-item>
 					<ion-label fixed class="label">PHONE</ion-label>
-					minlength="8" maxlength="8" required="true" #inphonenumber="ngModel"></ion-input>
+					<ion-input type="text" id="phoneNumber" name="phoneNumber" [(ngModel)]="newPatient.phoneNumber"
+						minlength="8" maxlength="8" required="true" #inphonenumber="ngModel"></ion-input>
 				</ion-item>
 				<div *ngIf="inphonenumber.invalid && (inphonenumber.dirty || inphonenumber.touched || submitted)"
 					class="message">
@@ -78,24 +78,26 @@
 							Phone Number must be exactly 8 characters long.
 						</div>
 					</div>
+				</div>
 
-					<ion-item>
-						<ion-label fixed class="label">PASSWORD</ion-label>
-						<ion-input type="password" id="password" name="password" [(ngModel)]="password" minlength="4"
-							maxlength="32" required="true" #inpassword="ngModel"></ion-input>
-					</ion-item>
-					<div *ngIf="inpassword.invalid && (inpassword.dirty || inpassword.touched || submitted)"
-						class="message">
-						<div *ngIf="inpassword.errors.required">
-							Password is required.
-						</div>
-						<div *ngIf="inpassword.errors.minlength">
-							Password must be at least 4 characters long.
-						</div>
-						<div *ngIf="inpassword.errors.maxlength">
-							Password cannot exceed 32 characters.
-						</div>
+				<ion-item>
+					<ion-label fixed class="label">PASSWORD</ion-label>
+					<ion-input type="password" id="password" name="password" [(ngModel)]="newPatient.password" minlength="4"
+						maxlength="32" required="true" #inpassword="ngModel"></ion-input>
+				</ion-item>
+				<div *ngIf="inpassword.invalid && (inpassword.dirty || inpassword.touched || submitted)"
+					class="message">
+					<div *ngIf="inpassword.errors.required">
+						Password is required.
 					</div>
+					<div *ngIf="inpassword.errors.minlength">
+						Password must be at least 4 characters long.
+					</div>
+					<div *ngIf="inpassword.errors.maxlength">
+						Password cannot exceed 32 characters.
+					</div>
+				</div>
+
 			</ion-list>
 
 			<ion-button class="login-button" type="submit" shape="round">REGISTER</ion-button>
@@ -103,7 +105,5 @@
 		</form>
 
 	</div>
-
-
 
 </ion-content>
