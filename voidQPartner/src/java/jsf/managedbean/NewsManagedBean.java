@@ -2,7 +2,6 @@ package jsf.managedbean;
 
 import ejb.entity.DoctorEntity;
 import ejb.entity.MessageOfTheDayEntity;
-import static ejb.entity.MessageOfTheDayEntity_.doctorEntity;
 import ejb.entity.StaffEntity;
 import ejb.session.stateless.MessageOfTheDayControllerLocal;
 import java.io.Serializable;

@@ -63,7 +63,6 @@ export class RegisterPage implements OnInit {
 					// 	this.sessionService.setIsLogin(true);
 					// 	this.sessionService.setCurrentPatient(this.newPatient);
 					// 	this.loginError = false;					
-
 					// 	window.location.reload();						
 					// }
 					// else
