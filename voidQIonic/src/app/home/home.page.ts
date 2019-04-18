@@ -10,6 +10,7 @@ import { Patient } from '../patient';
 import { NavController } from '@ionic/angular';
 
 
+
 @Component({
 	selector: 'app-home',
 	templateUrl: 'home.page.html',
@@ -31,7 +32,15 @@ export class HomePage implements OnInit {
 		this.submitted = false;
 	}
 
+	
+
 	ngOnInit() {
+	
+		if(this.sessionService.getIsLogin())
+		{
+			this.navigationCtrl.navigateForward('/tabs');
+		}
+		
 	}
 
 	patientLogin(patientLoginForm: NgForm) {
@@ -48,7 +57,7 @@ export class HomePage implements OnInit {
 						this.sessionService.setIsLogin(true);
 						this.sessionService.setCurrentPatient(patient);
 						this.loginError = false;
-						this.navigationCtrl.navigateRoot('/clinics');
+						this.navigationCtrl.navigateForward('/tabs');
 					}
 					else {
 						this.loginError = true;

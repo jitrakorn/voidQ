@@ -16,7 +16,7 @@ const httpOptions = {
 	providedIn: 'root'
 })
 export class PatientService {
-	baseUrl: string = "/api/Patient";
+	baseUrl: string = "http://localhost:8080/voidQRWS/Resources/Patient";
 
 	constructor(private httpClient: HttpClient) { }
 
@@ -43,6 +43,13 @@ export class PatientService {
 
 	retrieveCurrentBookingQueuePosition(bookingId: string, clinicId: string): Observable<any> {
 		return this.httpClient.get<any>(this.baseUrl + "/retrieveCurrentBookingQueuePosition?bookingId=" + bookingId + "&clinicId=" + clinicId).pipe
+			(
+				catchError(this.handleError)
+			)
+	}
+
+	retrieveCurrentBooking(patientId: string): Observable<any> {
+		return this.httpClient.get<any>(this.baseUrl + "/retrieveCurrentBooking/" + patientId).pipe
 			(
 				catchError(this.handleError)
 			)

@@ -1,6 +1,6 @@
 {
 	"/api": {
-		"target": "http://172.25.101.5:8080/voidQRWS/Resources",
+		"target": "http://172.25.104.110:8080/voidQRWS/Resources",
 		"secure": false,
 		"pathRewrite": {
 		  "^/api": ""

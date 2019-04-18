@@ -4,7 +4,7 @@ import { NgForm } from '@angular/forms';
 import { Booking } from '../booking';
 import { BookingService } from '../booking.service';
 import { NavController } from '@ionic/angular';
-
+import { Location } from '@angular/common';
 @Component({
 	selector: 'app-clinic-details',
 	templateUrl: './clinic-details.page.html',
@@ -15,15 +15,11 @@ export class ClinicDetailsPage implements OnInit {
 	submitted: boolean;
 	visitreason: String;
 
-	constructor(public sessionService: SessionService, private bookingService: BookingService, private navigationCtrl: NavController) {
+	constructor(public sessionService: SessionService, private bookingService: BookingService, private navigationCtrl: NavController,private location: Location) {
 		this.submitted = false;
 	}
 
 	ngOnInit() {
-
-	}
-
-	ionViewWillEnter() {
 		var clinicVals = Object.values(this.sessionService.getClinicObj());
 		this.clinic = {
 			clinicId: clinicVals[0],
@@ -38,6 +34,16 @@ export class ClinicDetailsPage implements OnInit {
 			queueNum: clinicVals[9]
 		}
 	}
+
+	ionViewWillEnter() {
+		
+	}
+	
+	back()
+	{
+		this.location.back();
+	}
+	
 
 	makeBooking(makeBookingForm: NgForm) {
 		this.submitted = true;

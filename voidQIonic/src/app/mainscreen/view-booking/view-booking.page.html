@@ -1,33 +1,29 @@
 <ion-header>
-		<ion-toolbar>
-				<ion-buttons slot="start">      
-						<ion-button (click)="back()">
-						<ion-icon slot="start" name="arrow-back"></ion-icon>
-						</ion-button>
-						</ion-buttons>
-			<ion-title>Booking</ion-title>
-		</ion-toolbar>
-	</ion-header>
+	<ion-toolbar>
+			
+		<ion-title>Booking</ion-title>
+	</ion-toolbar>
+</ion-header>
 
-<ion-content  *ngIf="queueNum != null">
+<ion-content  *ngIf="booking != null" >
 	<ion-list>
-			<ion-item>
+			<ion-item> 
 					<ion-label>
 						Your Booking ID:
 					</ion-label>
-					<span style="font-size: 50px">{{bookingId}}</span>
+				<span style="font-size: 15px">{{booking.bookingId}}</span> 
 				</ion-item>
 				<ion-item>
 						<ion-label>
-							Your Clinic ID:
+							Your Clinic Name:
 						</ion-label>
-						<span style="font-size: 50px">{{clinicId}}</span>
+						 <span style="font-size: 15px">{{clinicEntity.clinicName}}</span> 
 					</ion-item>
 		<ion-item>
 			<ion-label>
 				Your current position is:
 			</ion-label>
-			<span style="font-size: 50px">{{queueNum}}</span>
+			<span style="font-size: 15px">{{queueNum}}</span>
 		</ion-item>
 
 		<ion-item>
@@ -44,6 +40,6 @@
 	</ion-list>
 </ion-content>
 
-<ion-content  *ngIf="queueNum == null">
+<ion-content  *ngIf="booking == null">
 	<span style="font-size: 20px; text-align: center">You have no bookings yet!</span>
 </ion-content>
