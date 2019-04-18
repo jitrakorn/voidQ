@@ -56,6 +56,10 @@ export class ClinicsPage implements OnInit {
 		await this.loadMap();
 	}
 
+	IonViewWillEnter() {
+		this.loadData(event);
+	}
+
 	constructor(public sessionService: SessionService, public toastCtrl: ToastController,
 		private platform: Platform, private clinicService: ClinicService, private navigationCtrl: NavController) {
 	}

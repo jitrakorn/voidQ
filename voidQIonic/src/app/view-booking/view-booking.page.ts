@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { SessionService } from '../session.service';
 import { NavController } from '@ionic/angular';
 import { PatientService } from '../patient.service';
+import { BookingService } from '../booking.service';
 import { PayPal, PayPalPayment, PayPalConfiguration } from '@ionic-native/paypal/ngx';
 
 
@@ -16,7 +17,7 @@ export class ViewBookingPage implements OnInit {
 	clinicId: number;
 	queueNum: number;
 
-	constructor(public sessionService: SessionService, private patientService: PatientService, private navigationCtrl: NavController, private payPal: PayPal) { }
+	constructor(public sessionService: SessionService, private bookingService: BookingService, private patientService: PatientService, private navigationCtrl: NavController, private payPal: PayPal) { }
 
 	ngOnInit() {
 		this.bookingId = this.sessionService.getBookingId();
@@ -30,6 +31,11 @@ export class ViewBookingPage implements OnInit {
 			}
 		)
 		console.log("BookingId, ClinicId: " + this.bookingId + ", " + this.clinicId);
+	}
+
+	checkin() {
+		this.bookingService.checkin(String(this.bookingId));
+		alert("Checked-in!")
 	}
 
 

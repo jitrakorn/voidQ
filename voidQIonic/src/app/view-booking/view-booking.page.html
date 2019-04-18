@@ -1,28 +1,44 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>Booking</ion-title>
-  </ion-toolbar>
+	<ion-toolbar>
+		<ion-title>Booking</ion-title>
+	</ion-toolbar>
 </ion-header>
 
-<ion-content>
-  <ion-list>
-    <ion-item>
-      <ion-label>
-        Queue Position
-      </ion-label>
-      {{queueNum}}
-    </ion-item>
+<ion-content  *ngIf="queueNum != null">
+	<ion-list>
+			<ion-item>
+					<ion-label>
+						Your Booking ID:
+					</ion-label>
+					<span style="font-size: 50px">{{bookingId}}</span>
+				</ion-item>
+				<ion-item>
+						<ion-label>
+							Your Clinic ID:
+						</ion-label>
+						<span style="font-size: 50px">{{clinicId}}</span>
+					</ion-item>
+		<ion-item>
+			<ion-label>
+				Your current position is:
+			</ion-label>
+			<span style="font-size: 50px">{{queueNum}}</span>
+		</ion-item>
 
-    <ion-item>
-      <ion-button type="submit" ion-button block>
-        Check-in
-      </ion-button>
-    </ion-item>
+		<ion-item>
+			<ion-button type="submit" (click)="checkin()" ion-button block>
+				Check-in
+			</ion-button>
+		</ion-item>
 
-    <ion-item>
-      <ion-button type="submit" (click)="pay()" ion-button block>
-        Pay
-      </ion-button>
-    </ion-item>
-  </ion-list>
+		<ion-item>
+			<ion-button type="submit" (click)="pay()" ion-button block>
+				Pay
+			</ion-button>
+		</ion-item>
+	</ion-list>
+</ion-content>
+
+<ion-content  *ngIf="queueNum == null">
+	<span style="font-size: 20px; text-align: center">You have no bookings yet!</span>
 </ion-content>

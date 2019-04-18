@@ -1,5 +1,6 @@
 package ws.restful;
 
+import datamodel.ws.rest.CheckInReq;
 import datamodel.ws.rest.CreateBookingReq;
 import datamodel.ws.rest.CreateBookingRsp;
 import datamodel.ws.rest.ErrorRsp;
@@ -7,6 +8,7 @@ import datamodel.ws.rest.GetAllBookingsByClinicRsp;
 import datamodel.ws.rest.MakePaymentReq;
 import ejb.entity.BookingEntity;
 import ejb.entity.ClinicEntity;
+import ejb.entity.DoctorEntity;
 import ejb.entity.PatientEntity;
 import ejb.session.stateless.BookingSessionBeanLocal;
 import ejb.session.stateless.PartnerSessionBeanLocal;
@@ -93,6 +95,32 @@ public class BookingResource {
                 return Response.status(Status.NOT_FOUND).entity(errorRsp).build();
             }
         } else {
+            ErrorRsp errorRsp = new ErrorRsp("Invalid create new booking");
+
+            return Response.status(Response.Status.BAD_REQUEST).entity(errorRsp).build();
+        }
+    }
+    
+    @Path("checkin")
+    @PUT
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response checkIn(CheckInReq checkInReq) {
+        if (checkInReq != null) {
+            String bookingId = checkInReq.getBookingId();
+            BookingEntity currentBooking = bookingSessionBeanLocal.getBookingById(Long.parseLong(bookingId));
+            currentBooking.setStatus(BookingStatus.CHECKED_IN);
+            if (partnerSessionBean.hasAvailableDoctors(currentBooking.getClinicEntity())) {
+                currentBooking.setStatus(BookingStatus.VISITING);
+                DoctorEntity appointedDoctor = partnerSessionBean.appointAvailableDoctor(currentBooking.getClinicEntity(), currentBooking);
+                return Response.status(Response.Status.OK).build();
+                
+            } else {
+                ErrorRsp errorRsp = new ErrorRsp("Patient has not visited clinic yet");
+                return Response.status(Response.Status.BAD_REQUEST).entity(errorRsp).build();
+            }
+        }
+        else {
             ErrorRsp errorRsp = new ErrorRsp("Invalid create new booking");
 
             return Response.status(Response.Status.BAD_REQUEST).entity(errorRsp).build();

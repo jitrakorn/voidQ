@@ -4,45 +4,51 @@ import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
 const httpOptions = {
-  headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+	headers: new HttpHeaders({ 'Content-Type': 'application/json' })
 };
 
 @Injectable({
-  providedIn: 'root'
+	providedIn: 'root'
 })
 export class BookingService {
-  baseUrl: string = "/api/Booking";
+	baseUrl: string = "/api/Booking";
 
-  constructor(private httpClient: HttpClient) { }
+	constructor(private httpClient: HttpClient) { }
 
-  createBooking(email:String, visitReason:String, clinicId:String) : Observable<any> 
-  {
-    let createBookingReq  = {
-      "email" : email,
-      "visitReason" : visitReason,
-      "clinicId": clinicId
-    }
-    return this.httpClient.post<any>(this.baseUrl + "/createBooking", createBookingReq, httpOptions).pipe
-    (
-        catchError(this.handleError)
-    );
-  }
+	createBooking(email: String, visitReason: String, clinicId: String): Observable<any> {
+		let createBookingReq = {
+			"email": email,
+			"visitReason": visitReason,
+			"clinicId": clinicId
+		}
+		return this.httpClient.post<any>(this.baseUrl + "/createBooking", createBookingReq, httpOptions).pipe
+			(
+				catchError(this.handleError)
+			);
+	}
 
-  private handleError(error: HttpErrorResponse)
-  {
-    let errorMessage: string = "";
+	checkin(bookingId: String): Observable<any> {
+		let checkInReq = {
+			"bookingId": bookingId
+		}
+		return this.httpClient.put<any>(this.baseUrl + "/checkin", checkInReq, httpOptions).pipe
+			(
+				catchError(this.handleError)
+			);
+	}
 
-    if (error.error instanceof ErrorEvent)
-    {
-      errorMessage = "An unknown error has occurred: " + error.error.message;
-    }
-    else
-    {
-      errorMessage = "A HTTP error has occurred: " + `HTTP ${error.status}: ${error.error.message}`;
-    }
+	private handleError(error: HttpErrorResponse) {
+		let errorMessage: string = "";
 
-    console.error(errorMessage);
+		if (error.error instanceof ErrorEvent) {
+			errorMessage = "An unknown error has occurred: " + error.error.message;
+		}
+		else {
+			errorMessage = "A HTTP error has occurred: " + `HTTP ${error.status}: ${error.error.message}`;
+		}
 
-    return throwError(errorMessage);
-  }
+		console.error(errorMessage);
+
+		return throwError(errorMessage);
+	}
 }

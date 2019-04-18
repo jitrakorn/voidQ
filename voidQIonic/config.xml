@@ -3,7 +3,7 @@
     <name>voidQ</name>
     <description>voidQ Patient Ionic App</description>
     <author email="hi@ionicframework" href="http://ionicframework.com/">Ionic Framework Team</author>
-    <content original-src="index.html" src="http://192.168.1.24:8100" />
+    <content src="index.html" />
     <access origin="*" />
     <allow-navigation href="*" />
     <allow-intent href="http://*/*" />
@@ -92,7 +92,7 @@
         <variable name="PLAY_SERVICES_VERSION" value="15.0.1" />
         <variable name="ANDROID_SUPPORT_V4_VERSION" value="27.+" />
     </plugin>
-    <allow-navigation href="http://192.168.1.24:8100" sessionid="cbbe6ac9" />
     <engine name="browser" spec="5.0.4" />
     <engine name="android" spec="7.1.4" />
+    <plugin name="cordova-plugin-qrscanner" spec="3.0.1" />
 </widget>

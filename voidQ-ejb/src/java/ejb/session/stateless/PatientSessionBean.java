@@ -153,7 +153,7 @@ public class PatientSessionBean implements PatientSessionBeanLocal {
             if (booking.getBookingId().equals(currentBooking.getBookingId())) {
                 break;
             }
-            if (booking.getStatus().equals(BookingStatus.CHECKED_IN)) {
+            if (booking.getStatus().equals(BookingStatus.CHECKED_IN) || booking.getStatus().equals(BookingStatus.BOOKED)) {
                 position++;
             }
         }

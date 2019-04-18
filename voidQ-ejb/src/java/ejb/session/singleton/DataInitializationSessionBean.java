@@ -61,11 +61,14 @@ public class DataInitializationSessionBean {
             administratorSessionBeanLocal.createNewAdmin(new AdminEntity("Jitrakorn", "Tan", "Jitrakorntan@gmail.com", "password", 81132795));
             administratorSessionBeanLocal.createNewAdmin(new AdminEntity("Pamela", "Teo", "Pamelameteo@gmail.com", "password", 98198418));
 
-            partnerSessionBeanLocal.createNewPartner(new ClinicEntity("Etern Medical Clinic", "General Medical Practioner", "70 Punggol Central, #01–05, Punggol Mrt Station, Singapore – 828868","91833223", new BigDecimal(10),"1.404701","103.902205", ApplicationStatus.ACTIVATED));
-            partnerSessionBeanLocal.createNewPartner(new ClinicEntity("Healthmark Medical Clinic", "General Medical Practioner", "639 Punggol Drive, #01–06, Singapore – 820639", "91833212", new BigDecimal(20),"1.399476","103.915997", ApplicationStatus.ACTIVATED));
-            partnerSessionBeanLocal.createNewPartner(new ClinicEntity("Healthway Medical Clinic", "General Medical Practioner", "273c Punggol Place, #01–874, Singapore – 823273","91833290", new BigDecimal(30),"1.402249","103.901362", ApplicationStatus.ACTIVATED));
-            partnerSessionBeanLocal.createNewPartner(new ClinicEntity("Mutual Healthcare Medical Clinic (Punggol)", "General Medical Practioner", "106A Punggol Field, #01–546, Singapore – 821106", "91833236", new BigDecimal(40),"1.403033","103.897750", ApplicationStatus.ACTIVATED));
-            partnerSessionBeanLocal.createNewPartner(new ClinicEntity("My Family Clinic (Punggol Central)", "General Medical Practioner", "301 Punggol Central, #01–02, Singapore – 820301", "91833281", new BigDecimal(50), "1.403583","103.905993", ApplicationStatus.ACTIVATED));
+            partnerSessionBeanLocal.createNewPartner(new ClinicEntity("Etern Medical Clinic", "General Medical Practioner", "70 Punggol Central, #01–05, Punggol Mrt Station, Singapore – 828868", "91833223", new BigDecimal(10), "1.404701", "103.902205", ApplicationStatus.ACTIVATED));
+            partnerSessionBeanLocal.createNewPartner(new ClinicEntity("Healthmark Medical Clinic", "General Medical Practioner", "639 Punggol Drive, #01–06, Singapore – 820639", "91833212", new BigDecimal(20), "1.399476", "103.915997", ApplicationStatus.ACTIVATED));
+            partnerSessionBeanLocal.createNewPartner(new ClinicEntity("Healthway Medical Clinic", "General Medical Practioner", "273c Punggol Place, #01–874, Singapore – 823273", "91833290", new BigDecimal(30), "1.402249", "103.901362", ApplicationStatus.ACTIVATED));
+            partnerSessionBeanLocal.createNewPartner(new ClinicEntity("Mutual Healthcare Medical Clinic (Punggol)", "General Medical Practioner", "106A Punggol Field, #01–546, Singapore – 821106", "91833236", new BigDecimal(40), "1.403033", "103.897750", ApplicationStatus.ACTIVATED));
+            partnerSessionBeanLocal.createNewPartner(new ClinicEntity("My Family Clinic (Punggol Central)", "General Medical Practioner", "301 Punggol Central, #01–02, Singapore – 820301", "91833281", new BigDecimal(50), "1.403583", "103.905993", ApplicationStatus.ACTIVATED));
+            partnerSessionBeanLocal.createNewPartner(new ClinicEntity("BL Medical Associates Pte Ltd", "General Medical Practioner", "2 Science Park Drive #01-10 Ascent, Singapore – 820301", "62651052", new BigDecimal(55), "1.290410", "103.788727", ApplicationStatus.ACTIVATED));
+            partnerSessionBeanLocal.createNewPartner(new ClinicEntity("Fetal Care Centre", "Hospital", "5 Lower Kent Ridge Road, Level 3, Kent Ridge Building, 2 National University, Singapore – 119074", "67722230", new BigDecimal(55), "1.296450", "103.782850", ApplicationStatus.ACTIVATED));
+            partnerSessionBeanLocal.createNewPartner(new ClinicEntity("University Health Centre", "Hospital", "20 Lower Kent Ridge Road \n" + "Singapore 119080", "66015035", new BigDecimal(55), "1.290475", "103..852036", ApplicationStatus.ACTIVATED));
 
             partnerSessionBeanLocal.retrievePartnerByPartnerId(1L).getDoctorEntities().add((DoctorEntity) partnerSessionBeanLocal.createNewStaff(new DoctorEntity("Doctor1A@gmail.com", "password", "Doctor", "OneA", partnerSessionBeanLocal.retrievePartnerByPartnerId(1L), Availability.AVAILABLE)));
             partnerSessionBeanLocal.retrievePartnerByPartnerId(1L).getDoctorEntities().add((DoctorEntity) partnerSessionBeanLocal.createNewStaff(new DoctorEntity("Doctor1B@gmail.com", "password", "Doctor", "OneB", partnerSessionBeanLocal.retrievePartnerByPartnerId(1L), Availability.AVAILABLE)));
@@ -130,7 +133,7 @@ public class DataInitializationSessionBean {
             partnerSessionBeanLocal.updatePartner(partnerSessionBeanLocal.retrievePartnerByPartnerId(3L));
             partnerSessionBeanLocal.updatePartner(partnerSessionBeanLocal.retrievePartnerByPartnerId(4L));
             partnerSessionBeanLocal.updatePartner(partnerSessionBeanLocal.retrievePartnerByPartnerId(5L));
-            
+
         } catch (InputDataValidationException ex) {
             System.err.println("********** DataInitializationSessionBean.initializeData(): " + ex.getMessage());
         } catch (Exception ex) {

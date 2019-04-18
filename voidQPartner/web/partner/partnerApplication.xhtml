@@ -22,19 +22,17 @@
                 <h:outputText value="1" styleClass="section__number" />
                 <h:outputText value="ABOUT YOU" styleClass="section__title" />
                 <br/>
-                <h:inputText id="firstName" value="#{partnerApplicationManagedBean.newStaff.firstName}" required="true" label="First Name" styleClass="text-input__input text-input__input--align-center"/>
+                <h:inputText id="firstName" value="#{partnerApplicationManagedBean.newDoctor.firstName}" required="true" label="First Name" styleClass="text-input__input text-input__input--align-center"/>
                 <h:outputLabel for="firstName" value="FIRST NAME" styleClass="text-input__label"/>
                 <br/>
-                <h:inputText id="lastName" value="#{partnerApplicationManagedBean.newStaff.lastName}" required="true" label="Last Name" styleClass="text-input__input text-input__input--align-center"/>
+                <h:inputText id="lastName" value="#{partnerApplicationManagedBean.newDoctor.lastName}" required="true" label="Last Name" styleClass="text-input__input text-input__input--align-center"/>
                 <h:outputLabel for="lastName" value="LAST NAME" styleClass="text-input__label"/>
+
                 <br/>
-                <h:inputText id="contactNumber" value="#{partnerApplicationManagedBean.newStaff.phoneNumber}" required="true" label="Contact Number" styleClass="text-input__input text-input__input--align-center"/>
-                <h:outputLabel for="contactNumber" value="CONTACT NUMBER" styleClass="text-input__label"/>
-                <br/>
-                <h:inputText id="email" value="#{partnerApplicationManagedBean.newStaff.email}" required="true" label="Email" styleClass="text-input__input text-input__input--align-center"/>
+                <h:inputText id="email" value="#{partnerApplicationManagedBean.newDoctor.email}" required="true" label="Email" styleClass="text-input__input text-input__input--align-center"/>
                 <h:outputLabel for="email" value="EMAIL" styleClass="text-input__label"/>
                 <br/>
-                <h:inputSecret id="password" value="#{partnerApplicationManagedBean.newStaff.password}" required="true" label="Password" styleClass="text-input__input text-input__input--align-center"/>
+                <h:inputSecret id="password" value="#{partnerApplicationManagedBean.newDoctor.password}" required="true" label="Password" styleClass="text-input__input text-input__input--align-center"/>
                 <h:outputLabel for="password"  value="PASSWORD" styleClass="text-input__label"/>
 
                 <br/>

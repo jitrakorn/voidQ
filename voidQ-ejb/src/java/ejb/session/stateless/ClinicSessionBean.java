@@ -86,7 +86,7 @@ public class ClinicSessionBean implements ClinicSessionBeanLocal {
         List<BookingEntity> bookings = bookingSessionBean.getClinicCurrentDayBookings(clinic);
         List<BookingEntity> checkedInBookings = new ArrayList<>();
         for(BookingEntity booking : bookings) {
-            if(booking.getStatus().equals(BookingStatus.CHECKED_IN)) {
+            if(booking.getStatus().equals(BookingStatus.CHECKED_IN) || booking.getStatus().equals(BookingStatus.BOOKED)) {
                 checkedInBookings.add(booking);
             }
         } 

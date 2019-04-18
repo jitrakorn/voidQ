@@ -8,15 +8,11 @@
 	<div id="map_canvas"></div>
 
 	<ion-list>
-		<ion-list-header>
-			<ion-label>Clinic</ion-label>
-			<ion-label>Current Queue</ion-label>
-		</ion-list-header>
-		<ion-item *ngFor="let clinic of clinicsWithQueue">
-			<ion-button (click)="goBook(clinic)">
-				<ion-label>{{clinic.clinicName}}</ion-label>
-				<ion-label>{{clinic.queueNum}}</ion-label>
-			</ion-button>
+		<ion-item *ngFor="let clinic of clinicsWithQueue" (click)="goBook(clinic)">
+
+			<ion-label>{{clinic.clinicName}}</ion-label>
+			<ion-label style="font-size: 30px; text-align: right; font-weight: 500;">{{clinic.queueNum}} <span style="font-size: 12px;">
+					in queue</span></ion-label>
 		</ion-item>
 	</ion-list>
 

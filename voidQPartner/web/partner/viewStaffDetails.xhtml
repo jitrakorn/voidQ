@@ -23,12 +23,6 @@
 
                 <h:outputLabel for="email" value="EMAIL" styleClass="text-input__label text-input__label--left"/>
                 <h:inputText id="email" value="#{updateUserManagedBean.staffToUpdate.email}" styleClass="text-input__input"/>
-
-                <h:outputLabel for="contactNum" value="CONTACT NUMBER" styleClass="text-input__label text-input__label--left"/>
-                <h:inputText id="contactNum" value="#{updateUserManagedBean.staffToUpdate.phoneNumber}" styleClass="text-input__input"/>
-
-                <h:outputLabel for="designation" value="DESIGNATION" styleClass="text-input__label text-input__label--left"/>
-                <h:inputText id="designation" value="#{updateUserManagedBean.staffToUpdate.title}" styleClass="text-input__input" readonly="true"/>
             </h:panelGrid>
             <br/>
             <h:commandButton value="UPDATE" actionListener="#{updateUserManagedBean.updateStaff}" styleClass="button"/>
