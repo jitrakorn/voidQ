@@ -5,6 +5,7 @@ import { catchError } from 'rxjs/operators';
 import { ErrorObservable } from 'rxjs/observable/ErrorObservable';
 
 import { Patient } from './patient';
+import { EmailValidator } from '@angular/forms';
 
 
 const httpOptions = {
@@ -16,7 +17,7 @@ const httpOptions = {
 	providedIn: 'root'
 })
 export class PatientService {
-	baseUrl: string = "http://192.168.1.148:8080/voidQRWS/Resources/Patient";
+	baseUrl: string = "http://localhost:8090/voidQRWS/Resources/Patient";
 
 	constructor(private httpClient: HttpClient) { }
 
@@ -40,6 +41,17 @@ export class PatientService {
 			);
 	}
 
+	updatePatientDetails(email: String, password: String, newPatient: Patient): Observable<any> {
+		let updatePatientReq = {
+			"email": email,
+			"password": password,
+			"patientEntity": newPatient
+		};
+		return this.httpClient.post<any>(this.baseUrl , updatePatientReq, httpOptions).pipe
+		(
+			catchError(this.handleError)
+		);
+	}
 
 	retrieveCurrentBookingQueuePosition(bookingId: string, clinicId: string): Observable<any> {
 		return this.httpClient.get<any>(this.baseUrl + "/retrieveCurrentBookingQueuePosition?bookingId=" + bookingId + "&clinicId=" + clinicId).pipe

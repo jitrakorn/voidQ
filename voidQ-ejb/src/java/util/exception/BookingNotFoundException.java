@@ -2,15 +2,15 @@ package util.exception;
 
 
 
-public class AdministratorNotFoundException extends Exception
+public class BookingNotFoundException extends Exception
 {
-    public AdministratorNotFoundException()
+    public BookingNotFoundException()
     {
     }
     
     
     
-    public AdministratorNotFoundException(String msg)
+    public BookingNotFoundException(String msg)
     {
         super(msg);
     }

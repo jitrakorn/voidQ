@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { SessionService } from '../session.service';
 import { NavController } from '@ionic/angular';
+import { Patient } from '../patient';
+import { PatientService } from '../patient.service';
 
 @Component({
   selector: 'app-profile',
@@ -9,14 +12,20 @@ import { NavController } from '@ionic/angular';
 export class ProfilePage implements OnInit {
 
   constructor(
-	  private navigationCtrl:NavController
+    private navigationCtrl: NavController,
+    private patientService: PatientService,
+    public sessionService: SessionService
   ) { }
 
   ngOnInit() {
+    var currentPatient = this.sessionService.getCurrentPatient();
+    console.log("HIII" + currentPatient);
+    console.log("o is " + currentPatient[0]);
+    console.log(currentPatient.email);
   }
 
   goToLogin() {
-	this.navigationCtrl.navigateRoot('/home');
+    this.navigationCtrl.navigateRoot('/home');
 
   }
 

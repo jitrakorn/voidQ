@@ -39,6 +39,8 @@ export class SessionService
 
 
 
+
+
 	getCurrentPatient(): Patient
 	{
 		return JSON.parse(sessionStorage.currentPatient);

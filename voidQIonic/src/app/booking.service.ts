@@ -11,7 +11,7 @@ const httpOptions = {
 	providedIn: 'root'
 })
 export class BookingService {
-	baseUrl: string = "http://192.168.1.148:8080/voidQRWS/Resources/Booking";
+	baseUrl: string = "http://localhost:8090/voidQRWS/Resources/Booking";
 
 	constructor(private httpClient: HttpClient) { }
 

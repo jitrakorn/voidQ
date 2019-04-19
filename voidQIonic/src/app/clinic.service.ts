@@ -13,7 +13,7 @@ const httpOptions = {
   providedIn: 'root'
 })
 export class ClinicService {
-  baseUrl: string = "http://192.168.1.148:8080/voidQRWS/Resources/Clinic";
+  baseUrl: string = "http://localhost:8090/voidQRWS/Resources/Clinic";
   constructor(private httpClient: HttpClient) { }
 
   retrieveClinics(): Observable<any>

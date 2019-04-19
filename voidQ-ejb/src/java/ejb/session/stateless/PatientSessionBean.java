@@ -95,9 +95,9 @@ public class PatientSessionBean implements PatientSessionBeanLocal {
         // Also check for existing staff before proceeding with the update
 
         // Updated in v4.2 with bean validation
-        Set<ConstraintViolation<PatientEntity>> constraintViolations = validator.validate(patient);
+       // Set<ConstraintViolation<PatientEntity>> constraintViolations = validator.validate(patient);
 
-        if (constraintViolations.isEmpty()) {
+//        if (constraintViolations.isEmpty()) {
             if (patient.getUserId() != null) {
                 PatientEntity patientToUpdate = retrievePatientByPatientId(patient.getUserId());
 
@@ -105,6 +105,7 @@ public class PatientSessionBean implements PatientSessionBeanLocal {
                     patientToUpdate.setFirstName(patient.getFirstName());
                     patientToUpdate.setLastName(patient.getLastName());
                     patientToUpdate.setPhoneNumber(patient.getPhoneNumber());
+                    
 
                 } else {
                     throw new UpdatePatientException("Username of patient record to be updated does not match the existing record");
@@ -112,9 +113,9 @@ public class PatientSessionBean implements PatientSessionBeanLocal {
             } else {
                 throw new PatientNotFoundException("Patient ID not provided for patient to be updated");
             }
-        } else {
-            throw new InputDataValidationException(prepareInputDataValidationErrorsMessage(constraintViolations));
-        }
+//        } else {
+//            throw new InputDataValidationException(prepareInputDataValidationErrorsMessage(constraintViolations));
+//        }
     }
 
     @Override
