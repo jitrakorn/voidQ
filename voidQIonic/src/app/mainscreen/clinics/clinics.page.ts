@@ -58,8 +58,38 @@ export class ClinicsPage implements OnInit {
 		await this.loadMap();
 	}
 
-	IonViewWillEnter() {
+	 IonViewWillEnter() {
+		this.clinicService.retrieveClinics().subscribe(
+			clinicResponse => {
+				this.clinics = clinicResponse.clinicEntities;
+
+				for (let clinic of this.clinics) {
+					this.clinicService.retrieveCurrentClinicCurrentDayCurrentQueue(String(clinic.clinicId)).subscribe(
+						queueResponse => {
+							this.clinicsWithQueue = [];
+							this.clinicsWithQueue.push({
+								clinicId: clinic.clinicId,
+								address: clinic.address,
+								clinicName: clinic.clinicName,
+								applicationStatus: clinic.applicationStatus,
+								description: clinic.description,
+								lat: clinic.lat,
+								lng: clinic.lng,
+								phoneNum: clinic.phoneNum,
+								unitPrice: clinic.unitPrice,
+								queueNum: queueResponse.queueNumber
+							})
+							console.log(this.clinicsWithQueue);
+						}
+					)
+				}
+			},
+			error => {
+				console.log('********** home.page.ts (retrieveClinics): ' + error);
+			}
+		);
 		this.loadData(event);
+		
 	}
 
 	constructor(public sessionService: SessionService, public toastCtrl: ToastController,

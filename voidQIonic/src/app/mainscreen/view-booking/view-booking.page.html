@@ -33,7 +33,7 @@
 		</ion-item>
 
 		<ion-item>
-			<ion-button type="submit" (click)="pay()" ion-button block>
+			<ion-button type="submit"  [disabled]="paymentDisabled" (click)="pay()" ion-button block>
 				Pay
 			</ion-button>
 		</ion-item>

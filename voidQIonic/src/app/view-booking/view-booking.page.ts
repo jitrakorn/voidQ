@@ -27,7 +27,7 @@ export class ViewBookingPage implements OnInit {
 
 	back()
 	{
-		this.location.back();
+		this.navigationCtrl.navigateRoot('/tabs');
 	}
 	ionViewWillEnter() {
 		this.patientService.retrieveCurrentBookingQueuePosition(String(this.bookingId), String(this.clinicId)).subscribe(
@@ -42,30 +42,15 @@ export class ViewBookingPage implements OnInit {
 		await this.bookingService.checkin(String(this.bookingId)).subscribe(
 			response => {
 				console.log(response);
+				this.disabled  = true;
 								alert("Checked-in!")
 			},
 			error => {
 				console.log(error);
 			}
-		)
-		await this.patientService.retrieveCurrentBooking(Object.values(this.sessionService.getCurrentPatient())[1]).subscribe(
-			response => {
-				
-			
-				if( response.bookingEntity.status == "BOOKED" )
-				{
-					this.disabled = false;
-				}
-				else{
-					this.disabled  = true;
-				}
-			
-				
-				
-			
-				
-			}
 		);
+		
+		
 		
 	}
 
