@@ -16,6 +16,7 @@ export class ViewBookingPage implements OnInit {
 	bookingId: number;
 	clinicId: number;
 	queueNum: number;
+	disabled : any;
 
 	constructor(public sessionService: SessionService, private bookingService: BookingService, private patientService: PatientService, private navigationCtrl: NavController, private payPal: PayPal,private location: Location) { }
 
@@ -37,9 +38,35 @@ export class ViewBookingPage implements OnInit {
 		console.log("BookingId, ClinicId: " + this.bookingId + ", " + this.clinicId);
 	}
 
-	checkin() {
-		this.bookingService.checkin(String(this.bookingId));
-		alert("Checked-in!")
+	async checkin() {
+		await this.bookingService.checkin(String(this.bookingId)).subscribe(
+			response => {
+				console.log(response);
+								alert("Checked-in!")
+			},
+			error => {
+				console.log(error);
+			}
+		)
+		await this.patientService.retrieveCurrentBooking(Object.values(this.sessionService.getCurrentPatient())[1]).subscribe(
+			response => {
+				
+			
+				if( response.bookingEntity.status == "BOOKED" )
+				{
+					this.disabled = false;
+				}
+				else{
+					this.disabled  = true;
+				}
+			
+				
+				
+			
+				
+			}
+		);
+		
 	}
 
 

@@ -11,7 +11,7 @@ const httpOptions = {
 	providedIn: 'root'
 })
 export class BookingService {
-	baseUrl: string = "http://localhost:8080/voidQRWS/Resources/Booking";
+	baseUrl: string = "http://192.168.1.148:8080/voidQRWS/Resources/Booking";
 
 	constructor(private httpClient: HttpClient) { }
 
@@ -31,7 +31,7 @@ export class BookingService {
 		let checkInReq = {
 			"bookingId": bookingId
 		}
-		return this.httpClient.put<any>(this.baseUrl + "/checkin", checkInReq, httpOptions).pipe
+		return this.httpClient.post<any>(this.baseUrl + "/checkin", checkInReq, httpOptions).pipe
 			(
 				catchError(this.handleError)
 			);

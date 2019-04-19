@@ -31,16 +31,12 @@
 		</ion-item>
 
 		<ion-item>
-			<ion-button type="submit" (click)="checkin()" ion-button block>
+			<ion-button type="submit" [disabled]="disabled" (click)="checkin()" ion-button block>
 				Check-in
 			</ion-button>
 		</ion-item>
 
-		<ion-item>
-			<ion-button type="submit" (click)="pay()" ion-button block>
-				Pay
-			</ion-button>
-		</ion-item>
+	
 	</ion-list>
 </ion-content>
 

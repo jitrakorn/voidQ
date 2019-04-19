@@ -17,6 +17,7 @@ export class ViewBookingPage implements OnInit {
 	clinicEntity: any;
 	queueNum: number;
 	booking : any;
+	disabled : any;
 	constructor(public sessionService: SessionService, private bookingService: BookingService, private patientService: PatientService, private navigationCtrl: NavController, private payPal: PayPal) { }
 
 	async ngOnInit() {
@@ -25,6 +26,13 @@ export class ViewBookingPage implements OnInit {
 			response => {
 				this.booking = response.bookingEntity;
 				console.log(this.booking);
+				if(this.booking.status == "BOOKED" )
+				{
+					this.disabled = false;
+				}
+				else{
+					this.disabled  = true;
+				}
 			
 				this.clinicEntity = response.bookingEntity.clinicEntity;
 				
@@ -56,9 +64,20 @@ export class ViewBookingPage implements OnInit {
 		// )
 	}
 
-	checkin() {
-		this.bookingService.checkin(String(this.booking.bookingId));
-		alert("Checked-in!")
+	async checkin() {
+
+
+		await this.bookingService.checkin(String(this.booking.bookingId)).subscribe(
+			response => {
+				console.log(response);
+								alert("Checked-in!")
+			},
+			error => {
+				console.log(error);
+			}
+		)
+
+		
 	}
 
 
