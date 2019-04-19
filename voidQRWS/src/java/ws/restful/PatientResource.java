@@ -5,7 +5,9 @@ import datamodel.ws.rest.CreatePatientRsp;
 import datamodel.ws.rest.ErrorRsp;
 import datamodel.ws.rest.PatientLoginRsp;
 import datamodel.ws.rest.RetrieveCurrentBookingQueuePositionRsp;
+import datamodel.ws.rest.RetrieveCurrentBookingRsp;
 import datamodel.ws.rest.UpdatePatientReq;
+import ejb.entity.BookingEntity;
 
 import ejb.entity.PatientEntity;
 import ejb.session.stateless.PatientSessionBeanLocal;
@@ -22,6 +24,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -160,6 +163,28 @@ public class PatientResource {
         return Response.status(Status.OK).entity(new RetrieveCurrentBookingQueuePositionRsp(patientSessionBean.retrieveCurrentBookingQueuePosition(longBookingId, longClinicId))).build();
     }
     
+    @Path("retrieveCurrentBooking/{patientId}")
+    @GET
+    @Consumes(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response retrieveCurrentBooking(@PathParam("patientId") String patientId) {
+        System.out.println("** ran retrieveCurrentBooking**");
+        Long longPatientId = Long.parseLong(patientId);
+        BookingEntity bookingEntity = patientSessionBeanLocal.retrieveCurrentBooking(longPatientId);
+        System.out.println("hi" + bookingEntity.getBookingId());
+        bookingEntity.getClinicEntity().getBookingEntities().clear();
+        bookingEntity.getClinicEntity().getDoctorEntities().clear();
+        bookingEntity.getClinicEntity().getNurseEntities().clear();
+        bookingEntity.getPatientEntity().getBookingEntities().clear();
+        
+//         System.out.println("test" + bookingEntity.getClinicEntity().getClinicId());
+       
+
+           bookingEntity.setDoctorEntity(null);
+            bookingEntity.setNurseEntity(null);
+            bookingEntity.setTransactionEntity(null);
+        return Response.status(Status.OK).entity(new RetrieveCurrentBookingRsp(bookingEntity)).build();
+    }
 
     private PatientSessionBeanLocal lookupPatientSessionBeanLocal() {
         try {

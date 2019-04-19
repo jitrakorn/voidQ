@@ -160,6 +160,27 @@ public class PatientSessionBean implements PatientSessionBeanLocal {
 
         return position;
     }
+    
+    @Override
+    public BookingEntity retrieveCurrentBooking(Long patientId) {
+        Calendar today = Calendar.getInstance();
+        today.set(Calendar.HOUR_OF_DAY, 0);
+        today.set(Calendar.MINUTE, 0);
+        today.set(Calendar.SECOND, 0);
+        today.set(Calendar.MILLISECOND, 0);
+
+           System.out.println("run " + patientId);
+        BookingEntity booking = (BookingEntity) em.createQuery("SELECT b FROM BookingEntity b WHERE b.patientEntity.userId= :patient AND b.transactionDateTime > :date ORDER BY b.transactionDateTime ASC")
+                .setParameter("patient", patientId)
+                .setParameter("date", today.getTime(), TemporalType.TIMESTAMP)
+                .getSingleResult();
+        
+        booking.getClinicEntity();
+        booking.getPatientEntity();
+           System.out.println("run z" + booking.getBookingId());
+       return booking;
+       
+    }
 
     private String prepareInputDataValidationErrorsMessage(Set<ConstraintViolation<PatientEntity>> constraintViolations) {
         String msg = "Input data validation error!:";

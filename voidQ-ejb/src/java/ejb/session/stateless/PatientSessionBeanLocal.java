@@ -5,6 +5,7 @@
  */
 package ejb.session.stateless;
 
+import ejb.entity.BookingEntity;
 import ejb.entity.PatientEntity;
 import ejb.entity.StaffEntity;
 import java.util.List;
@@ -32,5 +33,7 @@ public interface PatientSessionBeanLocal {
     public PatientEntity patientLogin(String email, String password) throws InvalidLoginCredentialException;
     
     public Integer retrieveCurrentBookingQueuePosition(Long bookingId, Long clinicId);
+    
+    public BookingEntity retrieveCurrentBooking(Long patientId);
     
 }
