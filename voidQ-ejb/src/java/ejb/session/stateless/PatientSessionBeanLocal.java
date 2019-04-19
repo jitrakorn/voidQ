@@ -9,6 +9,7 @@ import ejb.entity.BookingEntity;
 import ejb.entity.PatientEntity;
 import ejb.entity.StaffEntity;
 import java.util.List;
+import util.exception.BookingNotFoundException;
 import util.exception.InputDataValidationException;
 import util.exception.InvalidLoginCredentialException;
 import util.exception.PatientNotFoundException;
@@ -33,7 +34,9 @@ public interface PatientSessionBeanLocal {
     public PatientEntity patientLogin(String email, String password) throws InvalidLoginCredentialException;
     
     public Integer retrieveCurrentBookingQueuePosition(Long bookingId, Long clinicId);
+
+    public BookingEntity retrieveCurrentBooking(Long patientId) throws BookingNotFoundException;
     
-    public BookingEntity retrieveCurrentBooking(Long patientId);
+  
     
 }

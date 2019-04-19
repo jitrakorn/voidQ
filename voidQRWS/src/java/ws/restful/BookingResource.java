@@ -10,6 +10,7 @@ import ejb.entity.BookingEntity;
 import ejb.entity.ClinicEntity;
 import ejb.entity.DoctorEntity;
 import ejb.entity.PatientEntity;
+import ejb.entity.TransactionEntity;
 import ejb.session.stateless.BookingSessionBeanLocal;
 import ejb.session.stateless.PartnerSessionBeanLocal;
 import ejb.session.stateless.PatientSessionBeanLocal;
@@ -33,6 +34,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import util.enumeration.BookingStatus;
+import util.exception.BookingNotFoundException;
 import util.exception.PatientNotFoundException;
 
 @Path("Booking")
@@ -83,13 +85,27 @@ public class BookingResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response createBooking(CreateBookingReq createBookingReq) {
 
+        BookingEntity currentBooking = null;
         if (createBookingReq != null) {
             try {
                 PatientEntity patient = patientSessionBean.retrievePatientByEmail(createBookingReq.getEmail());
-                ClinicEntity clinic = partnerSessionBean.getPartnerById(Long.parseLong(createBookingReq.getClinicId()));
-                BookingEntity booking = bookingSessionBean.createBooking(new BookingEntity(BookingStatus.BOOKED, new Date(), clinic, patient, createBookingReq.getVisitReason()));
+                try {
+                    currentBooking = patientSessionBean.retrieveCurrentBooking(patient.getUserId());
+                } catch (BookingNotFoundException ex) {
+                     ClinicEntity clinic = partnerSessionBean.getPartnerById(Long.parseLong(createBookingReq.getClinicId()));
+                    BookingEntity booking = bookingSessionBean.createBooking(new BookingEntity(BookingStatus.BOOKED, new Date(), clinic, patient, createBookingReq.getVisitReason()));
+                    return Response.status(Status.OK).entity(new CreateBookingRsp(booking.getBookingId())).build();
+                }
+                if (currentBooking.getStatus().equals(BookingStatus.PAID)) {
 
-                return Response.status(Status.OK).entity(new CreateBookingRsp(booking.getBookingId())).build();
+                    ClinicEntity clinic = partnerSessionBean.getPartnerById(Long.parseLong(createBookingReq.getClinicId()));
+                    BookingEntity booking = bookingSessionBean.createBooking(new BookingEntity(BookingStatus.BOOKED, new Date(), clinic, patient, createBookingReq.getVisitReason()));
+                    return Response.status(Status.OK).entity(new CreateBookingRsp(booking.getBookingId())).build();
+                } else {
+                    ErrorRsp errorRsp = new ErrorRsp("PENDING BOOKING OR NOT PAID");
+                    return Response.status(Status.FORBIDDEN).entity(errorRsp).build();
+                }
+
             } catch (PatientNotFoundException ex) {
                 ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
                 return Response.status(Status.NOT_FOUND).entity(errorRsp).build();
@@ -100,27 +116,31 @@ public class BookingResource {
             return Response.status(Response.Status.BAD_REQUEST).entity(errorRsp).build();
         }
     }
-    
+
     @Path("checkin")
-    @PUT
+    @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response checkIn(CheckInReq checkInReq) {
+         System.out.println("run");
         if (checkInReq != null) {
+           
             String bookingId = checkInReq.getBookingId();
+            System.out.println("booking id " + bookingId);
             BookingEntity currentBooking = bookingSessionBeanLocal.getBookingById(Long.parseLong(bookingId));
             currentBooking.setStatus(BookingStatus.CHECKED_IN);
+            bookingSessionBeanLocal.updateBooking(currentBooking);
             if (partnerSessionBean.hasAvailableDoctors(currentBooking.getClinicEntity())) {
                 currentBooking.setStatus(BookingStatus.VISITING);
+                  bookingSessionBeanLocal.updateBooking(currentBooking);
                 DoctorEntity appointedDoctor = partnerSessionBean.appointAvailableDoctor(currentBooking.getClinicEntity(), currentBooking);
                 return Response.status(Response.Status.OK).build();
-                
+
             } else {
                 ErrorRsp errorRsp = new ErrorRsp("Patient has not visited clinic yet");
                 return Response.status(Response.Status.BAD_REQUEST).entity(errorRsp).build();
             }
-        }
-        else {
+        } else {
             ErrorRsp errorRsp = new ErrorRsp("Invalid create new booking");
 
             return Response.status(Response.Status.BAD_REQUEST).entity(errorRsp).build();
@@ -135,22 +155,27 @@ public class BookingResource {
         if (makePaymentReq != null) {
             String bookingId = makePaymentReq.getBookingId();
             BookingEntity currentBooking = bookingSessionBeanLocal.getBookingById(Long.parseLong(bookingId));
+            System.out.println("currentBooking.getStatus()" + currentBooking.getStatus());
             if (currentBooking.getStatus().equals(BookingStatus.VISITED)) {
-            currentBooking.setStatus(BookingStatus.PAID);
-            bookingSessionBean.updateBooking(currentBooking);
-            return Response.status(Status.OK).build();
+                
+                currentBooking.setStatus(BookingStatus.PAID);
+             
+             
+              TransactionEntity te=  bookingSessionBean.createTransaction(new TransactionEntity("PAID",new Date(),currentBooking));
+              currentBooking.setTransactionEntity(te);
+                   bookingSessionBean.updateBooking(currentBooking);
+                return Response.status(Status.OK).build();
             } else {
-                ErrorRsp errorRsp = new ErrorRsp("Patient has not visited clinic yet");
+                ErrorRsp errorRsp = new ErrorRsp("Not possible to come in here.");
 
-            return Response.status(Response.Status.BAD_REQUEST).entity(errorRsp).build();
+                return Response.status(Response.Status.BAD_REQUEST).entity(errorRsp).build();
             }
         } else {
-            ErrorRsp errorRsp = new ErrorRsp("Invalid create new booking");
+            ErrorRsp errorRsp = new ErrorRsp("Invalid create new payment");
 
             return Response.status(Response.Status.BAD_REQUEST).entity(errorRsp).build();
         }
     }
-    
 
     private BookingSessionBeanLocal lookupBookingSessionBeanLocal() {
         try {

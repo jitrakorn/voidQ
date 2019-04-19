@@ -7,6 +7,7 @@ package ejb.session.stateless;
 
 import ejb.entity.BookingEntity;
 import ejb.entity.ClinicEntity;
+import ejb.entity.TransactionEntity;
 import java.util.List;
 
 /**
@@ -26,5 +27,7 @@ public interface BookingSessionBeanLocal {
     public List<BookingEntity> getClinicCurrentDayBookings(ClinicEntity selectedClinic);
 
     public BookingEntity getBookingById(Long bookingId);
+
+    public TransactionEntity createTransaction(TransactionEntity newTransaction);
 
 }

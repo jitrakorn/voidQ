@@ -29,6 +29,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
+import util.exception.BookingNotFoundException;
 import util.exception.InputDataValidationException;
 import util.exception.InvalidLoginCredentialException;
 import util.exception.PatientNotFoundException;
@@ -38,12 +39,12 @@ import util.exception.UpdatePatientException;
 public class PatientResource {
 
     PatientSessionBeanLocal patientSessionBean = lookupPatientSessionBeanLocal();
-    
+
     @Context
     private UriInfo context;
 
     private final PatientSessionBeanLocal patientSessionBeanLocal;
-   
+
     public PatientResource() {
         patientSessionBeanLocal = lookupPatientSessionBeanLocal();
     }
@@ -67,10 +68,8 @@ public class PatientResource {
             patientEntity.setPassword(null);
             patientEntity.setSalt(null);
             patientEntity.getBookingEntities().clear();
-           
-            
-            //patientEntity.setBookingEntities(null);
 
+            //patientEntity.setBookingEntities(null);
             return Response.status(Status.OK).entity(new PatientLoginRsp(patientEntity)).build();
         } catch (InvalidLoginCredentialException ex) {
             ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
@@ -83,8 +82,7 @@ public class PatientResource {
             return Response.status(Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
         }
     }
- 
-    
+
     @Path("createPatient")
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
@@ -122,14 +120,14 @@ public class PatientResource {
 
         if (updatePatientReq != null) {
             try {
-                System.out.println("**********  " );
+                System.out.println("**********  ");
                 PatientEntity patient = patientSessionBean.retrievePatientByEmail(updatePatientReq.getEmail());
-                
+
                 patientSessionBeanLocal.updatePatient(updatePatientReq.getPatientEntity());
 
                 return Response.status(Response.Status.OK).build();
 
-            }  catch (InputDataValidationException ex) {
+            } catch (InputDataValidationException ex) {
                 ErrorRsp errorRsp = new ErrorRsp("Invalid data vaidation exception");
 
                 return Response.status(Response.Status.BAD_REQUEST).entity(errorRsp).build();
@@ -150,7 +148,7 @@ public class PatientResource {
 
         }
     }
-    
+
     @Path("retrieveCurrentBookingQueuePosition")
     @GET
     @Consumes(MediaType.TEXT_PLAIN)
@@ -159,31 +157,35 @@ public class PatientResource {
         System.out.println("****** ran retrieveCurrentBookingQueuePosition****");
         Long longBookingId = Long.parseLong(bookingId);
         Long longClinicId = Long.parseLong(clinicId);
-        
+
         return Response.status(Status.OK).entity(new RetrieveCurrentBookingQueuePositionRsp(patientSessionBean.retrieveCurrentBookingQueuePosition(longBookingId, longClinicId))).build();
     }
-    
+
     @Path("retrieveCurrentBooking/{patientId}")
     @GET
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.APPLICATION_JSON)
     public Response retrieveCurrentBooking(@PathParam("patientId") String patientId) {
-        System.out.println("** ran retrieveCurrentBooking**");
-        Long longPatientId = Long.parseLong(patientId);
-        BookingEntity bookingEntity = patientSessionBeanLocal.retrieveCurrentBooking(longPatientId);
-        System.out.println("hi" + bookingEntity.getBookingId());
-        bookingEntity.getClinicEntity().getBookingEntities().clear();
-        bookingEntity.getClinicEntity().getDoctorEntities().clear();
-        bookingEntity.getClinicEntity().getNurseEntities().clear();
-        bookingEntity.getPatientEntity().getBookingEntities().clear();
-        
-//         System.out.println("test" + bookingEntity.getClinicEntity().getClinicId());
-       
 
-           bookingEntity.setDoctorEntity(null);
+        Long longPatientId = Long.parseLong(patientId);
+        BookingEntity bookingEntity = null;
+        try {
+            bookingEntity = patientSessionBeanLocal.retrieveCurrentBooking(longPatientId);
+             bookingEntity.getClinicEntity().getBookingEntities().clear();
+            bookingEntity.getClinicEntity().getDoctorEntities().clear();
+            bookingEntity.getClinicEntity().getNurseEntities().clear();
+            bookingEntity.getPatientEntity().getBookingEntities().clear();
+
+//         System.out.println("test" + bookingEntity.getClinicEntity().getClinicId());
+            bookingEntity.setDoctorEntity(null);
             bookingEntity.setNurseEntity(null);
             bookingEntity.setTransactionEntity(null);
-        return Response.status(Status.OK).entity(new RetrieveCurrentBookingRsp(bookingEntity)).build();
+            return Response.status(Status.OK).entity(new RetrieveCurrentBookingRsp(bookingEntity)).build();
+        } catch (BookingNotFoundException ex) {
+             ErrorRsp errorRsp = new ErrorRsp("empty");
+           return Response.status(Status.OK).entity(errorRsp).build();
+        }
+        
     }
 
     private PatientSessionBeanLocal lookupPatientSessionBeanLocal() {
@@ -195,9 +197,5 @@ public class PatientResource {
             throw new RuntimeException(ne);
         }
     }
-
-   
-    
-    
 
 }

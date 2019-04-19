@@ -23,6 +23,7 @@ import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 import util.enumeration.BookingStatus;
+import util.exception.BookingNotFoundException;
 import util.exception.InputDataValidationException;
 import util.exception.InvalidLoginCredentialException;
 import util.exception.PatientNotFoundException;
@@ -160,26 +161,30 @@ public class PatientSessionBean implements PatientSessionBeanLocal {
 
         return position;
     }
-    
+
     @Override
-    public BookingEntity retrieveCurrentBooking(Long patientId) {
+    public BookingEntity retrieveCurrentBooking(Long patientId) throws BookingNotFoundException {
         Calendar today = Calendar.getInstance();
         today.set(Calendar.HOUR_OF_DAY, 0);
         today.set(Calendar.MINUTE, 0);
         today.set(Calendar.SECOND, 0);
         today.set(Calendar.MILLISECOND, 0);
+        BookingEntity booking;
 
-           System.out.println("run " + patientId);
-        BookingEntity booking = (BookingEntity) em.createQuery("SELECT b FROM BookingEntity b WHERE b.patientEntity.userId= :patient AND b.transactionDateTime > :date ORDER BY b.transactionDateTime ASC")
-                .setParameter("patient", patientId)
-                .setParameter("date", today.getTime(), TemporalType.TIMESTAMP)
-                .getSingleResult();
-        
+        try {
+            booking = (BookingEntity) em.createQuery("SELECT b FROM BookingEntity b WHERE b.patientEntity.userId= :patient AND b.transactionDateTime > :date ORDER BY b.transactionDateTime ASC")
+                    .setParameter("patient", patientId)
+                    .setParameter("date", today.getTime(), TemporalType.TIMESTAMP)
+                    .getSingleResult();
+        } catch (NoResultException | NonUniqueResultException ex) {
+            throw new BookingNotFoundException("Booking not found for patient Id " + patientId + " does not exist!");
+        }
+
         booking.getClinicEntity();
         booking.getPatientEntity();
-           System.out.println("run z" + booking.getBookingId());
-       return booking;
-       
+
+        return booking;
+
     }
 
     private String prepareInputDataValidationErrorsMessage(Set<ConstraintViolation<PatientEntity>> constraintViolations) {

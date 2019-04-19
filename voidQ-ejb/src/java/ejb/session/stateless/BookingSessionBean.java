@@ -7,6 +7,7 @@ package ejb.session.stateless;
 
 import ejb.entity.BookingEntity;
 import ejb.entity.ClinicEntity;
+import ejb.entity.TransactionEntity;
 import java.util.Calendar;
 import java.util.List;
 import javax.ejb.Local;
@@ -35,6 +36,13 @@ public class BookingSessionBean implements BookingSessionBeanLocal {
         em.persist(newBooking);
         em.flush();
         return newBooking;
+    }
+    
+      @Override
+    public TransactionEntity createTransaction(TransactionEntity newTransaction) {
+        em.persist(newTransaction);
+        em.flush();
+        return newTransaction;
     }
 
     @Override
