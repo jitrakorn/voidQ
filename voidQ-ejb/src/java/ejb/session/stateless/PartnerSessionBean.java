@@ -111,6 +111,20 @@ public class PartnerSessionBean implements PartnerSessionBeanLocal {
     }
 
     @Override
+    public List<DoctorEntity> retrieveAllDoctors() {
+        Query query = em.createQuery("SELECT c FROM DoctorEntity c");
+
+        return query.getResultList();
+    }
+
+    @Override
+    public List<NurseEntity> retrieveAllNurses() {
+        Query query = em.createQuery("SELECT c FROM NurseEntity c");
+
+        return query.getResultList();
+    }
+
+    @Override
     public ClinicEntity retrievePartnerByPartnerId(Long clinicId) throws PartnerNotFoundException {
         ClinicEntity clinic = em.find(ClinicEntity.class, clinicId);
 
@@ -145,9 +159,9 @@ public class PartnerSessionBean implements PartnerSessionBeanLocal {
             throw new PartnerNotFoundException("Staff ID " + staffId + " does not exist!");
         }
     }
-    
+
     @Override
-     public DoctorEntity retrieveDoctorByStaffId(Long staffId) throws PartnerNotFoundException {
+    public DoctorEntity retrieveDoctorByStaffId(Long staffId) throws PartnerNotFoundException {
         DoctorEntity doctor = em.find(DoctorEntity.class, staffId);
 
         if (doctor != null) {
@@ -156,9 +170,9 @@ public class PartnerSessionBean implements PartnerSessionBeanLocal {
             throw new PartnerNotFoundException("Staff ID " + staffId + " does not exist!");
         }
     }
-     
-     @Override
-      public NurseEntity retrieveNurseByStaffId(Long staffId) throws PartnerNotFoundException {
+
+    @Override
+    public NurseEntity retrieveNurseByStaffId(Long staffId) throws PartnerNotFoundException {
         NurseEntity nurse = em.find(NurseEntity.class, staffId);
 
         if (nurse != null) {
@@ -224,7 +238,61 @@ public class PartnerSessionBean implements PartnerSessionBeanLocal {
         }
     }
 
-@Override
+    @Override
+    public void updateDoctor(DoctorEntity staff) throws InputDataValidationException, PartnerNotFoundException, UpdatePartnerException {
+        // Updated in v4.1 to update selective attributes instead of merging the entire state passed in from the client
+        // Also check for existing staff before proceeding with the update
+
+        // Updated in v4.2 with bean validation
+        Set<ConstraintViolation<DoctorEntity>> constraintViolations = validator.validate(staff);
+
+        if (constraintViolations.isEmpty()) {
+            if (staff.getUserId() != null) {
+                DoctorEntity staffToUpdate = retrieveDoctorByStaffId(staff.getUserId());
+
+                if (staffToUpdate.getUserId().equals(staff.getUserId())) {
+                    staffToUpdate.setEmail(staff.getEmail());
+                    staffToUpdate.setFirstName(staff.getFirstName());
+                    staffToUpdate.setLastName(staff.getLastName());
+                } else {
+                    throw new UpdatePartnerException("Email of staff record to be updated does not match the existing record");
+                }
+            } else {
+                throw new PartnerNotFoundException("Staff ID not provided for stadf to be updated");
+            }
+        } else {
+            // throw new InputDataValidationException(prepareInputDataValidationErrorsMessage(constraintViolations));
+        }
+    }
+
+    @Override
+    public void updateNurse(NurseEntity staff) throws InputDataValidationException, PartnerNotFoundException, UpdatePartnerException {
+        // Updated in v4.1 to update selective attributes instead of merging the entire state passed in from the client
+        // Also check for existing staff before proceeding with the update
+
+        // Updated in v4.2 with bean validation
+        Set<ConstraintViolation<NurseEntity>> constraintViolations = validator.validate(staff);
+
+        if (constraintViolations.isEmpty()) {
+            if (staff.getUserId() != null) {
+                NurseEntity staffToUpdate = retrieveNurseByStaffId(staff.getUserId());
+
+                if (staffToUpdate.getUserId().equals(staff.getUserId())) {
+                    staffToUpdate.setEmail(staff.getEmail());
+                    staffToUpdate.setFirstName(staff.getFirstName());
+                    staffToUpdate.setLastName(staff.getLastName());
+                } else {
+                    throw new UpdatePartnerException("Email of staff record to be updated does not match the existing record");
+                }
+            } else {
+                throw new PartnerNotFoundException("Staff ID not provided for stadf to be updated");
+            }
+        } else {
+            // throw new InputDataValidationException(prepareInputDataValidationErrorsMessage(constraintViolations));
+        }
+    }
+
+    @Override
     public void updateDoctorPassword(DoctorEntity staff, String oldPassword, String newPassword) throws UpdatePasswordException, PartnerNotFoundException {
         try {
             Set<ConstraintViolation<DoctorEntity>> constraintViolations = validator.validate(staff);
@@ -254,9 +322,9 @@ public class PartnerSessionBean implements PartnerSessionBeanLocal {
         }
 
     }
-    
-    @Override 
-        public void updateNursePassword(NurseEntity staff, String oldPassword, String newPassword) throws UpdatePasswordException, PartnerNotFoundException {
+
+    @Override
+    public void updateNursePassword(NurseEntity staff, String oldPassword, String newPassword) throws UpdatePasswordException, PartnerNotFoundException {
         try {
             Set<ConstraintViolation<NurseEntity>> constraintViolations = validator.validate(staff);
 
@@ -271,6 +339,7 @@ public class PartnerSessionBean implements PartnerSessionBeanLocal {
                         if (!oldPassword.equals(newPassword)) {
                             System.out.println("HI im working");
                             staffToUpdate.setPassword(newPassword);
+                            System.out.println("HI");
                         } else {
                             throw new UpdatePasswordException("new password must be different!");
                         }
@@ -285,7 +354,6 @@ public class PartnerSessionBean implements PartnerSessionBeanLocal {
         }
 
     }
-
 
     @Override
     public StaffEntity emailLogin(String email, String password) throws InvalidLoginCredentialException {
@@ -320,6 +388,56 @@ public class PartnerSessionBean implements PartnerSessionBeanLocal {
         em.remove(partner);
     }
 
+    @Override
+    public void deleteStaff(Long partnerId) throws PartnerNotFoundException, DeletePartnerException {
+        StaffEntity partner = retrieveStaffByStaffId(partnerId);
+
+        /*if(partner.getSaleTransactionEntities().isEmpty())
+        {
+            em.remove(partner);
+        } 
+        else
+        {
+            // New in v4.1 to prevent deleting staff with existing sale transaction(s)
+            throw new DeletePartnerException("Partner ID " + partnerId + " is associated with existing sale transaction(s) and cannot be deleted!");
+        }*/
+        // have to check if partner is associated with something 
+        em.remove(partner);
+    }
+    
+    @Override
+     public void deleteDoctor(Long partnerId) throws PartnerNotFoundException, DeletePartnerException {
+        DoctorEntity partner = retrieveDoctorByStaffId(partnerId);
+
+        /*if(partner.getSaleTransactionEntities().isEmpty())
+        {
+            em.remove(partner);
+        } 
+        else
+        {
+            // New in v4.1 to prevent deleting staff with existing sale transaction(s)
+            throw new DeletePartnerException("Partner ID " + partnerId + " is associated with existing sale transaction(s) and cannot be deleted!");
+        }*/
+        // have to check if partner is associated with something 
+        em.remove(partner);
+    }
+
+     @Override
+      public void deleteNurse(Long partnerId) throws PartnerNotFoundException, DeletePartnerException {
+        NurseEntity partner = retrieveNurseByStaffId(partnerId);
+
+        /*if(partner.getSaleTransactionEntities().isEmpty())
+        {
+            em.remove(partner);
+        } 
+        else
+        {
+            // New in v4.1 to prevent deleting staff with existing sale transaction(s)
+            throw new DeletePartnerException("Partner ID " + partnerId + " is associated with existing sale transaction(s) and cannot be deleted!");
+        }*/
+        // have to check if partner is associated with something 
+        em.remove(partner);
+    }
     @Override
     public Boolean hasAvailableDoctors(ClinicEntity currentClinic) {
         List<DoctorEntity> doctors = em.createQuery("SELECT d FROM DoctorEntity d WHERE d.status = :status AND d.clinicEntity = :clinic")
