@@ -8,7 +8,10 @@ package ejb.session.stateless;
 import ejb.entity.BookingEntity;
 import ejb.entity.ClinicEntity;
 import ejb.entity.DoctorEntity;
+import ejb.entity.NurseEntity;
+import ejb.entity.PatientEntity;
 import ejb.entity.StaffEntity;
+import ejb.entity.UserEntity;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Set;
@@ -31,7 +34,9 @@ import util.exception.DeletePartnerException;
 import util.exception.InputDataValidationException;
 import util.exception.InvalidLoginCredentialException;
 import util.exception.PartnerNotFoundException;
+import util.exception.PatientNotFoundException;
 import util.exception.UpdatePartnerException;
+import util.exception.UpdatePasswordException;
 import util.security.CryptographicHelper;
 
 /**
@@ -140,6 +145,28 @@ public class PartnerSessionBean implements PartnerSessionBeanLocal {
             throw new PartnerNotFoundException("Staff ID " + staffId + " does not exist!");
         }
     }
+    
+    @Override
+     public DoctorEntity retrieveDoctorByStaffId(Long staffId) throws PartnerNotFoundException {
+        DoctorEntity doctor = em.find(DoctorEntity.class, staffId);
+
+        if (doctor != null) {
+            return doctor;
+        } else {
+            throw new PartnerNotFoundException("Staff ID " + staffId + " does not exist!");
+        }
+    }
+     
+     @Override
+      public NurseEntity retrieveNurseByStaffId(Long staffId) throws PartnerNotFoundException {
+        NurseEntity nurse = em.find(NurseEntity.class, staffId);
+
+        if (nurse != null) {
+            return nurse;
+        } else {
+            throw new PartnerNotFoundException("Staff ID " + staffId + " does not exist!");
+        }
+    }
 
     @Override
     public void updatePartner(ClinicEntity clinic) throws InputDataValidationException, PartnerNotFoundException, UpdatePartnerException {
@@ -197,6 +224,69 @@ public class PartnerSessionBean implements PartnerSessionBeanLocal {
         }
     }
 
+@Override
+    public void updateDoctorPassword(DoctorEntity staff, String oldPassword, String newPassword) throws UpdatePasswordException, PartnerNotFoundException {
+        try {
+            Set<ConstraintViolation<DoctorEntity>> constraintViolations = validator.validate(staff);
+
+            if (constraintViolations.isEmpty()) {
+                if (staff.getUserId() != null) {
+                    DoctorEntity staffToUpdate = retrieveDoctorByStaffId(staff.getUserId());
+                    System.out.println("CHECKoldpw" + oldPassword);
+                    String oldPasswordHash = CryptographicHelper.getInstance().byteArrayToHexString(CryptographicHelper.getInstance().doMD5Hashing(oldPassword + staffToUpdate.getSalt()));
+                    System.out.println("CHECK" + oldPasswordHash);
+                    System.out.println("OLDHASH" + staffToUpdate.getPassword());
+                    if (oldPasswordHash.equalsIgnoreCase(staffToUpdate.getPassword())) {
+                        if (!oldPassword.equals(newPassword)) {
+                            System.out.println("HI im working");
+                            staffToUpdate.setPassword(newPassword);
+                        } else {
+                            throw new UpdatePasswordException("new password must be different!");
+                        }
+                    } else {
+                        throw new UpdatePasswordException("Old password does not match original password!");
+
+                    }
+                }
+            }
+        } catch (PartnerNotFoundException ex) {
+
+        }
+
+    }
+    
+    @Override 
+        public void updateNursePassword(NurseEntity staff, String oldPassword, String newPassword) throws UpdatePasswordException, PartnerNotFoundException {
+        try {
+            Set<ConstraintViolation<NurseEntity>> constraintViolations = validator.validate(staff);
+
+            if (constraintViolations.isEmpty()) {
+                if (staff.getUserId() != null) {
+                    NurseEntity staffToUpdate = retrieveNurseByStaffId(staff.getUserId());
+                    System.out.println("CHECKoldpw" + oldPassword);
+                    String oldPasswordHash = CryptographicHelper.getInstance().byteArrayToHexString(CryptographicHelper.getInstance().doMD5Hashing(oldPassword + staffToUpdate.getSalt()));
+                    System.out.println("CHECK" + oldPasswordHash);
+                    System.out.println("OLDHASH" + staffToUpdate.getPassword());
+                    if (oldPasswordHash.equalsIgnoreCase(staffToUpdate.getPassword())) {
+                        if (!oldPassword.equals(newPassword)) {
+                            System.out.println("HI im working");
+                            staffToUpdate.setPassword(newPassword);
+                        } else {
+                            throw new UpdatePasswordException("new password must be different!");
+                        }
+                    } else {
+                        throw new UpdatePasswordException("Old password does not match original password!");
+
+                    }
+                }
+            }
+        } catch (PartnerNotFoundException ex) {
+
+        }
+
+    }
+
+
     @Override
     public StaffEntity emailLogin(String email, String password) throws InvalidLoginCredentialException {
         try {
@@ -250,7 +340,7 @@ public class PartnerSessionBean implements PartnerSessionBeanLocal {
                 .setParameter("status", Availability.AVAILABLE)
                 .setParameter("clinic", currentClinic)
                 .getResultList();
-        
+
         DoctorEntity appointedDoctor = doctors.get(0);
 
         booking.setDoctorEntity(appointedDoctor);
@@ -263,13 +353,13 @@ public class PartnerSessionBean implements PartnerSessionBeanLocal {
 
         return appointedDoctor;
     }
-    
+
     @Override
     public DoctorEntity availDoctor(DoctorEntity appointedDoctor) {
         appointedDoctor.setStatus(Availability.AVAILABLE);
         em.merge(appointedDoctor);
         em.flush();
-        
+
         return appointedDoctor;
     }
 
