@@ -8,6 +8,7 @@ package ejb.session.stateless;
 import ejb.entity.BookingEntity;
 import ejb.entity.ClinicEntity;
 import ejb.entity.DoctorEntity;
+import ejb.entity.NurseEntity;
 import ejb.entity.StaffEntity;
 
 import java.util.List;
@@ -17,6 +18,7 @@ import util.exception.InputDataValidationException;
 import util.exception.InvalidLoginCredentialException;
 import util.exception.PartnerNotFoundException;
 import util.exception.UpdatePartnerException;
+import util.exception.UpdatePasswordException;
 
 /**
  *
@@ -25,7 +27,6 @@ import util.exception.UpdatePartnerException;
 @Local
 public interface PartnerSessionBeanLocal {
 
- 
     public ClinicEntity createNewPartner(ClinicEntity newClinic) throws InputDataValidationException;
 
     public StaffEntity retrievePartnerByEmail(String email) throws PartnerNotFoundException;
@@ -35,7 +36,7 @@ public interface PartnerSessionBeanLocal {
     public List<ClinicEntity> retrieveAllPartners();
 
     public ClinicEntity retrievePartnerByPartnerId(Long clinicId) throws PartnerNotFoundException;
-    
+
     public ClinicEntity getPartnerById(Long clinicId);
 
     public void updatePartner(ClinicEntity clinic) throws InputDataValidationException, PartnerNotFoundException, UpdatePartnerException;
@@ -43,16 +44,25 @@ public interface PartnerSessionBeanLocal {
     public void deletePartner(Long clinicId) throws PartnerNotFoundException, DeletePartnerException;
 
     public StaffEntity createNewStaff(StaffEntity newStaff);
-    
+
     public StaffEntity retrieveStaffByStaffId(Long staffId) throws PartnerNotFoundException;
 
     public void updateStaff(StaffEntity staff) throws InputDataValidationException, PartnerNotFoundException, UpdatePartnerException;
 
-   public List<ClinicEntity> retrieveUnApprovedApplications();
-   
-   public Boolean hasAvailableDoctors(ClinicEntity currentClinic);
-   
-   public DoctorEntity appointAvailableDoctor(ClinicEntity currentClinic, BookingEntity booking);
-   
-   public DoctorEntity availDoctor(DoctorEntity appointedDoctor);  
-}
+    public List<ClinicEntity> retrieveUnApprovedApplications();
+
+    public Boolean hasAvailableDoctors(ClinicEntity currentClinic);
+
+    public DoctorEntity appointAvailableDoctor(ClinicEntity currentClinic, BookingEntity booking);
+
+    public DoctorEntity availDoctor(DoctorEntity appointedDoctor);
+
+    public DoctorEntity retrieveDoctorByStaffId(Long staffId) throws PartnerNotFoundException;
+
+    public NurseEntity retrieveNurseByStaffId(Long staffId) throws PartnerNotFoundException;
+
+    public void updateNursePassword(NurseEntity staff, String oldPassword, String newPassword) throws UpdatePasswordException, PartnerNotFoundException;
+
+    public void updateDoctorPassword(DoctorEntity staff, String oldPassword, String newPassword) throws UpdatePasswordException, PartnerNotFoundException;
+
+   }
