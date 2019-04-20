@@ -84,6 +84,26 @@ public class PatientResource {
             return Response.status(Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
         }
     }
+    
+    
+    
+       @Path("resetPassword")
+    @GET
+    @Consumes(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response resetPassword(@QueryParam("username") String username,
+            @QueryParam("password") String password) throws Exception {
+       
+            System.out.println("username" + username);
+            PatientEntity patientEntity = patientSessionBeanLocal.resetPassword(username);
+ErrorRsp errorRsp = new ErrorRsp("password sent to handphone number");
+
+         
+            //patientEntity.setBookingEntities(null);
+            return Response.status(Status.OK).entity((errorRsp)).build();
+      
+    }
+    
 
     @Path("createPatient")
     @PUT

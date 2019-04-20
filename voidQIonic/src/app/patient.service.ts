@@ -8,20 +8,26 @@ import { Patient } from './patient';
 
 
 const httpOptions = {
+	
 	headers: new HttpHeaders({ 'Content-Type': 'application/json' })
 };
 
+const httpOptions2 = {
+	headers: new HttpHeaders({ 'Content-Type': 'text/plain' })
+};
 
 @Injectable({
 	providedIn: 'root'
 })
 export class PatientService {
+	//baseUrl: string = "/api/Patient";
 	baseUrl: string = "http://localhost:8080/voidQRWS/Resources/Patient";
 
 	constructor(private httpClient: HttpClient) { }
 
 
 	patientLogin(username: string, password: string): Observable<any> {
+	
 		return this.httpClient.get<any>(this.baseUrl + "/patientLogin?username=" + username + "&password=" + password).pipe
 			(
 				catchError(this.handleError)
@@ -78,6 +84,33 @@ export class PatientService {
 		);
 	}
 
+	resetPassword(username: string): Observable<any> {
+
+		return this.httpClient.get<any>(this.baseUrl + "/resetPassword?username=" + username).pipe
+			(
+				catchError(this.handleError)
+			);
+	}
+
+
+
+	sendSMS()
+	{
+
+		var request = new XMLHttpRequest()
+
+		request.open('POST', 'https://crossorigin.me/https://rest.nexmo.com/sms/json?api_key=7f783f15&api_secret=0140f14a&from=voidQ&to=+6596658673&text=your new password is', true)
+		request.onload = function() {
+		  // Begin accessing JSON data here
+		  var data = JSON.parse(this.response)
+		
+		  
+		}
+		
+		request.send()
+
+		
+	}
 
 	private handleError(error: HttpErrorResponse) {
 		let errorMessage: string = "";
