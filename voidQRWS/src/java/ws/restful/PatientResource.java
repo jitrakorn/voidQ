@@ -198,7 +198,13 @@ public class PatientResource {
             bookingEntity.getPatientEntity().getBookingEntities().clear();
 
 //         System.out.println("test" + bookingEntity.getClinicEntity().getClinicId());
-            bookingEntity.setDoctorEntity(null);
+            if (bookingEntity.getDoctorEntity() != null) {
+                bookingEntity.getDoctorEntity().getBookingEntities().clear();
+                bookingEntity.getDoctorEntity().getMessageOfTheDayEntities().clear();
+//                bookingEntity.getDoctorEntity().getMessageOfTheDayEntity().setDoctorEntity(null);
+//                bookingEntity.getDoctorEntity().getMessageOfTheDayEntity().setLastEditedDoctorEntity(null);
+            }
+
             bookingEntity.setNurseEntity(null);
             bookingEntity.setTransactionEntity(null);
             return Response.status(Status.OK).entity(new RetrieveCurrentBookingRsp(bookingEntity)).build();

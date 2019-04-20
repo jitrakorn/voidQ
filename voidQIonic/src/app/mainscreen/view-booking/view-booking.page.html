@@ -19,7 +19,26 @@
 						</ion-label>
 						 <span style="font-size: 15px">{{clinicEntity.clinicName}}</span> 
 					</ion-item>
-		<ion-item>
+					<ion-item>
+							<ion-label>
+								Status:
+							</ion-label>
+							 <span style="font-size: 15px">{{booking.status}}</span> 
+						</ion-item>
+						<ion-item>
+								<ion-label>
+								 Visit Reason:
+								</ion-label>
+								 <span style="font-size: 15px">{{booking.visitReason}}</span> 
+							</ion-item>
+
+							<ion-item *ngIf="booking.status == 'VISITING' ">
+									<ion-label>
+										Attended By:
+										</ion-label>
+										<span style="font-size: 15px">Doctor {{booking.doctorEntity.firstName}} {{booking.doctorEntity.lastName }}</span>
+									</ion-item>
+		<ion-item *ngIf="booking.status == 'BOOKED' || booking.status == 'CHECKED_IN' ">
 			<ion-label>
 				Your current position is:
 			</ion-label>

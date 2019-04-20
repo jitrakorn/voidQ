@@ -17,7 +17,8 @@ export class ViewBookingPage implements OnInit {
 	clinicId: number;
 	queueNum: number;
 	disabled : any;
-
+	booking : any;
+	clinicEntity: any;
 	constructor(public sessionService: SessionService, private bookingService: BookingService, private patientService: PatientService, private navigationCtrl: NavController, private payPal: PayPal,private location: Location, private router : Router) { }
 
 	ngOnInit() {
@@ -25,15 +26,46 @@ export class ViewBookingPage implements OnInit {
 		this.clinicId = Object.values(this.sessionService.getClinicObj())[0];
 	}
 
+
+
+	async checkPatient()
+	{
+	   await this.patientService.retrieveCurrentBooking(Object.values(this.sessionService.getCurrentPatient())[1]).subscribe(
+		   response => {
+			   this.booking = response.bookingEntity;
+			   console.log(this.booking);
+			   if(this.booking.status == "BOOKED")
+			   {
+				   this.disabled = false;
+			   }
+			   else{
+				   this.disabled  = true;
+			   }
+			   
+			   
+		   
+			   this.clinicEntity = response.bookingEntity.clinicEntity;
+			   
+			   this.patientService.retrieveCurrentBookingQueuePosition(String(this.booking.bookingId), String(this.clinicEntity.clinicId)).subscribe(
+				   response => {
+		   
+					   this.queueNum = response.queueNumber
+				   }
+			   )
+		   }
+	   );
+	}
+
 	back()
 	{
 		
 		//this.router.navigate(["/tabs"])
-		this.navigationCtrl.navigateBack(['/tabs']);
+		//this.navigationCtrl.navigateBack(['/tabs']);
 	
-		//this.navigationCtrl.navigateRoot('/tabs');
+		this.navigationCtrl.navigateRoot('/tabs');
 	}
-	ionViewWillEnter() {
+	async ionViewWillEnter() {
+		this.checkPatient();
 		this.patientService.retrieveCurrentBookingQueuePosition(String(this.bookingId), String(this.clinicId)).subscribe(
 			response => {
 				this.queueNum = response.queueNumber

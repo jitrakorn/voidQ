@@ -207,9 +207,10 @@ public class PatientSessionBean implements PatientSessionBeanLocal {
         BookingEntity booking;
 
         try {
-            booking = (BookingEntity) em.createQuery("SELECT b FROM BookingEntity b WHERE b.patientEntity.userId= :patient AND b.transactionDateTime > :date ORDER BY b.transactionDateTime ASC")
+            booking = (BookingEntity) em.createQuery("SELECT b FROM BookingEntity b WHERE b.patientEntity.userId= :patient AND b.status<>  :status  AND b.transactionDateTime > :date ORDER BY b.transactionDateTime ASC")
                     .setParameter("patient", patientId)
                     .setParameter("date", today.getTime(), TemporalType.TIMESTAMP)
+                     .setParameter("status", BookingStatus.PAID)
                     .getSingleResult();
         } catch (NoResultException | NonUniqueResultException ex) {
             throw new BookingNotFoundException("Booking not found for patient Id " + patientId + " does not exist!");
@@ -217,6 +218,10 @@ public class PatientSessionBean implements PatientSessionBeanLocal {
 
         booking.getClinicEntity();
         booking.getPatientEntity();
+        if( booking.getDoctorEntity() != null)
+        {
+        booking.getDoctorEntity();
+        }
 
         return booking;
 
