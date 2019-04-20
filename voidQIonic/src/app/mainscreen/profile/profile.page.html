@@ -1,69 +1,101 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-button (click)="back()">
-        <ion-icon slot="start" name="arrow-back"></ion-icon>
-      </ion-button>
-    </ion-buttons>
-    <ion-title>Welcome, {{currentPatient.firstName}}</ion-title>
-  </ion-toolbar>
-
-
-</ion-header>
-<ion-content>
-
-  <form *ngIf="currentPatient != null" #updatePatientForm="ngForm" (ngSubmit)="update(updatePatientForm)">
-    <div style="color: red;">
-
-      <div *ngIf="firstName.invalid && (firstName.dirty || firstName.touched || submitted)" class="errorText">
-        <div *ngIf="firstName.errors.required">
-          First Name is required.
+    <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-button (click)="back()">
+          <ion-icon slot="start" name="arrow-back"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+      <ion-title>Welcome, {{currentPatient.firstName}}</ion-title>
+    </ion-toolbar>
+  
+  
+  </ion-header>
+  <ion-content>
+  
+    <form *ngIf="currentPatient != null" #updatePatientForm="ngForm" (ngSubmit)="update(updatePatientForm)">
+      <div style="color: red;">
+  
+        <div *ngIf="firstName.invalid && (firstName.dirty || firstName.touched || submitted)" class="errorText">
+          <div *ngIf="firstName.errors.required">
+            First Name is required.
+          </div>
         </div>
-      </div>
-
-      <div *ngIf="lastName.invalid && (lastName.dirty || lastName.touched || submitted)" class="errorText">
-        <div *ngIf="lastName.errors.required">
-          Last Name is required.
+  
+        <div *ngIf="lastName.invalid && (lastName.dirty || lastName.touched || submitted)" class="errorText">
+          <div *ngIf="lastName.errors.required">
+            Last Name is required.
+          </div>
         </div>
-      </div>
-
-    
-
-      <div *ngIf="phoneNumber.invalid && (phoneNumber.dirty || phoneNumber.touched || submitted)" class="errorText">
-        <div *ngIf="phoneNumber.errors.required">
-          Phone Number is required.
+  
+  
+  
+        <div *ngIf="phoneNumber.invalid && (phoneNumber.dirty || phoneNumber.touched || submitted)" class="errorText">
+          <div *ngIf="phoneNumber.errors.required">
+            Phone Number is required.
+          </div>
         </div>
+  
       </div>
-      </div>
-
+  
       <ion-list>
-
+  
+        <ion-item>
+          <ion-label><b>Patient ID</b></ion-label>
+          {{currentPatient.userId}}
+        </ion-item>
+  
+        <ion-item>
+          <ion-label><b>Email</b></ion-label>
+          {{currentPatient.email}}
+        </ion-item>
+  
         <ion-item>
           <ion-label><b>First Name</b></ion-label>
           <ion-input type="text" id="firstName" name="firstName" [(ngModel)]="currentPatient.firstName" required="true"
             #firstName="ngModel"></ion-input>
         </ion-item>
-
+  
         <ion-item>
           <ion-label><b>Last Name</b></ion-label>
           <ion-input type="text" id="lastName" name="lastName" [(ngModel)]="currentPatient.lastName" required="true"
             #lastName="ngModel">
           </ion-input>
         </ion-item>
-
+  
         <ion-item>
           <ion-label><b>Phone number</b></ion-label>
-          <ion-input type="text" id="phoneNumber" name="phoneNumber" [(ngModel)]="currentPatient.phoneNumber" required="true"
-            #phoneNumber="ngModel"></ion-input>
+          <ion-input type="text" id="phoneNumber" name="phoneNumber" [(ngModel)]="currentPatient.phoneNumber"
+            required="true" #phoneNumber="ngModel"></ion-input>
         </ion-item>
-
-
-
+  
+  
       </ion-list>
-
-      
+  
+  
       <ion-button type="submit" ion-button block>Update</ion-button>
+    </form>
+  
+  
+    <ion-button (click)="changePassword()">Change Password</ion-button>
+    <ion-button (click)="goToLogout()">Logout</ion-button>
+    <div>
+      <form *ngIf="buttonClicked" #updatePatientPasswordForm="ngForm"
+        (ngSubmit)="updatePassword(updatePatientPasswordForm)">
+        <ion-list>
+  
+          <ion-item>
+            <ion-label><b>Old Password </b></ion-label>
+            <ion-input type="password" id="oldPassword" name="oldPassword" [(ngModel)]="oldPasswordText" required="true"
+              #oldPassword="ngModel"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label><b>New Password </b></ion-label>
+            <ion-input type="password" id="newPassword" name="newPassword" [(ngModel)]="newPasswordText" required="true"
+              #newPassword="ngModel"></ion-input>
+          </ion-item>
+        </ion-list>
+        <ion-button type="submit" ion-button block>Update</ion-button>
       </form>
-      <ion-button (click)="goToLogin()">Logout</ion-button>
-      
-</ion-content>
+    </div>
+  
+  </ion-content>

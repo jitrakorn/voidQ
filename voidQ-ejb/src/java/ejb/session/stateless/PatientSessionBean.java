@@ -8,9 +8,12 @@ package ejb.session.stateless;
 import ejb.entity.BookingEntity;
 import ejb.entity.ClinicEntity;
 import ejb.entity.PatientEntity;
+import ejb.entity.UserEntity;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -27,6 +30,7 @@ import util.exception.BookingNotFoundException;
 import util.exception.InputDataValidationException;
 import util.exception.InvalidLoginCredentialException;
 import util.exception.PatientNotFoundException;
+import util.exception.UpdatePasswordException;
 import util.exception.UpdatePatientException;
 import util.security.CryptographicHelper;
 
@@ -90,33 +94,64 @@ public class PatientSessionBean implements PatientSessionBeanLocal {
         }
     }
 
-    @Override
+   @Override
     public void updatePatient(PatientEntity patient) throws InputDataValidationException, PatientNotFoundException, UpdatePatientException {
         // Updated in v4.1 to update selective attributes instead of merging the entire state passed in from the client
         // Also check for existing staff before proceeding with the update
 
         // Updated in v4.2 with bean validation
-        Set<ConstraintViolation<PatientEntity>> constraintViolations = validator.validate(patient);
+        //   Set<ConstraintViolation<PatientEntity>> constraintViolations = validator.validate(patient);
+//
+        //  if (constraintViolations.isEmpty()) {
+        if (patient.getUserId() != null) {
+            PatientEntity patientToUpdate = retrievePatientByPatientId(patient.getUserId());
 
-        if (constraintViolations.isEmpty()) {
-            if (patient.getUserId() != null) {
-                PatientEntity patientToUpdate = retrievePatientByPatientId(patient.getUserId());
+            if (patientToUpdate.getEmail().equals(patient.getEmail())) {
+                patientToUpdate.setFirstName(patient.getFirstName());
+                patientToUpdate.setLastName(patient.getLastName());
+                patientToUpdate.setPhoneNumber(patient.getPhoneNumber());
 
-                if (patientToUpdate.getEmail().equals(patient.getEmail())) {
-                    patientToUpdate.setFirstName(patient.getFirstName());
-                    patientToUpdate.setLastName(patient.getLastName());
-                    patientToUpdate.setPhoneNumber(patient.getPhoneNumber());
-
-                } else {
-                    throw new UpdatePatientException("Username of patient record to be updated does not match the existing record");
-                }
             } else {
-                throw new PatientNotFoundException("Patient ID not provided for patient to be updated");
+                throw new UpdatePatientException("Username of patient record to be updated does not match the existing record");
             }
         } else {
-            throw new InputDataValidationException(prepareInputDataValidationErrorsMessage(constraintViolations));
+            throw new PatientNotFoundException("Patient ID not provided for patient to be updated");
         }
+//        } else {
+//            throw new InputDataValidationException(prepareInputDataValidationErrorsMessage(constraintViolations));
+//        }
     }
+
+    
+     @Override
+    public void updatePassword(UserEntity patient, String oldPassword, String newPassword) throws UpdatePasswordException {
+        try {
+            PatientEntity patientToUpdate = null;
+            
+            Long patientId = patient.getUserId();
+            System.out.println("CHECKoldpw" + oldPassword);
+            patientToUpdate = retrievePatientByPatientId(patientId);
+            String oldPasswordHash = CryptographicHelper.getInstance().byteArrayToHexString(CryptographicHelper.getInstance().doMD5Hashing(oldPassword + patientToUpdate.getSalt()));
+            System.out.println("CHECK" + oldPasswordHash);
+            System.out.println("OLDHASH" + patientToUpdate.getPassword());
+            if (oldPasswordHash.equalsIgnoreCase(patientToUpdate.getPassword())) {
+                if (!oldPassword.equals(newPassword)) {
+                    System.out.println("HI im working");
+                    patientToUpdate.setPassword(newPassword);
+                } else {
+                    throw new UpdatePasswordException("new password must be different!");
+                }
+            } else {
+                throw new UpdatePasswordException("Old password does not match original password!");
+
+            }
+        } catch (PatientNotFoundException ex) {
+          
+        }
+
+     
+    }
+
 
     @Override
     public PatientEntity patientLogin(String email, String password) throws InvalidLoginCredentialException {

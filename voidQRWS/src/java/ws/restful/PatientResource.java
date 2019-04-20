@@ -6,6 +6,7 @@ import datamodel.ws.rest.ErrorRsp;
 import datamodel.ws.rest.PatientLoginRsp;
 import datamodel.ws.rest.RetrieveCurrentBookingQueuePositionRsp;
 import datamodel.ws.rest.RetrieveCurrentBookingRsp;
+import datamodel.ws.rest.UpdatePatientPasswordReq;
 import datamodel.ws.rest.UpdatePatientReq;
 import ejb.entity.BookingEntity;
 
@@ -33,6 +34,7 @@ import util.exception.BookingNotFoundException;
 import util.exception.InputDataValidationException;
 import util.exception.InvalidLoginCredentialException;
 import util.exception.PatientNotFoundException;
+import util.exception.UpdatePasswordException;
 import util.exception.UpdatePatientException;
 
 @Path("Patient")
@@ -149,6 +151,25 @@ public class PatientResource {
         }
     }
 
+    @Path("updatePassword")
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response updatePassword(UpdatePatientPasswordReq updatePatientPasswordReq) {
+        if (updatePatientPasswordReq != null) {
+            try {
+                patientSessionBeanLocal.updatePassword(updatePatientPasswordReq.getPatientEntity(), updatePatientPasswordReq.getOldPassword(), updatePatientPasswordReq.getNewPassword());
+
+            } catch (UpdatePasswordException ex) {
+
+                ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
+
+                return Response.status(Response.Status.BAD_REQUEST).entity(errorRsp).build();
+            }
+        }
+        return Response.status(Response.Status.OK).build();
+    }
+
     @Path("retrieveCurrentBookingQueuePosition")
     @GET
     @Consumes(MediaType.TEXT_PLAIN)
@@ -171,7 +192,7 @@ public class PatientResource {
         BookingEntity bookingEntity = null;
         try {
             bookingEntity = patientSessionBeanLocal.retrieveCurrentBooking(longPatientId);
-             bookingEntity.getClinicEntity().getBookingEntities().clear();
+            bookingEntity.getClinicEntity().getBookingEntities().clear();
             bookingEntity.getClinicEntity().getDoctorEntities().clear();
             bookingEntity.getClinicEntity().getNurseEntities().clear();
             bookingEntity.getPatientEntity().getBookingEntities().clear();
@@ -182,10 +203,10 @@ public class PatientResource {
             bookingEntity.setTransactionEntity(null);
             return Response.status(Status.OK).entity(new RetrieveCurrentBookingRsp(bookingEntity)).build();
         } catch (BookingNotFoundException ex) {
-             ErrorRsp errorRsp = new ErrorRsp("empty");
-           return Response.status(Status.OK).entity(errorRsp).build();
+            ErrorRsp errorRsp = new ErrorRsp("empty");
+            return Response.status(Status.OK).entity(errorRsp).build();
         }
-        
+
     }
 
     private PatientSessionBeanLocal lookupPatientSessionBeanLocal() {

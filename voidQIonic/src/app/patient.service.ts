@@ -56,15 +56,28 @@ export class PatientService {
 	}
 	updatePatientDetails(email: String, password: String, newPatient: Patient): Observable<any> {
 		let updatePatientReq = {
-		 "email": email,
-		 "password": password,
-		 "patientEntity": newPatient
+			"email": email,
+			"password": password,
+			"patientEntity": newPatient
 		};
-		return this.httpClient.post<any>(this.baseUrl + "/updatePatient", updatePatientReq, httpOptions).pipe
+		return this.httpClient.post<any>(this.baseUrl , updatePatientReq, httpOptions).pipe
 		(
-		 catchError(this.handleError)
+			catchError(this.handleError)
 		);
-	   }
+	}
+
+	updatePatientPassword(oldPassword: String, newPassword: String, newPatient: Patient): Observable<any> {
+		let updatePatientPasswordReq = {
+			"oldPassword": oldPassword,
+			"newPassword": newPassword,
+			"patientEntity": newPatient
+		};
+		return this.httpClient.post<any>(this.baseUrl + "/updatePassword" ,  updatePatientPasswordReq, httpOptions).pipe
+		(
+			catchError(this.handleError)
+		);
+	}
+
 
 	private handleError(error: HttpErrorResponse) {
 		let errorMessage: string = "";
