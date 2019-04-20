@@ -8,10 +8,12 @@ package ejb.session.stateless;
 import ejb.entity.BookingEntity;
 import ejb.entity.PatientEntity;
 import ejb.entity.StaffEntity;
+import ejb.entity.UserEntity;
 import java.util.List;
 import util.exception.InputDataValidationException;
 import util.exception.InvalidLoginCredentialException;
 import util.exception.PatientNotFoundException;
+import util.exception.UpdatePasswordException;
 import util.exception.UpdatePatientException;
 
 /**
@@ -35,5 +37,7 @@ public interface PatientSessionBeanLocal {
     public Integer retrieveCurrentBookingQueuePosition(Long bookingId, Long clinicId);
     
     public BookingEntity retrieveCurrentBooking(Long patientId);
+
+    public void updatePassword(UserEntity patient, String oldPassword, String newPassword) throws UpdatePasswordException;
     
 }

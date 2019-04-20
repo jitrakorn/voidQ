@@ -53,6 +53,18 @@ export class PatientService {
 		);
 	}
 
+	updatePatientPassword(oldPassword: String, newPassword: String, newPatient: Patient): Observable<any> {
+		let updatePatientPasswordReq = {
+			"oldPassword": oldPassword,
+			"newPassword": newPassword,
+			"patientEntity": newPatient
+		};
+		return this.httpClient.post<any>(this.baseUrl + "/updatePassword" ,  updatePatientPasswordReq, httpOptions).pipe
+		(
+			catchError(this.handleError)
+		);
+	}
+
 	retrieveCurrentBookingQueuePosition(bookingId: string, clinicId: string): Observable<any> {
 		return this.httpClient.get<any>(this.baseUrl + "/retrieveCurrentBookingQueuePosition?bookingId=" + bookingId + "&clinicId=" + clinicId).pipe
 			(

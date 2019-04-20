@@ -8,9 +8,12 @@ package ejb.session.stateless;
 import ejb.entity.BookingEntity;
 import ejb.entity.ClinicEntity;
 import ejb.entity.PatientEntity;
+import ejb.entity.UserEntity;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -26,6 +29,7 @@ import util.enumeration.BookingStatus;
 import util.exception.InputDataValidationException;
 import util.exception.InvalidLoginCredentialException;
 import util.exception.PatientNotFoundException;
+import util.exception.UpdatePasswordException;
 import util.exception.UpdatePatientException;
 import util.security.CryptographicHelper;
 
@@ -95,24 +99,23 @@ public class PatientSessionBean implements PatientSessionBeanLocal {
         // Also check for existing staff before proceeding with the update
 
         // Updated in v4.2 with bean validation
-       // Set<ConstraintViolation<PatientEntity>> constraintViolations = validator.validate(patient);
+        //   Set<ConstraintViolation<PatientEntity>> constraintViolations = validator.validate(patient);
+//
+        //  if (constraintViolations.isEmpty()) {
+        if (patient.getUserId() != null) {
+            PatientEntity patientToUpdate = retrievePatientByPatientId(patient.getUserId());
 
-//        if (constraintViolations.isEmpty()) {
-            if (patient.getUserId() != null) {
-                PatientEntity patientToUpdate = retrievePatientByPatientId(patient.getUserId());
+            if (patientToUpdate.getEmail().equals(patient.getEmail())) {
+                patientToUpdate.setFirstName(patient.getFirstName());
+                patientToUpdate.setLastName(patient.getLastName());
+                patientToUpdate.setPhoneNumber(patient.getPhoneNumber());
 
-                if (patientToUpdate.getEmail().equals(patient.getEmail())) {
-                    patientToUpdate.setFirstName(patient.getFirstName());
-                    patientToUpdate.setLastName(patient.getLastName());
-                    patientToUpdate.setPhoneNumber(patient.getPhoneNumber());
-                    
-
-                } else {
-                    throw new UpdatePatientException("Username of patient record to be updated does not match the existing record");
-                }
             } else {
-                throw new PatientNotFoundException("Patient ID not provided for patient to be updated");
+                throw new UpdatePatientException("Username of patient record to be updated does not match the existing record");
             }
+        } else {
+            throw new PatientNotFoundException("Patient ID not provided for patient to be updated");
+        }
 //        } else {
 //            throw new InputDataValidationException(prepareInputDataValidationErrorsMessage(constraintViolations));
 //        }
@@ -135,7 +138,37 @@ public class PatientSessionBean implements PatientSessionBeanLocal {
     }
 
     @Override
-    public Integer retrieveCurrentBookingQueuePosition(Long bookingId, Long clinicId) {
+    public void updatePassword(UserEntity patient, String oldPassword, String newPassword) throws UpdatePasswordException {
+        PatientEntity patientToUpdate = null;
+        try {
+            Long patientId = patient.getUserId();
+            System.out.println("CHECKoldpw" + oldPassword);
+            patientToUpdate = retrievePatientByPatientId(patientId);
+            String oldPasswordHash = CryptographicHelper.getInstance().byteArrayToHexString(CryptographicHelper.getInstance().doMD5Hashing(oldPassword + patientToUpdate.getSalt()));
+            System.out.println("CHECK" + oldPasswordHash);
+            System.out.println("OLDHASH" + patientToUpdate.getPassword());
+            if (oldPasswordHash.equalsIgnoreCase(patientToUpdate.getPassword())) {
+                if (!oldPassword.equals(newPassword)) {
+                    System.out.println("HI im working");
+                    patientToUpdate.setPassword(newPassword);
+                } else {
+                    throw new UpdatePasswordException("new password must be different!");
+                }
+            } else {
+                throw new UpdatePasswordException("Old password does not match original password!");
+
+            }
+
+        } catch (PatientNotFoundException ex) {
+            Logger.getLogger(PatientSessionBean.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (UpdatePasswordException ex) {
+            throw new UpdatePasswordException("Unable to update password");
+        }
+    }
+
+    @Override
+    public Integer retrieveCurrentBookingQueuePosition(Long bookingId, Long clinicId
+    ) {
         Calendar today = Calendar.getInstance();
         today.set(Calendar.HOUR_OF_DAY, 0);
         today.set(Calendar.MINUTE, 0);
@@ -161,26 +194,27 @@ public class PatientSessionBean implements PatientSessionBeanLocal {
 
         return position;
     }
-    
+
     @Override
-    public BookingEntity retrieveCurrentBooking(Long patientId) {
+    public BookingEntity retrieveCurrentBooking(Long patientId
+    ) {
         Calendar today = Calendar.getInstance();
         today.set(Calendar.HOUR_OF_DAY, 0);
         today.set(Calendar.MINUTE, 0);
         today.set(Calendar.SECOND, 0);
         today.set(Calendar.MILLISECOND, 0);
 
-           System.out.println("run " + patientId);
+        System.out.println("run " + patientId);
         BookingEntity booking = (BookingEntity) em.createQuery("SELECT b FROM BookingEntity b WHERE b.patientEntity.userId= :patient AND b.transactionDateTime > :date ORDER BY b.transactionDateTime ASC")
                 .setParameter("patient", patientId)
                 .setParameter("date", today.getTime(), TemporalType.TIMESTAMP)
                 .getSingleResult();
-        
+
         booking.getClinicEntity();
         booking.getPatientEntity();
-           System.out.println("run z" + booking.getBookingId());
-       return booking;
-       
+        System.out.println("run z" + booking.getBookingId());
+        return booking;
+
     }
 
     private String prepareInputDataValidationErrorsMessage(Set<ConstraintViolation<PatientEntity>> constraintViolations) {

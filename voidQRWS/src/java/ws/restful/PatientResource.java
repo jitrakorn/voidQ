@@ -6,6 +6,7 @@ import datamodel.ws.rest.ErrorRsp;
 import datamodel.ws.rest.PatientLoginRsp;
 import datamodel.ws.rest.RetrieveCurrentBookingQueuePositionRsp;
 import datamodel.ws.rest.RetrieveCurrentBookingRsp;
+import datamodel.ws.rest.UpdatePatientPasswordReq;
 import datamodel.ws.rest.UpdatePatientReq;
 import ejb.entity.BookingEntity;
 
@@ -32,6 +33,7 @@ import javax.ws.rs.core.Response.Status;
 import util.exception.InputDataValidationException;
 import util.exception.InvalidLoginCredentialException;
 import util.exception.PatientNotFoundException;
+import util.exception.UpdatePasswordException;
 import util.exception.UpdatePatientException;
 
 @Path("Patient")
@@ -112,7 +114,6 @@ public class PatientResource {
         }
     }
 
-   
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
@@ -143,6 +144,22 @@ public class PatientResource {
 
         } else {
             ErrorRsp errorRsp = new ErrorRsp("Invalid patient to update details");
+
+            return Response.status(Response.Status.BAD_REQUEST).entity(errorRsp).build();
+
+        }
+    }
+
+    @Path("updatePassword")
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response updatePassword(UpdatePatientPasswordReq updatePatientPasswordReq) throws UpdatePasswordException {
+        if (updatePatientPasswordReq != null) {
+            patientSessionBeanLocal.updatePassword(updatePatientPasswordReq.getPatientEntity(), updatePatientPasswordReq.getOldPassword(), updatePatientPasswordReq.getNewPassword());
+            return Response.status(Response.Status.OK).build();
+        } else {
+            ErrorRsp errorRsp = new ErrorRsp("Invalid password to update details");
 
             return Response.status(Response.Status.BAD_REQUEST).entity(errorRsp).build();
 

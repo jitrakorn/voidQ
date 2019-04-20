@@ -74,6 +74,28 @@
 
     <ion-button type="submit" ion-button block>Update</ion-button>
   </form>
+
+
+  <ion-button (click)="changePassword()">Change Password</ion-button>
   <ion-button (click)="goToLogout()">Logout</ion-button>
+  <div>
+    <form *ngIf="buttonClicked" #updatePatientPasswordForm="ngForm"
+      (ngSubmit)="updatePassword(updatePatientPasswordForm)">
+      <ion-list>
+
+        <ion-item>
+          <ion-label><b>Old Password </b></ion-label>
+          <ion-input type="password" id="oldPassword" name="oldPassword" [(ngModel)]="oldPasswordText" required="true"
+            #oldPassword="ngModel"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label><b>New Password </b></ion-label>
+          <ion-input type="password" id="newPassword" name="newPassword" [(ngModel)]="newPasswordText" required="true"
+            #newPassword="ngModel"></ion-input>
+        </ion-item>
+      </ion-list>
+      <ion-button type="submit" ion-button block>Update</ion-button>
+    </form>
+  </div>
 
 </ion-content>
