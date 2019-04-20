@@ -7,23 +7,61 @@ import { IonicModule } from '@ionic/angular';
 
 import { TabsPage } from './tabs.page';
 
+
+
 const routes: Routes = [
   {
-    path: 'tabs',
+    path: '',
     component: TabsPage,
-    children: [
-      { path: 'clinics', loadChildren: '../clinics/clinics.module#ClinicsPageModule' },
-      { path: 'profile', loadChildren: '../profile/profile.module#ProfilePageModule' },
-  { path: 'view-booking', loadChildren: '../view-booking/view-booking.module#ViewBookingPageModule' }
-    ]
+    children:
+      [
+        {
+          path: 'clinics',
+          children:
+            [
+              {
+                path: '',
+                loadChildren: '../clinics/clinics.module#ClinicsPageModule'
+              }
+            ]
+        },
+        {
+          path: 'profile',
+          children:
+            [
+              {
+                path: '',
+                loadChildren: '../profile/profile.module#ProfilePageModule'
+              }
+            ]
+        },
+        {
+          path: 'view-booking',
+          children:
+            [
+              {
+                path: '',
+                loadChildren: '../view-booking/view-booking.module#ViewBookingPageModule'
+              }
+            ]
+        },
+        {
+          path: '',
+          redirectTo: '/tabs/clinics',
+          pathMatch: 'full'
+        }
+      ]
   },
   {
     path: '',
-    redirectTo:'tabs/clinics',
-    pathMatch : 'full'
+    redirectTo: '/tabs/clinics',
+    pathMatch: 'full'
   }
-  
 ];
+
+
+
+
 
 
 

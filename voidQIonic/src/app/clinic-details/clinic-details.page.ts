@@ -64,7 +64,7 @@ export class ClinicDetailsPage implements OnInit {
 					this.sessionService.setBookingId(newBookingId);
 					this.message = "booked ! ";
 					this.presentToast();
-					this.navigationCtrl.navigateForward("/view-booking");
+					this.navigationCtrl.navigateRoot("/view-booking");
 					
 				},
 				error => {

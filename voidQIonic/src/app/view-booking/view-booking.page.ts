@@ -5,7 +5,7 @@ import { PatientService } from '../patient.service';
 import { BookingService } from '../booking.service';
 import { PayPal, PayPalPayment, PayPalConfiguration } from '@ionic-native/paypal/ngx';
 import { Location } from '@angular/common';
-
+import {ActivatedRoute,Router} from '@angular/router';
 @Component({
 	selector: 'app-view-booking',
 	templateUrl: './view-booking.page.html',
@@ -18,7 +18,7 @@ export class ViewBookingPage implements OnInit {
 	queueNum: number;
 	disabled : any;
 
-	constructor(public sessionService: SessionService, private bookingService: BookingService, private patientService: PatientService, private navigationCtrl: NavController, private payPal: PayPal,private location: Location) { }
+	constructor(public sessionService: SessionService, private bookingService: BookingService, private patientService: PatientService, private navigationCtrl: NavController, private payPal: PayPal,private location: Location, private router : Router) { }
 
 	ngOnInit() {
 		this.bookingId = this.sessionService.getBookingId();
@@ -27,7 +27,11 @@ export class ViewBookingPage implements OnInit {
 
 	back()
 	{
-		this.navigationCtrl.navigateRoot('/tabs');
+		
+		//this.router.navigate(["/tabs"])
+		this.navigationCtrl.navigateBack(['/tabs']);
+	
+		//this.navigationCtrl.navigateRoot('/tabs');
 	}
 	ionViewWillEnter() {
 		this.patientService.retrieveCurrentBookingQueuePosition(String(this.bookingId), String(this.clinicId)).subscribe(

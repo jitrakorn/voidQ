@@ -4,20 +4,18 @@
 	</ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content padding>
 	<div id="map_canvas"></div>
-
+	
 	<ion-list>
-		<ion-item *ngFor="let clinic of clinicsWithQueue" (click)="goBook(clinic)">
+			<ion-item *ngFor="let clinic of clinicsWithQueue" (click)="goBook(clinic)">
+	
+				<ion-label>{{clinic.clinicName}}</ion-label>
+				<ion-label style="font-size: 30px; text-align: right; font-weight: 500;">{{clinic.queueNum}} <span style="font-size: 12px;">
+						in queue</span></ion-label>
+			</ion-item>
+		</ion-list>
 
-			<ion-label>{{clinic.clinicName}}</ion-label>
-			<ion-label style="font-size: 30px; text-align: right; font-weight: 500;">{{clinic.queueNum}} <span style="font-size: 12px;">
-					in queue</span></ion-label>
-		</ion-item>
-	</ion-list>
 
-	<ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)">
-		<ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
-		</ion-infinite-scroll-content>
-	</ion-infinite-scroll>
+	
 </ion-content>

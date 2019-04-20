@@ -5,6 +5,7 @@ import { GoogleMap, GoogleMaps, MyLocation, Marker, GoogleMapsAnimation, GoogleM
 import { Clinic } from 'src/app/clinic';
 import { ClinicService } from 'src/app/clinic.service';
 import { SessionService } from 'src/app/session.service';
+import { CompileShallowModuleMetadata } from '@angular/compiler';
 
 
 @Component({
@@ -14,24 +15,33 @@ import { SessionService } from 'src/app/session.service';
 })
 export class ClinicsPage implements OnInit {
 
-  @ViewChild(IonInfiniteScroll) infiniteScroll: IonInfiniteScroll;
+
 	clinics: Clinic[];
 	clinicsWithQueue: Object[];
 
 	map: GoogleMap;
 	loading: any;
 	async ngOnInit() {
+	
+	
+	}
+
+	async ionViewWillEnter() {
+		this.clinicsWithQueue= [];
+		console.log("hjh");
 		// Since ngOnInit() is executed before `deviceready` event,
 		// you have to wait the event.
 
 		this.clinicService.retrieveClinics().subscribe(
 			clinicResponse => {
 				this.clinics = clinicResponse.clinicEntities;
+				console.log(this.clinics);
 
 				for (let clinic of this.clinics) {
 					this.clinicService.retrieveCurrentClinicCurrentDayCurrentQueue(String(clinic.clinicId)).subscribe(
 						queueResponse => {
-							this.clinicsWithQueue = [];
+							
+					
 							this.clinicsWithQueue.push({
 								clinicId: clinic.clinicId,
 								address: clinic.address,
@@ -56,82 +66,50 @@ export class ClinicsPage implements OnInit {
 
 		await this.platform.ready();
 		await this.loadMap();
-	}
-
-	 IonViewWillEnter() {
-		this.clinicService.retrieveClinics().subscribe(
-			clinicResponse => {
-				this.clinics = clinicResponse.clinicEntities;
-
-				for (let clinic of this.clinics) {
-					this.clinicService.retrieveCurrentClinicCurrentDayCurrentQueue(String(clinic.clinicId)).subscribe(
-						queueResponse => {
-							this.clinicsWithQueue = [];
-							this.clinicsWithQueue.push({
-								clinicId: clinic.clinicId,
-								address: clinic.address,
-								clinicName: clinic.clinicName,
-								applicationStatus: clinic.applicationStatus,
-								description: clinic.description,
-								lat: clinic.lat,
-								lng: clinic.lng,
-								phoneNum: clinic.phoneNum,
-								unitPrice: clinic.unitPrice,
-								queueNum: queueResponse.queueNumber
-							})
-							console.log(this.clinicsWithQueue);
-						}
-					)
-				}
-			},
-			error => {
-				console.log('********** home.page.ts (retrieveClinics): ' + error);
-			}
-		);
-		this.loadData(event);
-		
+		await this.goToMyLocation();
 	}
 
 	constructor(public sessionService: SessionService, public toastCtrl: ToastController,
 		private platform: Platform, private clinicService: ClinicService, private navigationCtrl: NavController) {
+			this.clinicsWithQueue = [];
 	}
 
-	loadData(event) {
-		setTimeout(() => {
-			console.log('Done');
+	// loadData(event) {
+	// 	setTimeout(() => {
+	// 		console.log('Done');
 
-			this.clinicService.retrieveClinics().subscribe(
-				response => {
-					this.clinics = response.clinicEntities;
-					for (let clinic of this.clinics) {
+	// 		this.clinicService.retrieveClinics().subscribe(
+	// 			response => {
+	// 				this.clinics = response.clinicEntities;
+	// 				for (let clinic of this.clinics) {
 
-						this.clinicService.retrieveCurrentClinicCurrentDayCurrentQueue(String(clinic.clinicId)).subscribe(
-							queueResponse => {
-								this.clinicsWithQueue.push({
-									clinicId: clinic.clinicId,
-									address: clinic.address,
-									clinicName: clinic.clinicName,
-									applicationStatus: clinic.applicationStatus,
-									description: clinic.description,
-									lat: clinic.lat,
-									lng: clinic.lng,
-									phoneNum: clinic.phoneNum,
-									unitPrice: clinic.unitPrice,
-									queueNum: queueResponse.queueNumber
-								})
-								console.log(this.clinicsWithQueue);
-							}
-						)
-					}
-				},
-				error => {
-					console.log('**** home.page.ts (retrieveClinics): ' + error);
-				}
-			);
-			event.target.disabled = true;
-			event.target.complete();
-		}, 500);
-	}
+	// 					this.clinicService.retrieveCurrentClinicCurrentDayCurrentQueue(String(clinic.clinicId)).subscribe(
+	// 						queueResponse => {
+	// 							this.clinicsWithQueue.push({
+	// 								clinicId: clinic.clinicId,
+	// 								address: clinic.address,
+	// 								clinicName: clinic.clinicName,
+	// 								applicationStatus: clinic.applicationStatus,
+	// 								description: clinic.description,
+	// 								lat: clinic.lat,
+	// 								lng: clinic.lng,
+	// 								phoneNum: clinic.phoneNum,
+	// 								unitPrice: clinic.unitPrice,
+	// 								queueNum: queueResponse.queueNumber
+	// 							})
+	// 							console.log(this.clinicsWithQueue);
+	// 						}
+	// 					)
+	// 				}
+	// 			},
+	// 			error => {
+	// 				console.log('**** home.page.ts (retrieveClinics): ' + error);
+	// 			}
+	// 		);
+	// 		event.target.disabled = true;
+	// 		event.target.complete();
+	// 	}, 500);
+	// }
 
 	goBook(clinic: Object) {
 		console.log(clinic);
@@ -150,7 +128,7 @@ export class ClinicsPage implements OnInit {
 				'mapToolbar': true     // android only
 			  }
 		});
-		this.goToMyLocation();
+	
 	}
 
 	goToMyLocation() {
@@ -184,8 +162,7 @@ export class ClinicsPage implements OnInit {
 				});
 
 
-				//show the infoWindow
-				marker.showInfoWindow();
+		
 			}
 
 			this.map.on(GoogleMapsEvent.MAP_READY).subscribe(
@@ -209,7 +186,6 @@ export class ClinicsPage implements OnInit {
 
 		return (12742 * Math.asin(Math.sqrt(a))).toFixed(2); // 2 * R; R = 6371 km
 	}
-
 
 
 }

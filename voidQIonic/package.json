@@ -83,14 +83,14 @@
         "ANDROID_SUPPORT_ANNOTATIONS_VERSION": "27.+"
       },
       "cordova-plugin-ionic-keyboard": {},
+      "com.paypal.cordova.mobilesdk": {},
+      "cordova-plugin-qrscanner": {},
       "cordova-plugin-googlemaps": {
         "API_KEY_FOR_ANDROID": "AIzaSyBzvYLqwGw52vbHGWqZw2sCOtzAoZ4fxc0",
         "API_KEY_FOR_IOS": "AIzaSyBzvYLqwGw52vbHGWqZw2sCOtzAoZ4fxc0",
         "PLAY_SERVICES_VERSION": "15.0.1",
         "ANDROID_SUPPORT_V4_VERSION": "27.+"
-      },
-      "com.paypal.cordova.mobilesdk": {},
-      "cordova-plugin-qrscanner": {}
+      }
     },
     "platforms": [
       "browser",

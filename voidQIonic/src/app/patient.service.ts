@@ -16,7 +16,7 @@ const httpOptions = {
 	providedIn: 'root'
 })
 export class PatientService {
-	baseUrl: string = "/api/Patient";
+	baseUrl: string = "http://localhost:8080/voidQRWS/Resources/Patient";
 
 	constructor(private httpClient: HttpClient) { }
 
@@ -54,6 +54,17 @@ export class PatientService {
 				catchError(this.handleError)
 			)
 	}
+	updatePatientDetails(email: String, password: String, newPatient: Patient): Observable<any> {
+		let updatePatientReq = {
+		 "email": email,
+		 "password": password,
+		 "patientEntity": newPatient
+		};
+		return this.httpClient.post<any>(this.baseUrl + "/updatePatient", updatePatientReq, httpOptions).pipe
+		(
+		 catchError(this.handleError)
+		);
+	   }
 
 	private handleError(error: HttpErrorResponse) {
 		let errorMessage: string = "";
