@@ -65,4 +65,18 @@ public interface PartnerSessionBeanLocal {
 
     public void updateDoctorPassword(DoctorEntity staff, String oldPassword, String newPassword) throws UpdatePasswordException, PartnerNotFoundException;
 
-   }
+    public void deleteStaff(Long partnerId) throws PartnerNotFoundException, DeletePartnerException;
+
+    public List<DoctorEntity> retrieveAllDoctors();
+
+    public List<NurseEntity> retrieveAllNurses();
+
+    public void updateNurse(NurseEntity staff) throws InputDataValidationException, PartnerNotFoundException, UpdatePartnerException;
+
+    public void updateDoctor(DoctorEntity staff) throws InputDataValidationException, PartnerNotFoundException, UpdatePartnerException;
+
+    public void deleteNurse(Long partnerId) throws PartnerNotFoundException, DeletePartnerException;
+
+    public void deleteDoctor(Long partnerId) throws PartnerNotFoundException, DeletePartnerException;
+
+}
