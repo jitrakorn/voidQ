@@ -173,6 +173,14 @@ public class AdministratorSessionBean implements AdministratorSessionBeanLocal {
         // have to check if partner is associated with something 
         em.remove(admin);
     }
+    
+    @Override
+    public void updateAdminPassword(Long adminId, String password) {
+        AdminEntity admin = em.find(AdminEntity.class, adminId);
+        admin.setPassword(password);
+        em.merge(admin);
+        em.flush();
+    }
 
     private String prepareInputDataValidationErrorsMessage(Set<ConstraintViolation<AdminEntity>> constraintViolations) {
         String msg = "Input data validation error!:";

@@ -36,4 +36,6 @@ public interface AdministratorSessionBeanLocal {
 
     public AdminEntity resetPassword(Long adminId);
     
+    public void updateAdminPassword(Long adminId, String password);
+    
 }

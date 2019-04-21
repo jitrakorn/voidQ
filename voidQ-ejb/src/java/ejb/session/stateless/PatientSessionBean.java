@@ -1,4 +1,4 @@
-/*
+ /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -34,10 +34,13 @@ import util.exception.UpdatePasswordException;
 import util.exception.UpdatePatientException;
 import util.security.CryptographicHelper;
 import java.security.SecureRandom;
+
 /**
  *
  * @author mingxuan
  */
+
+
 @Stateless
 @Local(PatientSessionBeanLocal.class)
 public class PatientSessionBean implements PatientSessionBeanLocal {
@@ -95,23 +98,24 @@ public class PatientSessionBean implements PatientSessionBeanLocal {
         }
     }
 
-     public static String generatePassword(int len, String dic) {
-    String result = "";
-    for (int i = 0; i < len; i++) {
-        int index = random.nextInt(dic.length());
-        result += dic.charAt(index);
+    public static String generatePassword(int len, String dic) {
+        String result = "";
+        for (int i = 0; i < len; i++) {
+            int index = random.nextInt(dic.length());
+            result += dic.charAt(index);
+        }
+        return result;
     }
-    return result;
-    }
+
     @Override
     public PatientEntity resetPassword(String email) throws PatientNotFoundException, Exception {
         PatientEntity patient = retrievePatientByEmail(email);
-        String password = generatePassword(6,"abcdefghijklmnopqrstuvwxyz");
+        String password = generatePassword(6, "abcdefghijklmnopqrstuvwxyz");
         if (patient != null) {
-            
-            System.out.println("pw " + password );
+
+            System.out.println("pw " + password);
             patient.setPassword(password);
-               //SMS.sendPost(password, patient.getPhoneNumber());
+            //SMS.sendPost(password, patient.getPhoneNumber());
 
             return patient;
         } else {
@@ -247,27 +251,27 @@ public class PatientSessionBean implements PatientSessionBeanLocal {
         return booking;
 
     }
-    
+
     @Override
     public List<BookingEntity> retrievePastBookings(Long patientId) throws BookingNotFoundException {
         List<BookingEntity> bookings;
-        
+
         try {
             bookings = em.createQuery("SELECT b FROM BookingEntity b WHERE b.patientEntity.userId= :patient")
                     .setParameter("patient", patientId)
                     .getResultList();
-            
-            for (BookingEntity booking:bookings) {
-            booking.getDoctorEntity();
-            booking.getClinicEntity();
-            booking.getPatientEntity();
-        }
+
+            for (BookingEntity booking : bookings) {
+                booking.getDoctorEntity();
+                booking.getClinicEntity();
+                booking.getPatientEntity();
+            }
         } catch (NoResultException ex) {
-            throw new BookingNotFoundException("No bookings found for patient Id " + patientId + "!"); 
+            throw new BookingNotFoundException("No bookings found for patient Id " + patientId + "!");
         }
-        
+
         return bookings;
-        
+
     }
 
     private String prepareInputDataValidationErrorsMessage(Set<ConstraintViolation<PatientEntity>> constraintViolations) {

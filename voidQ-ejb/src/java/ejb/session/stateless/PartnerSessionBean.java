@@ -517,9 +517,6 @@ public class PartnerSessionBean implements PartnerSessionBeanLocal {
 
     }
 
-    @Override
-    public StaffEntity emailLogin(String email, String password) throws InvalidLoginCredentialException {
-
     private String prepareInputDataValidationErrorsMessage(Set<ConstraintViolation<ClinicEntity>> constraintViolations) {
         String msg = "Input data validation error!:";
 
