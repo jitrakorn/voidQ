@@ -12,9 +12,6 @@
         #{updateUserManagedBean.foo()}
         <h:form id="formClinic" styleClass="form form--wide">
             <h:panelGrid id="clinicPanel" columns="2" rendered="#{viewClinicDetailsManagedBean.staffToView.clinicEntity != null}" cellspacing="10px">
-                <h:outputLabel for="clinicId" value="CLINIC ID" styleClass="text-input__label text-input__label--left"/>
-                <h:inputText id="clinicId" value="#{viewClinicDetailsManagedBean.staffToView.clinicEntity.clinicId}" styleClass="text-input__input" readonly="true" />
-
                 <h:outputLabel for="name" value="NAME" styleClass="text-input__label text-input__label--left"/>
                 <h:inputText id="name" value="#{viewClinicDetailsManagedBean.staffToView.clinicEntity.clinicName}" styleClass="text-input__input" />
 

@@ -13,6 +13,7 @@ import ejb.entity.StaffEntity;
 
 import java.util.List;
 import javax.ejb.Local;
+import util.exception.ClinicNotActivatedException;
 import util.exception.DeletePartnerException;
 import util.exception.InputDataValidationException;
 import util.exception.InvalidLoginCredentialException;
@@ -31,7 +32,7 @@ public interface PartnerSessionBeanLocal {
 
     public StaffEntity retrievePartnerByEmail(String email) throws PartnerNotFoundException;
 
-    public StaffEntity emailLogin(String email, String password) throws InvalidLoginCredentialException;
+    public StaffEntity emailLogin(String email, String password) throws InvalidLoginCredentialException, ClinicNotActivatedException;
 
     public List<ClinicEntity> retrieveAllPartners();
 
@@ -48,6 +49,10 @@ public interface PartnerSessionBeanLocal {
     public StaffEntity retrieveStaffByStaffId(Long staffId) throws PartnerNotFoundException;
 
     public void updateStaff(StaffEntity staff) throws InputDataValidationException, PartnerNotFoundException, UpdatePartnerException;
+
+   public List<DoctorEntity> getDoctorsByClinicId(Long clinicId);
+   
+   public List<NurseEntity> getNursesByClinicId(Long clinicId);
 
     public List<ClinicEntity> retrieveUnApprovedApplications();
 
@@ -82,5 +87,4 @@ public interface PartnerSessionBeanLocal {
     public DoctorEntity createNewDoctor(DoctorEntity newStaff);
 
     public NurseEntity createNewNurse(NurseEntity newStaff);
-
 }

@@ -47,7 +47,6 @@ public class adminManagementManagedBean implements Serializable {
 
     public void doUpdateAdmin(ActionEvent event) {
         selectedAdminEntityToUpdate = (AdminEntity) event.getComponent().getAttributes().get("adminEntityToUpdate");
-
     }
     
     public void resetPassword(ActionEvent event)

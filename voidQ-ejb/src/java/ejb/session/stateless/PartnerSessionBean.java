@@ -22,14 +22,13 @@ import javax.persistence.NoResultException;
 import javax.persistence.NonUniqueResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import javax.persistence.TemporalType;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 import util.enumeration.ApplicationStatus;
 import util.enumeration.Availability;
-import util.enumeration.BookingStatus;
+import util.exception.ClinicNotActivatedException;
 import util.exception.DeletePartnerException;
 import util.exception.InputDataValidationException;
 import util.exception.InvalidLoginCredentialException;
@@ -233,21 +232,39 @@ public class PartnerSessionBean implements PartnerSessionBeanLocal {
         // Also check for existing staff before proceeding with the update
 
         // Updated in v4.2 with bean validation
+        DoctorEntity doctorCheck = new DoctorEntity();
+        NurseEntity nurseCheck = new NurseEntity();
+
         Set<ConstraintViolation<StaffEntity>> constraintViolations = validator.validate(staff);
 
         if (constraintViolations.isEmpty()) {
             if (staff.getUserId() != null) {
-                StaffEntity staffToUpdate = retrieveStaffByStaffId(staff.getUserId());
+                Object staffClass = staff.getClass();
+                System.out.println(staffClass);
 
-                if (staffToUpdate.getUserId().equals(staff.getUserId())) {
-                    staffToUpdate.setEmail(staff.getEmail());
-                    staffToUpdate.setFirstName(staff.getFirstName());
-                    staffToUpdate.setLastName(staff.getLastName());
-                } else {
-                    throw new UpdatePartnerException("Email of staff record to be updated does not match the existing record");
+                if (staff.getClass().equals(doctorCheck.getClass())) {
+                    doctorCheck = (DoctorEntity) retrievePartnerByEmail(staff.getEmail());
+
+                    if (doctorCheck.getUserId().equals(staff.getUserId())) {
+                        doctorCheck.setEmail(staff.getEmail());
+                        doctorCheck.setFirstName(staff.getFirstName());
+                        doctorCheck.setLastName(staff.getLastName());
+                    } else {
+                        throw new UpdatePartnerException("Email of doctor record to be updated does not match the existing record");
+                    }
+                } else if (staff.getClass().equals(nurseCheck.getClass())) {
+                    nurseCheck = (NurseEntity) retrievePartnerByEmail(staff.getEmail());
+
+                    if (nurseCheck.getUserId().equals(staff.getUserId())) {
+                        nurseCheck.setEmail(staff.getEmail());
+                        nurseCheck.setFirstName(staff.getFirstName());
+                        nurseCheck.setLastName(staff.getLastName());
+                    } else {
+                        throw new UpdatePartnerException("Email of nurse record to be updated does not match the existing record");
+                    }
                 }
             } else {
-                throw new PartnerNotFoundException("Staff ID not provided for stadf to be updated");
+                throw new PartnerNotFoundException("Staff ID not provided for staff to be updated");
             }
         } else {
             throw new InputDataValidationException(prepareInputDataValidationErrorsMessagea(constraintViolations));
@@ -255,127 +272,14 @@ public class PartnerSessionBean implements PartnerSessionBeanLocal {
     }
 
     @Override
-    public void updateDoctor(DoctorEntity staff) throws InputDataValidationException, PartnerNotFoundException, UpdatePartnerException {
-        // Updated in v4.1 to update selective attributes instead of merging the entire state passed in from the client
-        // Also check for existing staff before proceeding with the update
-
-        // Updated in v4.2 with bean validation
-        Set<ConstraintViolation<DoctorEntity>> constraintViolations = validator.validate(staff);
-
-        if (constraintViolations.isEmpty()) {
-            if (staff.getUserId() != null) {
-                DoctorEntity staffToUpdate = retrieveDoctorByStaffId(staff.getUserId());
-
-                if (staffToUpdate.getUserId().equals(staff.getUserId())) {
-                    staffToUpdate.setEmail(staff.getEmail());
-                    staffToUpdate.setFirstName(staff.getFirstName());
-                    staffToUpdate.setLastName(staff.getLastName());
-                } else {
-                    throw new UpdatePartnerException("Email of staff record to be updated does not match the existing record");
-                }
-            } else {
-                throw new PartnerNotFoundException("Staff ID not provided for stadf to be updated");
-            }
-        } else {
-            // throw new InputDataValidationException(prepareInputDataValidationErrorsMessage(constraintViolations));
-        }
-    }
-
-    @Override
-    public void updateNurse(NurseEntity staff) throws InputDataValidationException, PartnerNotFoundException, UpdatePartnerException {
-        // Updated in v4.1 to update selective attributes instead of merging the entire state passed in from the client
-        // Also check for existing staff before proceeding with the update
-
-        // Updated in v4.2 with bean validation
-        Set<ConstraintViolation<NurseEntity>> constraintViolations = validator.validate(staff);
-
-        if (constraintViolations.isEmpty()) {
-            if (staff.getUserId() != null) {
-                NurseEntity staffToUpdate = retrieveNurseByStaffId(staff.getUserId());
-
-                if (staffToUpdate.getUserId().equals(staff.getUserId())) {
-                    staffToUpdate.setEmail(staff.getEmail());
-                    staffToUpdate.setFirstName(staff.getFirstName());
-                    staffToUpdate.setLastName(staff.getLastName());
-                } else {
-                    throw new UpdatePartnerException("Email of staff record to be updated does not match the existing record");
-                }
-            } else {
-                throw new PartnerNotFoundException("Staff ID not provided for stadf to be updated");
-            }
-        } else {
-            // throw new InputDataValidationException(prepareInputDataValidationErrorsMessage(constraintViolations));
-        }
-    }
-
-    @Override
-    public void updateDoctorPassword(DoctorEntity staff, String oldPassword, String newPassword) throws UpdatePasswordException, PartnerNotFoundException {
-        try {
-            Set<ConstraintViolation<DoctorEntity>> constraintViolations = validator.validate(staff);
-
-            if (constraintViolations.isEmpty()) {
-                if (staff.getUserId() != null) {
-                    DoctorEntity staffToUpdate = retrieveDoctorByStaffId(staff.getUserId());
-                    System.out.println("CHECKoldpw" + oldPassword);
-                    String oldPasswordHash = CryptographicHelper.getInstance().byteArrayToHexString(CryptographicHelper.getInstance().doMD5Hashing(oldPassword + staffToUpdate.getSalt()));
-                    System.out.println("CHECK" + oldPasswordHash);
-                    System.out.println("OLDHASH" + staffToUpdate.getPassword());
-                    if (oldPasswordHash.equalsIgnoreCase(staffToUpdate.getPassword())) {
-                        if (!oldPassword.equals(newPassword)) {
-                            System.out.println("HI im working");
-                            staffToUpdate.setPassword(newPassword);
-                        } else {
-                            throw new UpdatePasswordException("new password must be different!");
-                        }
-                    } else {
-                        throw new UpdatePasswordException("Old password does not match original password!");
-
-                    }
-                }
-            }
-        } catch (PartnerNotFoundException ex) {
-
-        }
-
-    }
-
-    @Override
-    public void updateNursePassword(NurseEntity staff, String oldPassword, String newPassword) throws UpdatePasswordException, PartnerNotFoundException {
-        try {
-            Set<ConstraintViolation<NurseEntity>> constraintViolations = validator.validate(staff);
-
-            if (constraintViolations.isEmpty()) {
-                if (staff.getUserId() != null) {
-                    NurseEntity staffToUpdate = retrieveNurseByStaffId(staff.getUserId());
-                    System.out.println("CHECKoldpw" + oldPassword);
-                    String oldPasswordHash = CryptographicHelper.getInstance().byteArrayToHexString(CryptographicHelper.getInstance().doMD5Hashing(oldPassword + staffToUpdate.getSalt()));
-                    System.out.println("CHECK" + oldPasswordHash);
-                    System.out.println("OLDHASH" + staffToUpdate.getPassword());
-                    if (oldPasswordHash.equalsIgnoreCase(staffToUpdate.getPassword())) {
-                        if (!oldPassword.equals(newPassword)) {
-                            System.out.println("HI im working");
-                            staffToUpdate.setPassword(newPassword);
-                            System.out.println("HI");
-                        } else {
-                            throw new UpdatePasswordException("new password must be different!");
-                        }
-                    } else {
-                        throw new UpdatePasswordException("Old password does not match original password!");
-
-                    }
-                }
-            }
-        } catch (PartnerNotFoundException ex) {
-
-        }
-
-    }
-
-    @Override
-    public StaffEntity emailLogin(String email, String password) throws InvalidLoginCredentialException {
+    public StaffEntity emailLogin(String email, String password) throws InvalidLoginCredentialException, ClinicNotActivatedException {
         try {
             StaffEntity staffEntity = retrievePartnerByEmail(email);
             String passwordHash = CryptographicHelper.getInstance().byteArrayToHexString(CryptographicHelper.getInstance().doMD5Hashing(password + staffEntity.getSalt()));
+
+            if (staffEntity.getClinicEntity().getApplicationStatus().equals(ApplicationStatus.NOTACTIVATED)) {
+                throw new ClinicNotActivatedException("Clinic is not activated");
+            }
 
             if (staffEntity.getPassword().equals(passwordHash)) {
                 return staffEntity;
@@ -496,6 +400,141 @@ public class PartnerSessionBean implements PartnerSessionBeanLocal {
 
         return appointedDoctor;
     }
+
+    @Override
+    public List<DoctorEntity> getDoctorsByClinicId(Long clinicId) {
+        ClinicEntity clinic = em.find(ClinicEntity.class, clinicId);
+        return em.createQuery("SELECT d FROM DoctorEntity d WHERE d.clinicEntity = :clinic")
+                .setParameter("clinic", clinic)
+                .getResultList();
+    }
+
+    @Override
+    public List<NurseEntity> getNursesByClinicId(Long clinicId) {
+        ClinicEntity clinic = em.find(ClinicEntity.class, clinicId);
+        return em.createQuery("SELECT n FROM NurseEntity n WHERE n.clinicEntity = :clinic")
+                .setParameter("clinic", clinic)
+                .getResultList();
+    }
+  
+  public void updateDoctor(DoctorEntity staff) throws InputDataValidationException, PartnerNotFoundException, UpdatePartnerException {
+        // Updated in v4.1 to update selective attributes instead of merging the entire state passed in from the client
+        // Also check for existing staff before proceeding with the update
+
+        // Updated in v4.2 with bean validation
+        Set<ConstraintViolation<DoctorEntity>> constraintViolations = validator.validate(staff);
+
+        if (constraintViolations.isEmpty()) {
+            if (staff.getUserId() != null) {
+                DoctorEntity staffToUpdate = retrieveDoctorByStaffId(staff.getUserId());
+
+                if (staffToUpdate.getUserId().equals(staff.getUserId())) {
+                    staffToUpdate.setEmail(staff.getEmail());
+                    staffToUpdate.setFirstName(staff.getFirstName());
+                    staffToUpdate.setLastName(staff.getLastName());
+                } else {
+                    throw new UpdatePartnerException("Email of staff record to be updated does not match the existing record");
+                }
+            } else {
+                throw new PartnerNotFoundException("Staff ID not provided for stadf to be updated");
+            }
+        } else {
+            // throw new InputDataValidationException(prepareInputDataValidationErrorsMessage(constraintViolations));
+        }
+    }
+
+    @Override
+    public void updateNurse(NurseEntity staff) throws InputDataValidationException, PartnerNotFoundException, UpdatePartnerException {
+        // Updated in v4.1 to update selective attributes instead of merging the entire state passed in from the client
+        // Also check for existing staff before proceeding with the update
+
+        // Updated in v4.2 with bean validation
+        Set<ConstraintViolation<NurseEntity>> constraintViolations = validator.validate(staff);
+
+        if (constraintViolations.isEmpty()) {
+            if (staff.getUserId() != null) {
+                NurseEntity staffToUpdate = retrieveNurseByStaffId(staff.getUserId());
+
+                if (staffToUpdate.getUserId().equals(staff.getUserId())) {
+                    staffToUpdate.setEmail(staff.getEmail());
+                    staffToUpdate.setFirstName(staff.getFirstName());
+                    staffToUpdate.setLastName(staff.getLastName());
+                } else {
+                    throw new UpdatePartnerException("Email of staff record to be updated does not match the existing record");
+                }
+            } else {
+                throw new PartnerNotFoundException("Staff ID not provided for stadf to be updated");
+            }
+        } else {
+            // throw new InputDataValidationException(prepareInputDataValidationErrorsMessage(constraintViolations));
+        }
+    }
+
+    @Override
+    public void updateDoctorPassword(DoctorEntity staff, String oldPassword, String newPassword) throws UpdatePasswordException, PartnerNotFoundException {
+        try {
+            Set<ConstraintViolation<DoctorEntity>> constraintViolations = validator.validate(staff);
+
+            if (constraintViolations.isEmpty()) {
+                if (staff.getUserId() != null) {
+                    DoctorEntity staffToUpdate = retrieveDoctorByStaffId(staff.getUserId());
+                    System.out.println("CHECKoldpw" + oldPassword);
+                    String oldPasswordHash = CryptographicHelper.getInstance().byteArrayToHexString(CryptographicHelper.getInstance().doMD5Hashing(oldPassword + staffToUpdate.getSalt()));
+                    System.out.println("CHECK" + oldPasswordHash);
+                    System.out.println("OLDHASH" + staffToUpdate.getPassword());
+                    if (oldPasswordHash.equalsIgnoreCase(staffToUpdate.getPassword())) {
+                        if (!oldPassword.equals(newPassword)) {
+                            System.out.println("HI im working");
+                            staffToUpdate.setPassword(newPassword);
+                        } else {
+                            throw new UpdatePasswordException("new password must be different!");
+                        }
+                    } else {
+                        throw new UpdatePasswordException("Old password does not match original password!");
+
+                    }
+                }
+            }
+        } catch (PartnerNotFoundException ex) {
+
+        }
+
+    }
+
+    @Override
+    public void updateNursePassword(NurseEntity staff, String oldPassword, String newPassword) throws UpdatePasswordException, PartnerNotFoundException {
+        try {
+            Set<ConstraintViolation<NurseEntity>> constraintViolations = validator.validate(staff);
+
+            if (constraintViolations.isEmpty()) {
+                if (staff.getUserId() != null) {
+                    NurseEntity staffToUpdate = retrieveNurseByStaffId(staff.getUserId());
+                    System.out.println("CHECKoldpw" + oldPassword);
+                    String oldPasswordHash = CryptographicHelper.getInstance().byteArrayToHexString(CryptographicHelper.getInstance().doMD5Hashing(oldPassword + staffToUpdate.getSalt()));
+                    System.out.println("CHECK" + oldPasswordHash);
+                    System.out.println("OLDHASH" + staffToUpdate.getPassword());
+                    if (oldPasswordHash.equalsIgnoreCase(staffToUpdate.getPassword())) {
+                        if (!oldPassword.equals(newPassword)) {
+                            System.out.println("HI im working");
+                            staffToUpdate.setPassword(newPassword);
+                            System.out.println("HI");
+                        } else {
+                            throw new UpdatePasswordException("new password must be different!");
+                        }
+                    } else {
+                        throw new UpdatePasswordException("Old password does not match original password!");
+
+                    }
+                }
+            }
+        } catch (PartnerNotFoundException ex) {
+
+        }
+
+    }
+
+    @Override
+    public StaffEntity emailLogin(String email, String password) throws InvalidLoginCredentialException {
 
     private String prepareInputDataValidationErrorsMessage(Set<ConstraintViolation<ClinicEntity>> constraintViolations) {
         String msg = "Input data validation error!:";

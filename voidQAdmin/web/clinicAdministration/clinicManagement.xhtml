@@ -1,0 +1,181 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./../template/defaultTemplate.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:define name="content">
+
+        <div>
+            <h3>Clinic Management</h3>
+
+            <h:form>
+
+                <p:menubar>
+
+                    <p:submenu label="File" icon="ui-icon-document">
+                        <p:menuitem value="Create New Clinic" actionListener="#{clinicManagementManagedBean.redirectNewClinic}" icon="fa fa-plus" />
+                    </p:submenu>                                        
+
+                </p:menubar>
+                <br/>
+
+            </h:form>
+
+            <h:form id="formAllClinics">
+                <p:growl autoUpdate="true"/>
+                <p:messages id="messages" redisplay="false" closable="true" />
+
+                <p:dataTable id="dataTableAllClinics" widgetVar="dataTableAllClinics" value="#{clinicManagementManagedBean.clinics}" var="clinicEntity" rowKey="#{clinicEntity.clinicId}" rowIndexVar="row"
+                             filteredValue="#{clinicManagementManagedBean.filteredClinicEntities}"
+                             rows="10" paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="10,20,50">
+
+                    <f:facet name="header">
+                        <p:outputPanel style="text-align: right;">
+                            <h:outputText value="Search all fields:" />
+                            <p:inputText id="globalFilter" onkeyup="PF('dataTableAllClinics').filter()" style="width:300px" placeholder="Enter keyword"/>
+                        </p:outputPanel>
+                    </f:facet>
+
+                    <p:column headerText="ID" sortBy="#{clinicEntity.clinicId}" filterBy="#{clinicEntity.clinicId}" filterMatchMode="contains">
+                        <h:outputText value="#{clinicEntity.clinicId}" />
+                    </p:column>                       
+
+                    <p:column headerText="Name" sortBy="#{clinicEntity.clinicName}" filterBy="#{clinicEntity.clinicName}" filterMatchMode="contains">
+                        <h:outputText value="#{clinicEntity.clinicName}" />
+                    </p:column>
+
+                    <p:column headerText="Description" sortBy="#{clinicEntity.description}" filterBy="#{clinicEntity.description}" filterMatchMode="contains">
+                        <h:outputText value="#{clinicEntity.description}" />
+                    </p:column>
+
+                    <p:column headerText="ApplicationStatus" sortBy="#{clinicEntity.applicationStatus}" filterBy="#{clinicEntity.applicationStatus}" filterMatchMode="contains">
+                        <h:outputText value="#{clinicEntity.applicationStatus}" />
+                    </p:column>
+
+                    <p:column headerText="Phone Number" sortBy="#{clinicEntity.phoneNum}" filterBy="#{clinicEntity.phoneNum}" filterMatchMode="contains">
+                        <h:outputText value="#{clinicEntity.phoneNum}" />
+                    </p:column>
+
+                    <p:column headerText="Consultation Fee" sortBy="#{clinicEntity.unitPrice}" filterBy="#{clinicEntity.unitPrice}" filterMatchMode="contains">
+                        <h:outputText value="#{clinicEntity.unitPrice}" />
+                    </p:column>
+
+                    <p:column headerText="Action" >
+                        <p:commandButton actionListener="#{clinicManagementManagedBean.doUpdateClinic}" update="formUpdateClinic" oncomplete="PF('dialogUpdateClinic').show()" icon="ui-icon-pencil" title="Update">
+                            <f:attribute name="clinicEntityToUpdate" value="#{clinicEntity}" />
+                        </p:commandButton>
+                        <p:commandButton icon="ui-icon-trash" actionListener="#{clinicManagementManagedBean.deleteClinic}" update="formAllClinics:dataTableAllClinics formAllClinics:messages">
+                            <f:attribute name="clinicEntityToDelete" value="#{clinicEntity}" />
+                            <p:confirm header="Confirmation" message="Are you sure you want to delete #{clinicEntity.clinicName}" icon="ui-icon-alert" />
+                        </p:commandButton>
+                    </p:column>
+
+                </p:dataTable>
+
+                <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                    <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                </p:confirmDialog>
+
+            </h:form>
+
+            <h:form id="formUpdateClinic">
+
+                <p:dialog id="dialogUpdateClinic" widgetVar="dialogUpdateClinic" header="Update Clinic" closable="true">
+
+                    <p:messages id="messagesUpdateClinic" redisplay="false" />
+
+                    <p:panelGrid>
+
+                        <p:row>
+                            <p:column>
+                                <h:outputLabel value="ID: " />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{clinicManagementManagedBean.selectedClinicEntityToUpdate.clinicId}" />
+                            </p:column>
+                            <p:column>
+                                &nbsp;
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <h:outputLabel value="Name: " />
+                            </p:column>
+                            <p:column>
+                                <p:inputText value="#{clinicManagementManagedBean.selectedClinicEntityToUpdate.clinicName}" />
+                            </p:column>
+                            <p:column>
+                                &nbsp;
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <h:outputLabel value="Description: " />
+                            </p:column>
+                            <p:column>
+                                <p:inputText value="#{clinicManagementManagedBean.selectedClinicEntityToUpdate.description}" />
+                            </p:column>
+                            <p:column>
+                                &nbsp;
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <h:outputLabel value="Application Status: " />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{clinicManagementManagedBean.selectedClinicEntityToUpdate.applicationStatus}" />
+                            </p:column>
+                            <p:column>
+                                &nbsp;
+                            </p:column>
+                        </p:row>
+
+
+                        <p:row>
+                            <p:column>
+                                <h:outputLabel value="Phone Number: " />
+                            </p:column>
+                            <p:column>
+                                <p:inputText value="#{clinicManagementManagedBean.selectedClinicEntityToUpdate.phoneNum}" />
+                            </p:column>
+                            <p:column>
+                                &nbsp;
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <h:outputLabel value="Consultation Fee: " />
+                            </p:column>
+                            <p:column>
+                                <p:inputText value="#{clinicManagementManagedBean.selectedClinicEntityToUpdate.unitPrice}" />
+                            </p:column>
+                            <p:column>
+                                &nbsp;
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:commandButton value="Update Clinic" update="@form formAllClinics:dataTableAllClinics" actionListener="#{clinicManagementManagedBean.updateClinic}" oncomplete="PF('dialogUpdateClinic').show();" />
+                            </p:column>
+                        </p:row>
+
+                    </p:panelGrid>
+
+                </p:dialog>
+
+            </h:form>
+
+        </div>
+    </ui:define>
+
+</ui:composition>

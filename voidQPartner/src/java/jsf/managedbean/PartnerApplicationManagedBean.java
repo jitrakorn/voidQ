@@ -12,7 +12,6 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
-import javax.faces.event.ActionEvent;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
@@ -75,6 +74,8 @@ public class PartnerApplicationManagedBean implements Serializable {
             JSONObject locName = locObj.getJSONArray("results").getJSONObject(0);
             String name = locName.getString("formatted_address");
             newClinic.setAddress(name);
+            newClinic.setLat(lat);
+            newClinic.setLng(lng);
         } catch (IOException ex) {
 
         }

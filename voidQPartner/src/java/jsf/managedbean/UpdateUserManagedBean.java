@@ -6,20 +6,20 @@ import ejb.entity.StaffEntity;
 import ejb.session.stateless.PartnerSessionBeanLocal;
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
-import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
-import javax.servlet.http.HttpServletRequest;
 import org.primefaces.PrimeFaces;
 import util.exception.PartnerNotFoundException;
 import util.exception.UpdatePasswordException;
+
 
 @Named(value = "updateUserManagedBean")
 @ViewScoped
@@ -29,6 +29,8 @@ public class UpdateUserManagedBean implements Serializable {
     @EJB(name = "PartnerSessionBeanLocal")
     private PartnerSessionBeanLocal partnerSessionBeanLocal;
 
+    private List<DoctorEntity> doctors;
+    private List<NurseEntity> nurses;
     private Long staffIdToUpdate;
     private StaffEntity staffToUpdate;
     private DoctorEntity doctorToUpdate;
@@ -108,6 +110,8 @@ public class UpdateUserManagedBean implements Serializable {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An unexpected error has occurred: " + ex.getMessage(), null));
         }
     }
+    
+    
 
     public void updatePassword() {
 
@@ -165,6 +169,22 @@ public class UpdateUserManagedBean implements Serializable {
 
     public void setTextValue(String textValue) {
         this.textValue = textValue;
+    }
+  
+    public List<DoctorEntity> getDoctors() {
+        return doctors;
+    }
+
+    public void setDoctors(List<DoctorEntity> doctors) {
+        this.doctors = doctors;
+    }
+
+    public List<NurseEntity> getNurses() {
+        return nurses;
+    }
+
+    public void setNurses(List<NurseEntity> nurses) {
+        this.nurses = nurses;
     }
 
     public boolean isShowForm() {

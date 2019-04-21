@@ -6,48 +6,35 @@
                 xmlns:p="http://primefaces.org/ui">
 
 
-     <div style="text-align: left;">
-     <h:panelGroup rendered="#{sessionScope.isLogin == true} #{createNewPartnerManagedBean.getUnApproved > 0} ">
-         <h:link value="You have #{createNewPartnerManagedBean.getUnApproved} applications unapproved" outcome = "/clinicAdministration/viewApplications.xhtml" />
-            
+    <h:outputStylesheet library="css" name="style.css" />
+
+    <div class="header__bar">
+        <h:panelGroup styleClass="header__content" rendered="#{sessionScope.isLogin == true}">
+            <h:outputLink value="/voidQAdmin/index.xhtml" styleClass="header__title"><b>voidQ</b>admin</h:outputLink>
+
+            <h:panelGrid cellpadding="15" columns="4" styleClass="header__menu">
+                <h:outputLink value="/voidQAdmin/systemAdministration/adminManagement.xhtml" styleClass="link">ADMINISTRATORS</h:outputLink>
+                <h:outputLink value="/voidQAdmin/clinicAdministration/clinicManagement.xhtml" styleClass="link">CLINICS</h:outputLink>
+                <h:link value="#{createNewPartnerManagedBean.getUnApproved} unapproved clinics" outcome = "/clinicAdministration/viewApplications.xhtml" rendered="#{createNewPartnerManagedBean.getUnApproved > 0}"/>
+            </h:panelGrid>
+
+
+            <h:form id="logoutForm" styleClass="header__user">
+                <h:graphicImage value="/resources/images/user.png" styleClass="header__user__icon" />
+                <h:outputText value="#{sessionScope.currentAdmin.firstName}" styleClass="header__user__text" />
+                &nbsp;
+                <h:commandButton styleClass="button" actionListener="#{loginManagedBean.logout}" value="LOGOUT"/>
+
+            </h:form>
         </h:panelGroup>
+
+
+        <h:panelGroup styleClass="header__content" rendered="#{sessionScope.isLogin == false}">
+            <h:outputLink value="/voidQAdmin/index.xhtml" styleClass="header__title"><b>voidQ</b>admin</h:outputLink>
+        </h:panelGroup>
+
     </div>
-    
-    <header style="text-align: right;">
-
-        <h:panelGroup rendered="#{sessionScope.isLogin == false}">
-            <h:form id="loginForm">
-
-                <p:outputLabel for="username" value="Username" />&nbsp;
-                <p:inputText id="username" value="#{loginManagedBean.username}" size="16" required="true" requiredMessage="Username is required" maxlength="32">
-                    <f:validateLength minimum="4" />
-                </p:inputText>
-                &nbsp;
-                <p:outputLabel for="password" value="Password" />&nbsp;
-                <p:password id="password" value="#{loginManagedBean.password}" size="16" required="true" requiredMessage="Password is required" maxlength="32">
-                    <f:validateLength minimum="4" />
-                </p:password>
-                &nbsp;
-                <p:commandButton type="reset" value="Clear" icon="fa fa-undo" />&nbsp;
-                <p:commandButton type="submit" value="Login" actionListener="#{loginManagedBean.login}" icon="fa fa-sign-in" />
-
-                <p:growl autoUpdate="true" />
-
-            </h:form>
-        </h:panelGroup>
-
-        <h:panelGroup rendered="#{sessionScope.isLogin == true}">
 
 
-            <h:form id="logoutForm">
-                <h:outputText value="You are login as #{sessionScope.currentAdmin.firstName}
-                              #{sessionScope.currentAdmin.lastName}" />&nbsp;
-                <p:commandButton value="Logout" actionListener="#{loginManagedBean.logout}" icon="fa fa-sign-out" />
-            </h:form>
-        </h:panelGroup>
-
-    </header>
-    
-   
 </ui:composition>
 

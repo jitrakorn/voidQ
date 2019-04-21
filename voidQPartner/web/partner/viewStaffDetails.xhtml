@@ -11,9 +11,6 @@
         #{updateUserManagedBean.foo()}
         <h:form id="formUser" styleClass="form form--wide">
             <h:panelGrid id="userPanel" columns="2" rendered="#{updateUserManagedBean.staffToUpdate != null}" cellspacing="10px">
-                <h:outputLabel for="userId" value="USER ID" styleClass="text-input__label text-input__label--left"/>
-                <h:inputText id="userId" value="#{updateUserManagedBean.staffToUpdate.userId}" styleClass="text-input__input" readonly="true" />
-
                 <h:outputLabel for="firstName" value="FIRST NAME" styleClass="text-input__label text-input__label--left"/>
                 <h:inputText id="firstName" value="#{updateUserManagedBean.staffToUpdate.firstName}" styleClass="text-input__input"/>
 
@@ -25,6 +22,40 @@
             </h:panelGrid>
             <br/>
             <h:commandButton value="UPDATE" actionListener="#{updateUserManagedBean.updateStaff}" styleClass="button"/>
+
+        </h:form>
+
+        <br/>
+        <p:separator/>
+            
+        <h:outputText value="DOCTOR DETAILS" styleClass="title title--small" />
+        #{updateUserManagedBean.foo()}
+        <p:dataTable value="#{updateUserManagedBean.doctors}" var="doctor">
+            <p:column headerText="Name">
+                <h:outputText value="#{doctor.firstName} #{doctor.lastName}"/>
+            </p:column>
+
+            <p:column headerText="Email">
+                <h:outputText value="#{doctor.email}"/>
+            </p:column>
+
+            <p:column headerText="Status">
+                <h:outputText value="#{doctor.status}"/>
+            </p:column>
+        </p:dataTable>
+        
+                <h:outputText value="NURSE DETAILS" styleClass="title title--small" />
+        #{updateUserManagedBean.foo()}
+        <p:dataTable value="#{updateUserManagedBean.nurses}" var="nurse">
+            <p:column headerText="Name">
+                <h:outputText value="#{nurse.firstName} #{nurse.lastName}"/>
+            </p:column>
+
+            <p:column headerText="Email">
+                <h:outputText value="#{nurse.email}"/>
+            </p:column>
+        </p:dataTable>
+
             <br/>
             <h:commandButton value="CHANGE PASSWORD" actionListener="#{updateUserManagedBean.togglePassword}" styleClass="button"/>
 
