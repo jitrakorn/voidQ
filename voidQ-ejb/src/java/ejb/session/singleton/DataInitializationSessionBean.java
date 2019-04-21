@@ -107,7 +107,7 @@ public class DataInitializationSessionBean {
             patientSessionBeanLocal.createNewPatient(new PatientEntity("Patient7@gmail.com", "password", "Patient", "Seven", 90987856));
             patientSessionBeanLocal.createNewPatient(new PatientEntity("Patient8@gmail.com", "password", "Patient", "Eight", 80123265));
             patientSessionBeanLocal.createNewPatient(new PatientEntity("Patient9@gmail.com", "password", "Patient", "Nine", 98745325));
-            patientSessionBeanLocal.createNewPatient(new PatientEntity("Patient0@gmail.com", "password", "Patient", "Ten", 99182534));
+            patientSessionBeanLocal.createNewPatient(new PatientEntity("Patient0@gmail.com", "password", "Patient", "Ten", 96658673));
 
             partnerSessionBeanLocal.retrievePartnerByPartnerId(1L).getBookingEntities().add((BookingEntity) bookingSessionBean.createBooking(new BookingEntity(BookingStatus.BOOKED, new Date(), partnerSessionBeanLocal.retrievePartnerByPartnerId(1L), patientSessionBeanLocal.retrievePatientByPatientId(1L), "Fever")));
             partnerSessionBeanLocal.retrievePartnerByPartnerId(1L).getBookingEntities().add((BookingEntity) bookingSessionBean.createBooking(new BookingEntity(BookingStatus.BOOKED, new Date(), partnerSessionBeanLocal.retrievePartnerByPartnerId(1L), patientSessionBeanLocal.retrievePatientByPatientId(2L), "Stomach Flu")));

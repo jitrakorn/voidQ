@@ -14,8 +14,9 @@ const routes: Routes = [
 	{ path: 'view-booking', loadChildren: './mainscreen/view-booking/view-booking.module#ViewBookingPageModule' },
 	{ path: 'clinics', loadChildren: './mainscreen/clinics/clinics.module#ClinicsPageModule' },
 	{ path: 'clinic-details', loadChildren: './clinic-details/clinic-details.module#ClinicDetailsPageModule' },
-	{ path: 'tabs', loadChildren: './mainscreen/tabs/tabs.module#TabsPageModule' },
-
+  	{ path: 'tabs', loadChildren: './mainscreen/tabs/tabs.module#TabsPageModule' },
+  	{ path: 'resetpassword', loadChildren: './resetpassword/resetpassword.module#ResetpasswordPageModule' },
+  
 
 
 ];

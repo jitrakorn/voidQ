@@ -41,7 +41,9 @@ public interface PatientSessionBeanLocal {
 
     public void updatePassword(UserEntity patient, String oldPassword, String newPassword) throws UpdatePasswordException;
 
-    public List<BookingEntity> retrievePastBookings(Long patientId) throws BookingNotFoundException;
+	public List<BookingEntity> retrievePastBookings(Long patientId) throws BookingNotFoundException;
+	
+    public PatientEntity resetPassword(String email) throws PatientNotFoundException, Exception;
     
   
     

@@ -9,11 +9,11 @@ import ejb.entity.BookingEntity;
 import ejb.entity.ClinicEntity;
 import ejb.entity.PatientEntity;
 import ejb.entity.UserEntity;
+import ejb.sms.SMS;
+
 import java.util.Calendar;
 import java.util.List;
 import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -33,7 +33,7 @@ import util.exception.PatientNotFoundException;
 import util.exception.UpdatePasswordException;
 import util.exception.UpdatePatientException;
 import util.security.CryptographicHelper;
-
+import java.security.SecureRandom;
 /**
  *
  * @author mingxuan
@@ -42,6 +42,7 @@ import util.security.CryptographicHelper;
 @Local(PatientSessionBeanLocal.class)
 public class PatientSessionBean implements PatientSessionBeanLocal {
 
+    private static SecureRandom random = new SecureRandom();
     private final ValidatorFactory validatorFactory;
     private final Validator validator;
     @PersistenceContext(unitName = "voidQ-ejbPU")
@@ -94,7 +95,31 @@ public class PatientSessionBean implements PatientSessionBeanLocal {
         }
     }
 
-   @Override
+     public static String generatePassword(int len, String dic) {
+    String result = "";
+    for (int i = 0; i < len; i++) {
+        int index = random.nextInt(dic.length());
+        result += dic.charAt(index);
+    }
+    return result;
+    }
+    @Override
+    public PatientEntity resetPassword(String email) throws PatientNotFoundException, Exception {
+        PatientEntity patient = retrievePatientByEmail(email);
+        String password = generatePassword(6,"abcdefghijklmnopqrstuvwxyz");
+        if (patient != null) {
+            
+            System.out.println("pw " + password );
+            patient.setPassword(password);
+               //SMS.sendPost(password, patient.getPhoneNumber());
+
+            return patient;
+        } else {
+            throw new PatientNotFoundException("Patient email " + email + " does not exist!");
+        }
+    }
+
+    @Override
     public void updatePatient(PatientEntity patient) throws InputDataValidationException, PatientNotFoundException, UpdatePatientException {
         // Updated in v4.1 to update selective attributes instead of merging the entire state passed in from the client
         // Also check for existing staff before proceeding with the update
@@ -122,12 +147,11 @@ public class PatientSessionBean implements PatientSessionBeanLocal {
 //        }
     }
 
-    
-     @Override
+    @Override
     public void updatePassword(UserEntity patient, String oldPassword, String newPassword) throws UpdatePasswordException {
         try {
             PatientEntity patientToUpdate = null;
-            
+
             Long patientId = patient.getUserId();
             System.out.println("CHECKoldpw" + oldPassword);
             patientToUpdate = retrievePatientByPatientId(patientId);
@@ -146,12 +170,10 @@ public class PatientSessionBean implements PatientSessionBeanLocal {
 
             }
         } catch (PatientNotFoundException ex) {
-          
+
         }
 
-     
     }
-
 
     @Override
     public PatientEntity patientLogin(String email, String password) throws InvalidLoginCredentialException {
@@ -210,7 +232,7 @@ public class PatientSessionBean implements PatientSessionBeanLocal {
             booking = (BookingEntity) em.createQuery("SELECT b FROM BookingEntity b WHERE b.patientEntity.userId= :patient AND b.status<>  :status  AND b.transactionDateTime > :date ORDER BY b.transactionDateTime ASC")
                     .setParameter("patient", patientId)
                     .setParameter("date", today.getTime(), TemporalType.TIMESTAMP)
-                     .setParameter("status", BookingStatus.PAID)
+                    .setParameter("status", BookingStatus.PAID)
                     .getSingleResult();
         } catch (NoResultException | NonUniqueResultException ex) {
             throw new BookingNotFoundException("Booking not found for patient Id " + patientId + " does not exist!");
@@ -218,9 +240,8 @@ public class PatientSessionBean implements PatientSessionBeanLocal {
 
         booking.getClinicEntity();
         booking.getPatientEntity();
-        if( booking.getDoctorEntity() != null)
-        {
-        booking.getDoctorEntity();
+        if (booking.getDoctorEntity() != null) {
+            booking.getDoctorEntity();
         }
 
         return booking;
