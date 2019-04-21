@@ -7,55 +7,21 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:p="http://primefaces.org/ui"
-     >
+      >
+    
     <h:head>
-        <title>voidQ Administration</title>
-        <h:outputStylesheet library="css" name="default.css" />
+        <title><ui:insert name="title"/> - voidQadmin</title>
     </h:head>
+
     <h:body>
-
-        <p:layout fullPage="true">
-
-            <p:layoutUnit position="north" size="120">
-
-               
-                <h1>voidQ Administration</h1>
-               
-                
-             
-                <ui:insert name="header">
-                    <ui:include src="/header.xhtml" />
-                </ui:insert>
-
-            </p:layoutUnit>
-
-            <p:layoutUnit size="240" position="west">
-
-                <ui:insert name="mainmenu">
-                    <ui:include src="/mainmenu.xhtml" />
-                </ui:insert>        
-
-            </p:layoutUnit>
-
-            <p:layoutUnit position="center" >
-
-                <ui:insert name="content">Content</ui:insert>
-
-            </p:layoutUnit>
+        <header>
+            <ui:include src="/header.xhtml" />
+        </header>
 
 
 
-            <p:layoutUnit position="south" size="70" >
-
-                <ui:insert name="footer">
-                    <ui:include src="/footer.xhtml" />
-                </ui:insert>
-
-            </p:layoutUnit>                
-
-        </p:layout>
-   
-                
-               
+        <article>
+            <ui:insert name="content">Content</ui:insert>
+        </article>
     </h:body>
 </html>

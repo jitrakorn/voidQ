@@ -23,8 +23,11 @@ import org.json.JSONObject;
 import org.primefaces.event.FlowEvent;
 import org.primefaces.model.UploadedFile;
 import util.enumeration.ApplicationStatus;
+import util.enumeration.Availability;
 
 import util.exception.InputDataValidationException;
+import util.exception.PartnerNotFoundException;
+import util.exception.UpdatePartnerException;
 
 @Named(value = "createNewPartnerManagedBean")
 @ViewScoped
@@ -55,12 +58,11 @@ public class CreateNewPartner implements Serializable {
         companies = new ArrayList<>();
         companies.add(new SelectItem("hahaha"));
         unapprovedList = partnerSessionBeanLocal.retrieveUnApprovedApplications();
-        getUnApproved = partnerSessionBeanLocal.retrieveUnApprovedApplications().size();
+        getUnApproved = unapprovedList.size();
 
     }
 
     public void renderFileUpload(AjaxBehaviorEvent Event) {
-
         // if selected item == NO
         //do nothing else 
         renderFile = true;
@@ -68,9 +70,17 @@ public class CreateNewPartner implements Serializable {
     }
 
     public void doUpdateClinic(ActionEvent event) {
-
         selectedClinicEntityToView = (ClinicEntity) event.getComponent().getAttributes().get("clinicEntityToUpdate");
+    }
 
+    public void approve(ActionEvent event) {
+        ClinicEntity clinic = (ClinicEntity) event.getComponent().getAttributes().get("clinicEntityToUpdate");
+        clinic.setApplicationStatus(ApplicationStatus.ACTIVATED);
+        try {
+            partnerSessionBeanLocal.updatePartner(clinic);
+        } catch (InputDataValidationException | PartnerNotFoundException | UpdatePartnerException ex) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while approving new partner: " + ex.getMessage(), null));
+        }
     }
 
     public UploadedFile getFile() {
@@ -117,19 +127,23 @@ public class CreateNewPartner implements Serializable {
             JSONObject locName = locObj.getJSONArray("results").getJSONObject(0);
             String name = locName.getString("formatted_address");
             newClinic.setAddress(name);
+            newClinic.setLat(lat);
+            newClinic.setLng(lng);
         } catch (IOException ex) {
-            ex.printStackTrace();
+            System.err.println("ERROR: " + ex.getMessage());
         }
-
     }
 
     public void createNewPartner() {
-
         try {
             newClinic.setApplicationStatus(ApplicationStatus.ACTIVATED);
             ClinicEntity partner = partnerSessionBeanLocal.createNewPartner(newClinic);
-            partner.getDoctorEntities().add(newDoctor);
+            newDoctor.setClinicEntity(partner);
+            newDoctor.setStatus(Availability.AVAILABLE);
+            StaffEntity staff = partnerSessionBeanLocal.createNewStaff(newDoctor);
+            partner.getDoctorEntities().add((DoctorEntity) staff);
             newClinic = new ClinicEntity();
+            newDoctor = new DoctorEntity();
 
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New Clinic created successfully (Clinic ID: " + partner.getClinicId() + ")", null));
         } catch (InputDataValidationException ex) {
@@ -169,7 +183,6 @@ public class CreateNewPartner implements Serializable {
     public void setNewDoctor(DoctorEntity newDoctor) {
         this.newDoctor = newDoctor;
     }
-
 
     public String getCompany() {
         return company;

@@ -44,6 +44,7 @@ public class partnerBookingManagedBean implements Serializable {
     private StaffEntity currentStaff;
     private ClinicEntity currentClinic;
     private List<BookingEntity> bookings;
+    private List<BookingEntity> filteredBookingEntities;
 
     private ScheduleEvent event = new DefaultScheduleEvent();
     private BookingEntity booking;
@@ -188,7 +189,7 @@ public class partnerBookingManagedBean implements Serializable {
         if (booking.getDoctorEntity() == null) {
             doctorNameFromEvent = "Not Applicable";
         } else {
-            doctorNameFromEvent = booking.getDoctorEntity().getFirstName() + " " + booking.getDoctorEntity().getFirstName();
+            doctorNameFromEvent = booking.getDoctorEntity().getFirstName() + " " + booking.getDoctorEntity().getLastName();
         }
         return doctorNameFromEvent;
     }
@@ -225,5 +226,13 @@ public class partnerBookingManagedBean implements Serializable {
 
     public void setBookings(List<BookingEntity> bookings) {
         this.bookings = bookings;
+    }
+
+    public List<BookingEntity> getFilteredBookingEntities() {
+        return filteredBookingEntities;
+    }
+
+    public void setFilteredBookingEntities(List<BookingEntity> filteredBookingEntities) {
+        this.filteredBookingEntities = filteredBookingEntities;
     }
 }

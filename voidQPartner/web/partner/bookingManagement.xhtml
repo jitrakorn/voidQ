@@ -7,28 +7,40 @@
                 xmlns:f="http://xmlns.jcp.org/jsf/core">
 
     <ui:define name="content">
+        <h:outputText value="BOOKING SCHEDULER" styleClass="title title--small"/>
         <p:schedule value="#{partnerBookingManagedBean.schedule}" timeZone="GMT+8" draggable="false" slotMinutes="10">
             <p:ajax event="eventSelect" listener="#{partnerBookingManagedBean.onEventSelect}" update="eventDetails eventDetailsDialog" oncomplete="PF('eventDialog').show();"/>
         </p:schedule>
 
         <br/>
-        
-        <p:dataTable value="#{partnerBookingManagedBean.bookings}" var="booking">
-            <p:column headerText="Patient Name">
+        <br/>
+
+        <h:outputText value="BOOKING HISTORY" styleClass="title title--small"/>
+        <p:dataTable id="bookingHistoryTable" value="#{partnerBookingManagedBean.bookings}" var="booking" rowKey="#{booking.bookingId}" rowIndexVar="row"
+                     filteredValue="#{partnerBookingManagedBean.filteredBookingEntities}"
+                     rows="10" paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="10,20,50">
+
+
+            <f:facet name="header">
+                <p:outputPanel style="text-align: right;">
+                    <h:outputText value="Search all fields:" />
+                    <p:inputText id="globalFilter" onkeyup="PF('bookingHistoryTable').filter()" style="width:300px" placeholder="Enter keyword"/>
+                </p:outputPanel>
+            </f:facet>
+            
+            <p:column headerText="Patient Name" sortBy="#{booking.patientEntity.lastName}" filterBy="#{booking.patientEntity.lastName}" filterMatchMode="contains">
                 <h:outputText value="#{booking.patientEntity.firstName} #{booking.patientEntity.lastName}"/>
             </p:column>
-            <p:column headerText="Booking Status">
+            <p:column headerText="Booking Status" sortBy="#{booking.status}" filterBy="#{booking.status}" filterMatchMode="contains">
                 <h:outputText value="#{booking.status}"/>
             </p:column>
-            <p:column headerText="Attending Doctor">
-                <h:outputText value="#{booking.doctorEntity.firstName} #{booking.doctorEntity.lastName}"/>
+            <p:column headerText="Attending Doctor" sortBy="#{booking.doctorEntity.lastName}" filterBy="#{booking.doctorEntity.lastName}" filterMatchMode="contains">
+                <h:outputText value="#{booking.doctorEntity.lastName}"/>
             </p:column>
-            <p:column headerText="Booking Date">
+            <p:column headerText="Booking Date" sortBy="#{booking.transactionDateTime}" filterBy="#{booking.transactionDateTime}" filterMatchMode="contains">
                 <h:outputText value="#{booking.transactionDateTime}"/>
             </p:column>
-            <p:column headerText="Booking Date">
-                <h:outputText value="#{booking.transactionDateTime}"/>
-            </p:column>
+
         </p:dataTable>
 
         <p:dialog id="eventDetailsDialog" widgetVar="eventDialog" header="#{partnerBookingManagedBean.event.title}" showEffect="slide" hideEffect="slide">
@@ -43,24 +55,21 @@
                 </p:panelGrid>
 
                 <br/>
-                <p:panelGrid id="partnerDetails" columns="2">
-                    <p:outputLabel for="attendingDoctor" value="Attending Doctor: " style="font-weight: bold"/>
-                    <h:outputText id="attendingDoctor" value="#{partnerBookingManagedBean.doctorNameFromEvent}"/>
-
-                    <p:outputLabel for="attendingNurse" value="Attending Nurse " style="font-weight: bold"/>
-                    <h:outputText id="attendingNurse" value="#{partnerBookingManagedBean.nurseNameFromEvent}"/>
-                </p:panelGrid>
-
-                <br/>
                 <h:form>
+                    <p:panelGrid id="partnerDetails" columns="2">
+                        <p:outputLabel for="attendingDoctor" value="Attending Doctor: " style="font-weight: bold"/>
+                        <h:outputText id="attendingDoctor" value="#{partnerBookingManagedBean.doctorNameFromEvent}"/>
+                    </p:panelGrid>
+
+                    <br/>
                     <p:panelGrid id="bookingDetails" columns="2">
                         <p:outputLabel for="bookingStatus" value="Booking Status: " style="font-weight: bold"/>
                         <h:outputText id="bookingStatus" value="#{partnerBookingManagedBean.bookingStatusFromEvent}"/>
                     </p:panelGrid>
-                    <p:commandButton value="Check-In" actionListener="#{partnerBookingManagedBean.checkinPatient}" update="bookingDetails"/>
-                    <p:commandButton value="Visited" actionListener="#{partnerBookingManagedBean.visitedPatient}" update="bookingDetails"/>
-                    <p:commandButton value="No-Show" actionListener="#{partnerBookingManagedBean.noShowPatient}" update="bookingDetails"/>
-                    <p:commandButton value="Paid" actionListener="#{partnerBookingManagedBean.paidPatient}" update="bookingDetails"/>
+                    <p:commandButton value="Check-In" actionListener="#{partnerBookingManagedBean.checkinPatient}" update="bookingDetails partnerDetails bookingHistoryTable"/>
+                    <p:commandButton value="Visited" actionListener="#{partnerBookingManagedBean.visitedPatient}" update="bookingDetails partnerDetails bookingHistoryTable"/>
+                    <p:commandButton value="No-Show" actionListener="#{partnerBookingManagedBean.noShowPatient}" update="bookingDetails partnerDetails bookingHistoryTable"/>
+                    <p:commandButton value="Paid" actionListener="#{partnerBookingManagedBean.paidPatient}" update="bookingDetails partnerDetails bookingHistoryTable"/>
                 </h:form>
             </p:panelGrid>
         </p:dialog> 
