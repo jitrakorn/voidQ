@@ -1,0 +1,40 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                template="/template/defaultTemplate.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:define name="title">Add New Doctor/Nurse </ui:define>
+
+    <ui:define name="content">
+        <h:outputText value="STAFF DETAILS" styleClass="title title--big" />
+
+        <h:form id="formUser" styleClass="form form--wide">
+            <h:panelGrid id="userPanel" columns="2" cellspacing="10px">
+                <h:outputLabel for="email" value="Email" styleClass="text-input__label text-input__label--left"/>
+                <h:inputText id="email" value="#{createStaffManagedBean.emailAdd}" styleClass="text-input__input"  />
+
+                <h:outputLabel for="firstName" value="First Name" styleClass="text-input__label text-input__label--left"/>
+                <h:inputText id="firstName" value="#{createStaffManagedBean.firstName}" styleClass="text-input__input"/>
+
+                <h:outputLabel for="lastName" value="Last Name" styleClass="text-input__label text-input__label--left"/>
+                <h:inputText id="lastName" value="#{createStaffManagedBean.lastName}" styleClass="text-input__input"/>
+ 
+                <h:outputLabel for="role" value="Role" styleClass="text-input__label text-input__label--left"/>
+                
+                <h:selectOneMenu id="role" value="#{createStaffManagedBean.role}" style="width:243px">
+                    <f:selectItem itemLabel="Select One" itemValue="" />
+                    <f:selectItem itemLabel="Doctor" itemValue="Doctor" />
+                    <f:selectItem itemLabel="Nurse" itemValue="Nurse" />
+                </h:selectOneMenu>
+                <h:outputLabel for="password" value="Password" styleClass="text-input__label text-input__label--left"/>
+                <h:inputSecret id="password" value="#{createStaffManagedBean.password}" styleClass="text-input__input" />
+            </h:panelGrid>
+            <br/>
+            <h:commandButton value="CREATE" actionListener="#{createStaffManagedBean.updateNewStaff}" styleClass="button"/>
+            <br/>
+            </h:form>
+    </ui:define>
+
+</ui:composition>

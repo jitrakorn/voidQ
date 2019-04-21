@@ -14,14 +14,17 @@
 
             <h:panelGrid cellpadding="15" columns="4" styleClass="header__menu">
                 <h:outputLink value="/voidQPartner/news/viewAnnouncements.xhtml" styleClass="link">ANNOUNCEMENTS</h:outputLink>
-                <h:outputLink value="/voidQPartner/partner/viewStaffDetails.xhtml" styleClass="link">STAFF</h:outputLink>
+                <h:outputLink value="/voidQPartner/partner/createNewStaff.xhtml" styleClass="link">CREATE STAFF</h:outputLink>
                 <h:outputLink value="/voidQPartner/partner/viewClinicDetails.xhtml" styleClass="link">CLINIC</h:outputLink>
                 <h:outputLink value="/voidQPartner/partner/bookingManagement.xhtml" styleClass="link">BOOKINGS</h:outputLink>
             </h:panelGrid>
 
             <h:form id="logoutForm" styleClass="header__user">
                 <h:graphicImage value="/resources/images/user.png" styleClass="header__user__icon" />
-                <h:outputText value="#{sessionScope.currentPartner.firstName}" styleClass="header__user__text" />
+                <h:outputLink value="/voidQPartner/partner/viewStaffDetails.xhtml" styleClass="link">
+
+                    <h:outputText value="#{sessionScope.currentPartner.firstName}" styleClass="header__user__text" />
+                </h:outputLink>
                 &nbsp;
                 <h:commandButton styleClass="button" actionListener="#{partnerLoginManagedBean.logout}" value="LOGOUT"/>
 
