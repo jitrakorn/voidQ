@@ -5,6 +5,8 @@ import { Booking } from '../booking';
 import { BookingService } from '../booking.service';
 import { NavController } from '@ionic/angular';
 import { Location } from '@angular/common';
+import {ToastController} from '@ionic/angular';
+import { ConstantPool } from '@angular/compiler';
 @Component({
 	selector: 'app-clinic-details',
 	templateUrl: './clinic-details.page.html',
@@ -14,8 +16,9 @@ export class ClinicDetailsPage implements OnInit {
 	clinic: Object;
 	submitted: boolean;
 	visitreason: String;
+	toast:any;  message: string;
 
-	constructor(public sessionService: SessionService, private bookingService: BookingService, private navigationCtrl: NavController,private location: Location) {
+	constructor(public sessionService: SessionService, private bookingService: BookingService, private navigationCtrl: NavController,private location: Location,private toastController: ToastController) {
 		this.submitted = false;
 	}
 
@@ -45,7 +48,7 @@ export class ClinicDetailsPage implements OnInit {
 	}
 	
 
-	makeBooking(makeBookingForm: NgForm) {
+	async makeBooking(makeBookingForm: NgForm) {
 		this.submitted = true;
 
 		console.log(Object.values(this.sessionService.getClinicObj())[0].toString());
@@ -53,13 +56,33 @@ export class ClinicDetailsPage implements OnInit {
 		console.log(Object.values(this.sessionService.getCurrentPatient())[0].toString());
 
 		if (makeBookingForm.valid) {
-			this.bookingService.createBooking(Object.values(this.sessionService.getCurrentPatient())[0].toString(), this.visitreason.toString(), Object.values(this.sessionService.getClinicObj())[0].toString()).subscribe(
+			await this.bookingService.createBooking(Object.values(this.sessionService.getCurrentPatient())[0].toString(), this.visitreason.toString(), Object.values(this.sessionService.getClinicObj())[0].toString()).subscribe(
 				response => {
+					
+					
 					let newBookingId: number = response.bookingId;
 					this.sessionService.setBookingId(newBookingId);
-					this.navigationCtrl.navigateForward("/view-booking");
+					this.message = "booked ! ";
+					this.presentToast();
+					this.navigationCtrl.navigateRoot("/tabs");
+					alert("Booking Successful!");
+				},
+				error => {
+					this.message = "An error has occurred while booking: " + error;
+					this.presentToast();
 				}
 			)
 		}
 	}
+
+
+	async presentToast() {
+		this.toast = await this.toastController.create({
+		  message: this.message,
+		  duration: 2000,
+		  position: 'bottom'
+		});
+		await this.toast.present();
+		console.log("toast");
+	  }
 }

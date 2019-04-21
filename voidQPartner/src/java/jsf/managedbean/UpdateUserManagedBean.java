@@ -7,6 +7,8 @@ import ejb.session.stateless.PartnerSessionBeanLocal;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
@@ -16,6 +18,8 @@ import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import org.primefaces.PrimeFaces;
 import util.exception.PartnerNotFoundException;
+import util.exception.UpdatePasswordException;
+
 
 @Named(value = "updateUserManagedBean")
 @ViewScoped
@@ -29,7 +33,14 @@ public class UpdateUserManagedBean implements Serializable {
     private List<NurseEntity> nurses;
     private Long staffIdToUpdate;
     private StaffEntity staffToUpdate;
+    private DoctorEntity doctorToUpdate;
+    private String oldPassword;
+    private String newPassword;
     private boolean isDisabled = true;
+    private boolean showForm = false;
+    private boolean isDoctor = false;
+    private boolean isNurse = false;
+
     private String textValue = "Enable Edit";
 
     public UpdateUserManagedBean() {
@@ -39,8 +50,21 @@ public class UpdateUserManagedBean implements Serializable {
     @PostConstruct
     public void postConstruct() {
         staffToUpdate = (StaffEntity) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("currentPartner");
-        doctors = partnerSessionBeanLocal.getDoctorsByClinicId(staffToUpdate.getClinicEntity().getClinicId());
-        nurses = partnerSessionBeanLocal.getNursesByClinicId(staffToUpdate.getClinicEntity().getClinicId());
+        DoctorEntity doctor = new DoctorEntity();
+        if (staffToUpdate.getClass().equals(doctor.getClass())) {
+            isDoctor = true;
+        } else {
+            isNurse = true;
+        }
+    }
+
+    public void togglePassword(ActionEvent event) {
+        if (showForm) {
+            showForm = false;
+        } else {
+            showForm = true;
+
+        }
     }
 
     public void back(ActionEvent event) throws IOException {
@@ -89,6 +113,32 @@ public class UpdateUserManagedBean implements Serializable {
     
     
 
+    public void updatePassword() {
+
+        if (isDoctor) {
+            try {
+                partnerSessionBeanLocal.updateDoctorPassword((DoctorEntity) staffToUpdate, oldPassword, newPassword);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Password updated successfully", null));
+
+            } catch (UpdatePasswordException ex) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while updating password: " + ex.getMessage(), null));
+            } catch (PartnerNotFoundException ex) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while updating password: " + ex.getMessage(), null));
+            }
+        } else {
+            try {
+                partnerSessionBeanLocal.updateNursePassword((NurseEntity) staffToUpdate, oldPassword, newPassword);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Password updated successfully", null));
+
+            } catch (UpdatePasswordException ex) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while updating password: " + ex.getMessage(), null));
+            } catch (PartnerNotFoundException ex) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while updating password: " + ex.getMessage(), null));
+            }
+        }
+
+    }
+
     public Long getStaffIdToUpdate() {
         return staffIdToUpdate;
     }
@@ -120,7 +170,7 @@ public class UpdateUserManagedBean implements Serializable {
     public void setTextValue(String textValue) {
         this.textValue = textValue;
     }
-
+  
     public List<DoctorEntity> getDoctors() {
         return doctors;
     }
@@ -135,6 +185,30 @@ public class UpdateUserManagedBean implements Serializable {
 
     public void setNurses(List<NurseEntity> nurses) {
         this.nurses = nurses;
+    }
+
+    public boolean isShowForm() {
+        return showForm;
+    }
+
+    public void setShowForm(boolean showForm) {
+        this.showForm = showForm;
+    }
+
+    public String getOldPassword() {
+        return oldPassword;
+    }
+
+    public void setOldPassword(String oldPassword) {
+        this.oldPassword = oldPassword;
+    }
+
+    public String getNewPassword() {
+        return newPassword;
+    }
+
+    public void setNewPassword(String newPassword) {
+        this.newPassword = newPassword;
     }
 
 }

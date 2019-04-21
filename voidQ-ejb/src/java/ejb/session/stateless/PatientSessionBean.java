@@ -8,6 +8,9 @@ package ejb.session.stateless;
 import ejb.entity.BookingEntity;
 import ejb.entity.ClinicEntity;
 import ejb.entity.PatientEntity;
+import ejb.entity.UserEntity;
+import ejb.sms.SMS;
+
 import java.util.Calendar;
 import java.util.List;
 import java.util.Set;
@@ -23,12 +26,14 @@ import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 import util.enumeration.BookingStatus;
+import util.exception.BookingNotFoundException;
 import util.exception.InputDataValidationException;
 import util.exception.InvalidLoginCredentialException;
 import util.exception.PatientNotFoundException;
+import util.exception.UpdatePasswordException;
 import util.exception.UpdatePatientException;
 import util.security.CryptographicHelper;
-
+import java.security.SecureRandom;
 /**
  *
  * @author mingxuan
@@ -37,6 +42,7 @@ import util.security.CryptographicHelper;
 @Local(PatientSessionBeanLocal.class)
 public class PatientSessionBean implements PatientSessionBeanLocal {
 
+    private static SecureRandom random = new SecureRandom();
     private final ValidatorFactory validatorFactory;
     private final Validator validator;
     @PersistenceContext(unitName = "voidQ-ejbPU")
@@ -89,32 +95,84 @@ public class PatientSessionBean implements PatientSessionBeanLocal {
         }
     }
 
+     public static String generatePassword(int len, String dic) {
+    String result = "";
+    for (int i = 0; i < len; i++) {
+        int index = random.nextInt(dic.length());
+        result += dic.charAt(index);
+    }
+    return result;
+    }
+    @Override
+    public PatientEntity resetPassword(String email) throws PatientNotFoundException, Exception {
+        PatientEntity patient = retrievePatientByEmail(email);
+        String password = generatePassword(6,"abcdefghijklmnopqrstuvwxyz");
+        if (patient != null) {
+            
+            System.out.println("pw " + password );
+            patient.setPassword(password);
+               //SMS.sendPost(password, patient.getPhoneNumber());
+
+            return patient;
+        } else {
+            throw new PatientNotFoundException("Patient email " + email + " does not exist!");
+        }
+    }
+
     @Override
     public void updatePatient(PatientEntity patient) throws InputDataValidationException, PatientNotFoundException, UpdatePatientException {
         // Updated in v4.1 to update selective attributes instead of merging the entire state passed in from the client
         // Also check for existing staff before proceeding with the update
 
         // Updated in v4.2 with bean validation
-        Set<ConstraintViolation<PatientEntity>> constraintViolations = validator.validate(patient);
+        //   Set<ConstraintViolation<PatientEntity>> constraintViolations = validator.validate(patient);
+//
+        //  if (constraintViolations.isEmpty()) {
+        if (patient.getUserId() != null) {
+            PatientEntity patientToUpdate = retrievePatientByPatientId(patient.getUserId());
 
-        if (constraintViolations.isEmpty()) {
-            if (patient.getUserId() != null) {
-                PatientEntity patientToUpdate = retrievePatientByPatientId(patient.getUserId());
+            if (patientToUpdate.getEmail().equals(patient.getEmail())) {
+                patientToUpdate.setFirstName(patient.getFirstName());
+                patientToUpdate.setLastName(patient.getLastName());
+                patientToUpdate.setPhoneNumber(patient.getPhoneNumber());
 
-                if (patientToUpdate.getEmail().equals(patient.getEmail())) {
-                    patientToUpdate.setFirstName(patient.getFirstName());
-                    patientToUpdate.setLastName(patient.getLastName());
-                    patientToUpdate.setPhoneNumber(patient.getPhoneNumber());
-
-                } else {
-                    throw new UpdatePatientException("Username of patient record to be updated does not match the existing record");
-                }
             } else {
-                throw new PatientNotFoundException("Patient ID not provided for patient to be updated");
+                throw new UpdatePatientException("Username of patient record to be updated does not match the existing record");
             }
         } else {
-            throw new InputDataValidationException(prepareInputDataValidationErrorsMessage(constraintViolations));
+            throw new PatientNotFoundException("Patient ID not provided for patient to be updated");
         }
+//        } else {
+//            throw new InputDataValidationException(prepareInputDataValidationErrorsMessage(constraintViolations));
+//        }
+    }
+
+    @Override
+    public void updatePassword(UserEntity patient, String oldPassword, String newPassword) throws UpdatePasswordException {
+        try {
+            PatientEntity patientToUpdate = null;
+
+            Long patientId = patient.getUserId();
+            System.out.println("CHECKoldpw" + oldPassword);
+            patientToUpdate = retrievePatientByPatientId(patientId);
+            String oldPasswordHash = CryptographicHelper.getInstance().byteArrayToHexString(CryptographicHelper.getInstance().doMD5Hashing(oldPassword + patientToUpdate.getSalt()));
+            System.out.println("CHECK" + oldPasswordHash);
+            System.out.println("OLDHASH" + patientToUpdate.getPassword());
+            if (oldPasswordHash.equalsIgnoreCase(patientToUpdate.getPassword())) {
+                if (!oldPassword.equals(newPassword)) {
+                    System.out.println("HI im working");
+                    patientToUpdate.setPassword(newPassword);
+                } else {
+                    throw new UpdatePasswordException("new password must be different!");
+                }
+            } else {
+                throw new UpdatePasswordException("Old password does not match original password!");
+
+            }
+        } catch (PatientNotFoundException ex) {
+
+        }
+
     }
 
     @Override
@@ -160,26 +218,56 @@ public class PatientSessionBean implements PatientSessionBeanLocal {
 
         return position;
     }
-    
+
     @Override
-    public BookingEntity retrieveCurrentBooking(Long patientId) {
+    public BookingEntity retrieveCurrentBooking(Long patientId) throws BookingNotFoundException {
         Calendar today = Calendar.getInstance();
         today.set(Calendar.HOUR_OF_DAY, 0);
         today.set(Calendar.MINUTE, 0);
         today.set(Calendar.SECOND, 0);
         today.set(Calendar.MILLISECOND, 0);
+        BookingEntity booking;
 
-           System.out.println("run " + patientId);
-        BookingEntity booking = (BookingEntity) em.createQuery("SELECT b FROM BookingEntity b WHERE b.patientEntity.userId= :patient AND b.transactionDateTime > :date ORDER BY b.transactionDateTime ASC")
-                .setParameter("patient", patientId)
-                .setParameter("date", today.getTime(), TemporalType.TIMESTAMP)
-                .getSingleResult();
-        
+        try {
+            booking = (BookingEntity) em.createQuery("SELECT b FROM BookingEntity b WHERE b.patientEntity.userId= :patient AND b.status<>  :status  AND b.transactionDateTime > :date ORDER BY b.transactionDateTime ASC")
+                    .setParameter("patient", patientId)
+                    .setParameter("date", today.getTime(), TemporalType.TIMESTAMP)
+                    .setParameter("status", BookingStatus.PAID)
+                    .getSingleResult();
+        } catch (NoResultException | NonUniqueResultException ex) {
+            throw new BookingNotFoundException("Booking not found for patient Id " + patientId + " does not exist!");
+        }
+
         booking.getClinicEntity();
         booking.getPatientEntity();
-           System.out.println("run z" + booking.getBookingId());
-       return booking;
-       
+        if (booking.getDoctorEntity() != null) {
+            booking.getDoctorEntity();
+        }
+
+        return booking;
+
+    }
+    
+    @Override
+    public List<BookingEntity> retrievePastBookings(Long patientId) throws BookingNotFoundException {
+        List<BookingEntity> bookings;
+        
+        try {
+            bookings = em.createQuery("SELECT b FROM BookingEntity b WHERE b.patientEntity.userId= :patient")
+                    .setParameter("patient", patientId)
+                    .getResultList();
+            
+            for (BookingEntity booking:bookings) {
+            booking.getDoctorEntity();
+            booking.getClinicEntity();
+            booking.getPatientEntity();
+        }
+        } catch (NoResultException ex) {
+            throw new BookingNotFoundException("No bookings found for patient Id " + patientId + "!"); 
+        }
+        
+        return bookings;
+        
     }
 
     private String prepareInputDataValidationErrorsMessage(Set<ConstraintViolation<PatientEntity>> constraintViolations) {

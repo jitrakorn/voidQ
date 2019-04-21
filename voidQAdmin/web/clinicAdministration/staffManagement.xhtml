@@ -1,0 +1,249 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                template="/template/defaultTemplate.xhtml"
+                xmlns:p="http://primefaces.org/ui">
+
+
+
+    <ui:define name="content">
+
+        <div>
+            <h3>Doctor Management</h3>
+
+
+            <h:form id="formAllDoctors">
+
+                <p:messages id="messages" redisplay="false" closable="true" />
+
+                <p:dataTable id="dataTableAllDoctors" widgetVar="dataTableAllDoctors" value="#{partnerManagementManagedBean.doctors}" var="doctorEntity" rowKey="#{doctorEntity.userId}" rowIndexVar="row"
+                             filteredValue="#{partnerManagementManagedBean.filteredDoctorEntities}"
+                             rows="10" paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="10,20,50">
+
+                    <f:facet name="header">
+                        <p:outputPanel style="text-align: right;">
+                            <h:outputText value="Search all fields:" />
+                            <p:inputText id="globalFilter" onkeyup="PF('dataTableAllDoctors').filter()" style="width:300px" placeholder="Enter keyword"/>
+                        </p:outputPanel>
+                    </f:facet>
+
+                    <p:column headerText="User ID" sortBy="#{doctorEntity.userId}" filterBy="#{doctorEntity.userId}" filterMatchMode="contains">
+                        <h:outputText value="#{doctorEntity.userId}" />
+                    </p:column>
+
+                    <p:column headerText="Email" sortBy="#{doctorEntity.email}" filterBy="#{doctorEntity.email}" filterMatchMode="contains">
+                        <h:outputText value="#{doctorEntity.email}" />
+                    </p:column>                            
+
+                    <p:column headerText="First Name" sortBy="#{doctorEntity.firstName}" filterBy="#{doctorEntity.firstName}" filterMatchMode="contains">
+                        <h:outputText value="#{doctorEntity.firstName}" />
+                    </p:column>
+
+                    <p:column headerText="Last Description" sortBy="#{doctorEntity.lastName}" filterBy="#{doctorEntity.lastName}" filterMatchMode="contains">
+                        <h:outputText value="#{doctorEntity.lastName}" />
+                    </p:column>
+
+
+                    <p:column headerText="Action" >
+                        <p:commandButton update="formViewDoctor" oncomplete="PF('dialogViewDoctor').show()" icon="ui-icon-document" title="View">
+                            <f:setPropertyActionListener value="#{doctorEntity}" target="#{partnerManagementManagedBean.selectedDoctorEntityToView}" />
+                        </p:commandButton>
+                        <p:commandButton actionListener="#{partnerManagementManagedBean.doUpdateDoctor}" update="formUpdateDoctor" oncomplete="PF('dialogUpdateDoctor').show()" icon="ui-icon-pencil" title="Update">
+                            <f:attribute name="doctorEntityToUpdate" value="#{doctorEntity}" />
+                        </p:commandButton>
+                        <p:commandButton icon="ui-icon-trash" actionListener="#{partnerManagementManagedBean.deleteDoctor}" update="formAllDoctors:dataTableAllDoctors formAllDoctors:messages">
+                            <f:attribute name="doctorEntityToDelete" value="#{doctorEntity}" />
+                            <p:confirm header="Confirmation" message="Are you sure you want to delete #{doctorEntity.email}" icon="ui-icon-alert" />
+                        </p:commandButton>
+                        <p:commandButton title="Change password" actionListener="#{partnerManagementManagedBean.doUpdateDoctorPassword}" update="formUpdatePasswordDoctor" oncomplete="PF('dialogUpdatePasswordDoctor').show()">
+                           <f:attribute name="doctorEntityToUpdatePassword" value="#{doctorEntity}" />
+                        </p:commandButton>
+
+                       
+
+                    </p:column>
+
+                </p:dataTable>
+
+                <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                    <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                </p:confirmDialog>
+
+            </h:form>
+
+
+
+            <h:form id="formViewDoctor">
+
+                <p:dialog id="dialogViewDoctor" widgetVar="dialogViewDoctor" header="View Doctor" closable="true">
+
+                    <p:panelGrid>
+
+                        <p:row>
+                            <p:column>
+                                <h:outputLabel value="User ID: " />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{partnerManagementManagedBean.selectedDoctorEntityToView.userId}" />
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <h:outputLabel value="Email: " />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{partnerManagementManagedBean.selectedDoctorEntityToView.email}" />
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <h:outputLabel value="First Name: " />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{partnerManagementManagedBean.selectedDoctorEntityToView.firstName}" />
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <h:outputLabel value="Last Name " />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{partnerManagementManagedBean.selectedDoctorEntityToView.lastName}" />
+                            </p:column>
+                        </p:row>
+
+
+
+                    </p:panelGrid>
+
+                </p:dialog>
+
+            </h:form>
+
+            <h:form id="formUpdateDoctor">
+
+                <p:dialog id="dialogUpdateDoctor" widgetVar="dialogUpdateDoctor" header="Update Doctor" closable="true">
+
+                    <p:messages id="messagesUpdateDoctor" redisplay="false" />
+
+                    <p:panelGrid>
+
+                        <p:row>
+                            <p:column>
+                                <h:outputLabel value="User ID: " />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{partnerManagementManagedBean.selectedDoctorEntityToUpdate.userId}" />
+                            </p:column>
+                            <p:column>
+                                &nbsp;
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <h:outputLabel value="Email: " />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{partnerManagementManagedBean.selectedDoctorEntityToUpdate.email}" />
+                            </p:column>
+                            <p:column>
+                                &nbsp;
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="fname" value="First Name: " />
+                            </p:column>
+                            <p:column>
+                                <p:inputText id="fname" value="#{partnerManagementManagedBean.selectedDoctorEntityToUpdate.firstName}" required="true" requiredMessage="First Name is required" />
+                            </p:column>
+                            <p:column>
+                                <p:message for="fname" />
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="lname" value="Last Name: " />
+                            </p:column>
+                            <p:column>
+                                <p:inputText id="lname" value="#{partnerManagementManagedBean.selectedDoctorEntityToUpdate.lastName}" required="true" requiredMessage="Description is required" />
+                            </p:column>
+                            <p:column>
+                                <p:message for="lname" />
+                            </p:column>
+                        </p:row>
+
+
+
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:commandButton value="Update Doctor" update="@form formAllDoctors:dataTableAllDoctors" actionListener="#{partnerManagementManagedBean.updateDoctor}" oncomplete="PF('dialogUpdateDoctor').show()" />
+                            </p:column>
+                        </p:row>
+
+                    </p:panelGrid>
+
+                </p:dialog>
+
+            </h:form>
+            
+             <h:form id="formUpdatePasswordDoctor" >
+                
+                <p:dialog id="dialogUpdatePasswordDoctor" widgetVar="dialogUpdatePasswordDoctor" header="Update Password Doctor" closable="true">
+
+                    <p:messages id="messagesUpdatePasswordDoctor" redisplay="false" />
+
+                    <p:panelGrid id="userPanel" rendered="#{partnerManagementManagedBean.selectedDoctorEntityToUpdatePassword != null}">
+                        <p:row>
+                            <p:column>
+                                <h:outputLabel value="Old password: " />
+                            </p:column>
+                            <p:column>
+                                <h:inputSecret value="#{partnerManagementManagedBean.oldPassword}" />
+                            </p:column>
+                            <p:column>
+                                &nbsp;
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <h:outputLabel value="New password: " />
+                            </p:column>
+                            <p:column>
+                                <h:inputSecret value="#{partnerManagementManagedBean.newPassword}" />
+                            </p:column>
+                            <p:column>
+                                &nbsp;
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:commandButton value="Update Password" update="@form formAllDoctors:dataTableAllDoctors" actionListener="#{partnerManagementManagedBean.updatePassword}" oncomplete="PF('dialogUpdatePasswordDoctor').show()" />
+                            </p:column>
+                        </p:row>
+
+                    </p:panelGrid>
+
+                </p:dialog>
+            </h:form>
+
+
+           
+        </div>
+
+    </ui:define>
+
+</ui:composition>
+
+

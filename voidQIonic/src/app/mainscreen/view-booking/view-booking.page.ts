@@ -5,46 +5,71 @@ import { PatientService } from 'src/app/patient.service';
 import { PayPal, PayPalPayment, PayPalConfiguration } from '@ionic-native/paypal/ngx';
 import { NavController } from '@ionic/angular';
 import { Booking } from 'src/app/booking';
+import { checkAndUpdateBinding } from '@angular/core/src/view/util';
 @Component({
-  selector: 'app-view-booking',
-  templateUrl: './view-booking.page.html',
-  styleUrls: ['./view-booking.page.scss'],
+	selector: 'app-view-booking',
+	templateUrl: './view-booking.page.html',
+	styleUrls: ['./view-booking.page.scss'],
 })
 export class ViewBookingPage implements OnInit {
 
-  currentUserCurrentQueuePosition: number;
-	
+	currentUserCurrentQueuePosition: number;
+
 	clinicEntity: any;
 	queueNum: number;
-	booking : any;
+	booking: any;
+	disabled: any;
+	paymentDisabled: any;
+	bookings: any;
 	constructor(public sessionService: SessionService, private bookingService: BookingService, private patientService: PatientService, private navigationCtrl: NavController, private payPal: PayPal) { }
 
 	async ngOnInit() {
-		
+
+
+	}
+	async checkPatient() {
 		await this.patientService.retrieveCurrentBooking(Object.values(this.sessionService.getCurrentPatient())[1]).subscribe(
 			response => {
 				this.booking = response.bookingEntity;
 				console.log(this.booking);
-			
+				if (this.booking.status == "BOOKED") {
+					this.disabled = false;
+				}
+				else {
+					this.disabled = true;
+				}
+				if (this.booking.status != "VISITED") {
+					this.paymentDisabled = true;
+				}
+
+
 				this.clinicEntity = response.bookingEntity.clinicEntity;
-				
+
 				this.patientService.retrieveCurrentBookingQueuePosition(String(this.booking.bookingId), String(this.clinicEntity.clinicId)).subscribe(
 					response => {
-			
+
 						this.queueNum = response.queueNumber
 					}
 				)
 			}
 		);
-	}
 
-	ionViewWillEnter() {
+		await this.patientService.retrievePastBookings(Object.values(this.sessionService.getCurrentPatient())[1]).subscribe(
+			response => {
+				this.bookings = response.bookingEntities;
+				console.log(this.bookings);
+			}
+		)
+	}
+	async ionViewWillEnter() {
+
+		this.checkPatient();
 		// console.log(Object.values(this.sessionService.getCurrentPatient()));
 		// this.patientService.retrieveCurrentBooking(Object.values(this.sessionService.getCurrentPatient())[1]).subscribe(
 		// 	response => {
 		// 		this.booking = response.bookingEntity;
 		// 		this.clinicEntity = response.bookingEntity.clinicEntity;
-		
+
 		// 	}
 		// )		
 		// this.patientService.retrieveCurrentBookingQueuePosition(String(this.booking.bookingId), String(this.clinicEntity.clinicId)).subscribe(
@@ -56,9 +81,20 @@ export class ViewBookingPage implements OnInit {
 		// )
 	}
 
-	checkin() {
-		this.bookingService.checkin(String(this.booking.bookingId));
-		alert("Checked-in!")
+	async checkin() {
+
+
+		await this.bookingService.checkin(String(this.booking.bookingId)).subscribe(
+			response => {
+				console.log(response);
+				alert("Checked-in!")
+			},
+			error => {
+				console.log(error);
+			}
+		)
+
+
 	}
 
 
@@ -75,7 +111,19 @@ export class ViewBookingPage implements OnInit {
 				//payPalShippingAddressOption: 2 // PayPalShippingAddressOptionPayPal
 			})).then(() => {
 				let payment = new PayPalPayment(this.clinicEntity.unitPrice, 'USD', this.booking.visitReason, 'sale');
-				this.payPal.renderSinglePaymentUI(payment).then(() => {
+				this.payPal.renderSinglePaymentUI(payment).then((response) => {
+
+					alert("run");
+					this.bookingService.makePayment(this.booking.bookingId).subscribe(
+						response => {
+
+							alert("Checked-in!")
+						},
+						error => {
+							alert(error);
+						}
+					)
+
 					// Successfully paid
 
 					// Example sandbox response
@@ -96,15 +144,15 @@ export class ViewBookingPage implements OnInit {
 					//   }
 					// }
 				}, (error) => {
-					console.log(error);
+					alert(error);
 					// Error or render dialog closed without being successful
 				});
 			}, (error) => {
-				console.log(error);
+				alert(error);
 				// Error in configuration
 			});
 		}, (error) => {
-			console.log(error);
+			alert(error);
 			// Error in initialization, maybe PayPal isn't supported or something else
 		});
 	}

@@ -1,0 +1,249 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                template="/template/defaultTemplate.xhtml"
+                xmlns:p="http://primefaces.org/ui">
+
+
+
+    <ui:define name="content">
+
+        <div>
+            <h3>Nurse Management</h3>
+
+
+            <h:form id="formAllNurses">
+
+                <p:messages id="messages" redisplay="false" closable="true" />
+
+                <p:dataTable id="dataTableAllNurses" widgetVar="dataTableAllNurses" value="#{nurseManagementManagedBean.nurses}" var="nurseEntity" rowKey="#{nurseEntity.userId}" rowIndexVar="row"
+                             filteredValue="#{nurseManagementManagedBean.filteredNurseEntities}"
+                             rows="10" paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="10,20,50">
+
+                    <f:facet name="header">
+                        <p:outputPanel style="text-align: right;">
+                            <h:outputText value="Search all fields:" />
+                            <p:inputText id="globalFilter" onkeyup="PF('dataTableAllNurses').filter()" style="width:300px" placeholder="Enter keyword"/>
+                        </p:outputPanel>
+                    </f:facet>
+
+                    <p:column headerText="User ID" sortBy="#{nurseEntity.userId}" filterBy="#{nurseEntity.userId}" filterMatchMode="contains">
+                        <h:outputText value="#{nurseEntity.userId}" />
+                    </p:column>
+
+                    <p:column headerText="Email" sortBy="#{nurseEntity.email}" filterBy="#{nurseEntity.email}" filterMatchMode="contains">
+                        <h:outputText value="#{nurseEntity.email}" />
+                    </p:column>                            
+
+                    <p:column headerText="First Name" sortBy="#{nurseEntity.firstName}" filterBy="#{nurseEntity.firstName}" filterMatchMode="contains">
+                        <h:outputText value="#{nurseEntity.firstName}" />
+                    </p:column>
+
+                    <p:column headerText="Last Description" sortBy="#{nurseEntity.lastName}" filterBy="#{nurseEntity.lastName}" filterMatchMode="contains">
+                        <h:outputText value="#{nurseEntity.lastName}" />
+                    </p:column>
+
+
+                    <p:column headerText="Action" >
+                        <p:commandButton update="formViewNurse" oncomplete="PF('dialogViewNurse').show()" icon="ui-icon-document" title="View">
+                            <f:setPropertyActionListener value="#{nurseEntity}" target="#{nurseManagementManagedBean.selectedNurseEntityToView}" />
+                        </p:commandButton>
+                        <p:commandButton actionListener="#{nurseManagementManagedBean.doUpdateNurse}" update="formUpdateNurse" oncomplete="PF('dialogUpdateNurse').show()" icon="ui-icon-pencil" title="Update">
+                            <f:attribute name="nurseEntityToUpdate" value="#{nurseEntity}" />
+                        </p:commandButton>
+                        <p:commandButton icon="ui-icon-trash" actionListener="#{nurseManagementManagedBean.deleteNurse}" update="formAllNurses:dataTableAllNurses formAllNurses:messages">
+                            <f:attribute name="nurseEntityToDelete" value="#{nurseEntity}" />
+                            <p:confirm header="Confirmation" message="Are you sure you want to delete #{nurseEntity.email}" icon="ui-icon-alert" />
+                        </p:commandButton>
+                        <p:commandButton title="Change password" actionListener="#{nurseManagementManagedBean.doUpdateNursePassword}" update="formUpdatePasswordNurse" oncomplete="PF('dialogUpdatePasswordNurse').show()">
+                           <f:attribute name="nurseEntityToUpdatePassword" value="#{nurseEntity}" />
+                        </p:commandButton>
+
+                       
+
+                    </p:column>
+
+                </p:dataTable>
+
+                <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                    <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                </p:confirmDialog>
+
+            </h:form>
+
+
+
+            <h:form id="formViewNurse">
+
+                <p:dialog id="dialogViewNurse" widgetVar="dialogViewNurse" header="View Nurse" closable="true">
+
+                    <p:panelGrid>
+
+                        <p:row>
+                            <p:column>
+                                <h:outputLabel value="User ID: " />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{nurseManagementManagedBean.selectedNurseEntityToView.userId}" />
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <h:outputLabel value="Email: " />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{nurseManagementManagedBean.selectedNurseEntityToView.email}" />
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <h:outputLabel value="First Name: " />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{nurseManagementManagedBean.selectedNurseEntityToView.firstName}" />
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <h:outputLabel value="Last Name " />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{nurseManagementManagedBean.selectedNurseEntityToView.lastName}" />
+                            </p:column>
+                        </p:row>
+
+
+
+                    </p:panelGrid>
+
+                </p:dialog>
+
+            </h:form>
+
+            <h:form id="formUpdateNurse">
+
+                <p:dialog id="dialogUpdateNurse" widgetVar="dialogUpdateNurse" header="Update Nurse" closable="true">
+
+                    <p:messages id="messagesUpdateNurse" redisplay="false" />
+
+                    <p:panelGrid>
+
+                        <p:row>
+                            <p:column>
+                                <h:outputLabel value="User ID: " />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{nurseManagementManagedBean.selectedNurseEntityToUpdate.userId}" />
+                            </p:column>
+                            <p:column>
+                                &nbsp;
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <h:outputLabel value="Email: " />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{nurseManagementManagedBean.selectedNurseEntityToUpdate.email}" />
+                            </p:column>
+                            <p:column>
+                                &nbsp;
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="fname" value="First Name: " />
+                            </p:column>
+                            <p:column>
+                                <p:inputText id="fname" value="#{nurseManagementManagedBean.selectedNurseEntityToUpdate.firstName}" required="true" requiredMessage="First Name is required" />
+                            </p:column>
+                            <p:column>
+                                <p:message for="fname" />
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="lname" value="Last Name: " />
+                            </p:column>
+                            <p:column>
+                                <p:inputText id="lname" value="#{nurseManagementManagedBean.selectedNurseEntityToUpdate.lastName}" required="true" requiredMessage="Description is required" />
+                            </p:column>
+                            <p:column>
+                                <p:message for="lname" />
+                            </p:column>
+                        </p:row>
+
+
+
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:commandButton value="Update Nurse" update="@form formAllNurses:dataTableAllNurses" actionListener="#{nurseManagementManagedBean.updateNurse}" oncomplete="PF('dialogUpdateNurse').show()" />
+                            </p:column>
+                        </p:row>
+
+                    </p:panelGrid>
+
+                </p:dialog>
+
+            </h:form>
+            
+             <h:form id="formUpdatePasswordNurse" >
+                
+                <p:dialog id="dialogUpdatePasswordNurse" widgetVar="dialogUpdatePasswordNurse" header="Update Password Nurse" closable="true">
+
+                    <p:messages id="messagesUpdatePasswordNurse" redisplay="false" />
+
+                    <p:panelGrid id="userPanel" rendered="#{nurseManagementManagedBean.selectedNurseEntityToUpdatePassword != null}">
+                        <p:row>
+                            <p:column>
+                                <h:outputLabel value="Old password: " />
+                            </p:column>
+                            <p:column>
+                                <h:inputSecret value="#{nurseManagementManagedBean.oldPassword}" />
+                            </p:column>
+                            <p:column>
+                                &nbsp;
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <h:outputLabel value="New password: " />
+                            </p:column>
+                            <p:column>
+                                <h:inputSecret value="#{nurseManagementManagedBean.newPassword}" />
+                            </p:column>
+                            <p:column>
+                                &nbsp;
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:commandButton value="Update Password" update="@form formAllNurses:dataTableAllNurses" actionListener="#{nurseManagementManagedBean.updatePassword}" oncomplete="PF('dialogUpdatePasswordNurse').show()" />
+                            </p:column>
+                        </p:row>
+
+                    </p:panelGrid>
+
+                </p:dialog>
+            </h:form>
+
+
+           
+        </div>
+
+    </ui:define>
+
+</ui:composition>
+
+

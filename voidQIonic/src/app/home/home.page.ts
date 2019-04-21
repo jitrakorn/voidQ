@@ -74,6 +74,9 @@ export class HomePage implements OnInit {
 	}
 
 	goToRegisterPage() {
-		this.navigationCtrl.navigateForward('/register');
+		this.navigationCtrl.navigateRoot('/register');
+	}
+	goToResetPasswordPage() {
+		this.navigationCtrl.navigateRoot('/resetpassword');
 	}
 }

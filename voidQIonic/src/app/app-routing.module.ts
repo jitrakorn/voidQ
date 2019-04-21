@@ -10,11 +10,12 @@ const routes: Routes = [
 	{ path: 'home', loadChildren: './home/home.module#HomePageModule' },
 	{ path: 'register', loadChildren: './register/register.module#RegisterPageModule' },
 	{ path: 'paymentpage', loadChildren: './paymentpage/paymentpage.module#PaymentpagePageModule' },
-	{ path: 'profile', loadChildren: './profile/profile.module#ProfilePageModule' },
-	{ path: 'view-booking', loadChildren: './view-booking/view-booking.module#ViewBookingPageModule' },
-	{ path: 'clinics', loadChildren: './clinics/clinics.module#ClinicsPageModule' },
+	{ path: 'profile', loadChildren: './mainscreen/profile/profile.module#ProfilePageModule' },
+	{ path: 'view-booking', loadChildren: './mainscreen/view-booking/view-booking.module#ViewBookingPageModule' },
+	{ path: 'clinics', loadChildren: './mainscreen/clinics/clinics.module#ClinicsPageModule' },
 	{ path: 'clinic-details', loadChildren: './clinic-details/clinic-details.module#ClinicDetailsPageModule' },
-  { path: 'tabs', loadChildren: './mainscreen/tabs/tabs.module#TabsPageModule' },
+  	{ path: 'tabs', loadChildren: './mainscreen/tabs/tabs.module#TabsPageModule' },
+  	{ path: 'resetpassword', loadChildren: './resetpassword/resetpassword.module#ResetpasswordPageModule' },
   
 
 

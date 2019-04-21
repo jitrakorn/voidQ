@@ -3,11 +3,18 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/jitra/Documents/GitHub/voidQ/voidQAdmin/web/clinicAdministration/createNewPartner.xhtml</file>
-            <file>file:/C:/Users/jitra/Documents/GitHub/voidQ/voidQAdmin/web/clinicAdministration/viewApplications.xhtml</file>
-            <file>file:/C:/Users/jitra/Documents/GitHub/voidQ/voidQAdmin/web/index.xhtml</file>
-            <file>file:/C:/Users/jitra/Documents/GitHub/voidQ/voidQAdmin/web/header.xhtml</file>
-            <file>file:/C:/Users/jitra/Documents/GitHub/voidQ/voidQAdmin/web/mainmenu.xhtml</file>
+            <file>file:/C:/Users/pamela/Desktop/voidQ/voidQAdmin/web/systemAdministration/adminManagement.xhtml</file>
+            <file>file:/C:/Users/pamela/Desktop/voidQ/voidQAdmin/src/java/jsf/managedbean/partnerManagementManagedBean.java</file>
+            <file>file:/C:/Users/pamela/Desktop/voidQ/voidQAdmin/web/clinicAdministration/viewAllPartners.xhtml</file>
+            <file>file:/C:/Users/pamela/Desktop/voidQ/voidQAdmin/web/clinicAdministration/staffManagement.xhtml</file>
+            <file>file:/C:/Users/pamela/Desktop/voidQ/voidQAdmin/src/java/jsf/managedbean/ViewAdminDetailsManagedBean.java</file>
+            <file>file:/C:/Users/pamela/Desktop/voidQ/voidQAdmin/web/header.xhtml</file>
+            <file>file:/C:/Users/pamela/Desktop/voidQ/voidQAdmin/src/java/jsf/managedbean/adminManagementManagedBean.java</file>
+            <file>file:/C:/Users/pamela/Desktop/voidQ/voidQAdmin/web/clinicAdministration/viewApplications.xhtml</file>
+            <file>file:/C:/Users/pamela/Desktop/voidQ/voidQAdmin/web/systemAdministration/viewAllAdmins.xhtml</file>
+            <file>file:/C:/Users/pamela/Desktop/voidQ/voidQAdmin/src/java/jsf/managedbean/ViewPartnerDetailsManagedBean.java</file>
+            <file>file:/C:/Users/pamela/Desktop/voidQ/voidQAdmin/web/mainmenu.xhtml</file>
+            <file>file:/C:/Users/pamela/Desktop/voidQ/voidQAdmin/web/clinicAdministration/createNewPartner.xhtml</file>
         </group>
     </open-files>
 </project-private>

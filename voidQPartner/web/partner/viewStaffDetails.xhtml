@@ -2,7 +2,6 @@
 <!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
                 xmlns:h="http://xmlns.jcp.org/jsf/html"
-                xmlns:f="http://xmlns.jcp.org/jsf/core"
                 template="/template/defaultTemplate.xhtml"
                 xmlns:p="http://primefaces.org/ui">
     <ui:define name="title">Staff Details</ui:define>
@@ -19,10 +18,11 @@
                 <h:inputText id="lastName" value="#{updateUserManagedBean.staffToUpdate.lastName}" styleClass="text-input__input"/>
 
                 <h:outputLabel for="email" value="EMAIL" styleClass="text-input__label text-input__label--left"/>
-                <h:inputText id="email" value="#{updateUserManagedBean.staffToUpdate.email}" styleClass="text-input__input"/>
+                <h:inputText id="email" value="#{updateUserManagedBean.staffToUpdate.email}" styleClass="text-input__input" readonly="true"/>
             </h:panelGrid>
             <br/>
             <h:commandButton value="UPDATE" actionListener="#{updateUserManagedBean.updateStaff}" styleClass="button"/>
+
         </h:form>
 
         <br/>
@@ -55,5 +55,22 @@
                 <h:outputText value="#{nurse.email}"/>
             </p:column>
         </p:dataTable>
+
+            <br/>
+            <h:commandButton value="CHANGE PASSWORD" actionListener="#{updateUserManagedBean.togglePassword}" styleClass="button"/>
+
+        </h:form>
+        <h:form id="changePassword" rendered="#{updateUserManagedBean.showForm == true}" styleClass="form form--wide">
+            <h:panelGrid id="userPanel" columns="2" rendered="#{updateUserManagedBean.staffToUpdate != null}" cellspacing="10px">
+                <h:outputLabel for="oldPassword" value="OLD PASSWORD" styleClass="text-input__label text-input__label--left"/>
+                <h:inputSecret id="oldPassword" value="#{updateUserManagedBean.oldPassword}" styleClass="text-input__input"  />
+                <h:outputLabel for="newPassword" value="NEW PASSWORD" styleClass="text-input__label text-input__label--left"/>
+                <h:inputSecret id="newPassword" value="#{updateUserManagedBean.newPassword}" styleClass="text-input__input" />
+            </h:panelGrid>
+            <br/>
+            <h:commandButton value="UPDATE PASSWORD" actionListener="#{updateUserManagedBean.updatePassword}" styleClass="button"/>
+
+        </h:form>
+
     </ui:define>
 </ui:composition>
