@@ -41,6 +41,9 @@ export class ViewBookingPage implements OnInit {
 				if (this.booking.status != "VISITED") {
 					this.paymentDisabled = true;
 				}
+				else{
+					this.paymentDisabled = false;
+				}
 
 
 				this.clinicEntity = response.bookingEntity.clinicEntity;
@@ -87,9 +90,11 @@ export class ViewBookingPage implements OnInit {
 		await this.bookingService.checkin(String(this.booking.bookingId)).subscribe(
 			response => {
 				console.log(response);
+				this.checkPatient();
 				alert("Checked-in!")
 			},
 			error => {
+				alert(error);
 				console.log(error);
 			}
 		)
@@ -117,7 +122,8 @@ export class ViewBookingPage implements OnInit {
 					this.bookingService.makePayment(this.booking.bookingId).subscribe(
 						response => {
 
-							alert("Checked-in!")
+							alert("Successfully made a payment!")
+							this.checkPatient();
 						},
 						error => {
 							alert(error);
