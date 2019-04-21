@@ -20,7 +20,6 @@ import org.primefaces.PrimeFaces;
 import util.exception.PartnerNotFoundException;
 import util.exception.UpdatePasswordException;
 
-
 @Named(value = "updateUserManagedBean")
 @ViewScoped
 
@@ -50,6 +49,8 @@ public class UpdateUserManagedBean implements Serializable {
     @PostConstruct
     public void postConstruct() {
         staffToUpdate = (StaffEntity) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("currentPartner");
+        doctors = partnerSessionBeanLocal.getDoctorsByClinicId(staffToUpdate.getClinicEntity().getClinicId());
+        nurses = partnerSessionBeanLocal.getNursesByClinicId(staffToUpdate.getClinicEntity().getClinicId());
         DoctorEntity doctor = new DoctorEntity();
         if (staffToUpdate.getClass().equals(doctor.getClass())) {
             isDoctor = true;
@@ -110,8 +111,6 @@ public class UpdateUserManagedBean implements Serializable {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An unexpected error has occurred: " + ex.getMessage(), null));
         }
     }
-    
-    
 
     public void updatePassword() {
 
@@ -170,7 +169,7 @@ public class UpdateUserManagedBean implements Serializable {
     public void setTextValue(String textValue) {
         this.textValue = textValue;
     }
-  
+
     public List<DoctorEntity> getDoctors() {
         return doctors;
     }

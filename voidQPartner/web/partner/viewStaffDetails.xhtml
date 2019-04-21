@@ -27,8 +27,22 @@
 
         <br/>
         <p:separator/>
-            
-        <h:outputText value="DOCTOR DETAILS" styleClass="title title--small" />
+
+        <br/>
+        <h:commandButton value="CHANGE PASSWORD" actionListener="#{updateUserManagedBean.togglePassword}" styleClass="button"/>
+
+        <h:form id="changePassword" rendered="#{updateUserManagedBean.showForm == true}" styleClass="form form--wide">
+            <h:panelGrid id="userPanel" columns="2" rendered="#{updateUserManagedBean.staffToUpdate != null}" cellspacing="10px">
+                <h:outputLabel for="oldPassword" value="OLD PASSWORD" styleClass="text-input__label text-input__label--left"/>
+                <h:inputSecret id="oldPassword" value="#{updateUserManagedBean.oldPassword}" styleClass="text-input__input"  />
+                <h:outputLabel for="newPassword" value="NEW PASSWORD" styleClass="text-input__label text-input__label--left"/>
+                <h:inputSecret id="newPassword" value="#{updateUserManagedBean.newPassword}" styleClass="text-input__input" />
+            </h:panelGrid>
+            <br/>
+            <h:commandButton value="UPDATE PASSWORD" actionListener="#{updateUserManagedBean.updatePassword}" styleClass="button"/>
+        </h:form>
+        
+                <h:outputText value="DOCTOR DETAILS" styleClass="title title--small" />
         #{updateUserManagedBean.foo()}
         <p:dataTable value="#{updateUserManagedBean.doctors}" var="doctor">
             <p:column headerText="Name">
@@ -43,8 +57,8 @@
                 <h:outputText value="#{doctor.status}"/>
             </p:column>
         </p:dataTable>
-        
-                <h:outputText value="NURSE DETAILS" styleClass="title title--small" />
+
+        <h:outputText value="NURSE DETAILS" styleClass="title title--small" />
         #{updateUserManagedBean.foo()}
         <p:dataTable value="#{updateUserManagedBean.nurses}" var="nurse">
             <p:column headerText="Name">
@@ -55,22 +69,6 @@
                 <h:outputText value="#{nurse.email}"/>
             </p:column>
         </p:dataTable>
-
-            <br/>
-            <h:commandButton value="CHANGE PASSWORD" actionListener="#{updateUserManagedBean.togglePassword}" styleClass="button"/>
-
-        </h:form>
-        <h:form id="changePassword" rendered="#{updateUserManagedBean.showForm == true}" styleClass="form form--wide">
-            <h:panelGrid id="userPanel" columns="2" rendered="#{updateUserManagedBean.staffToUpdate != null}" cellspacing="10px">
-                <h:outputLabel for="oldPassword" value="OLD PASSWORD" styleClass="text-input__label text-input__label--left"/>
-                <h:inputSecret id="oldPassword" value="#{updateUserManagedBean.oldPassword}" styleClass="text-input__input"  />
-                <h:outputLabel for="newPassword" value="NEW PASSWORD" styleClass="text-input__label text-input__label--left"/>
-                <h:inputSecret id="newPassword" value="#{updateUserManagedBean.newPassword}" styleClass="text-input__input" />
-            </h:panelGrid>
-            <br/>
-            <h:commandButton value="UPDATE PASSWORD" actionListener="#{updateUserManagedBean.updatePassword}" styleClass="button"/>
-
-        </h:form>
 
     </ui:define>
 </ui:composition>
