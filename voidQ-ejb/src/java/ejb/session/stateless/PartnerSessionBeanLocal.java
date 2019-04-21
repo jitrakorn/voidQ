@@ -79,4 +79,8 @@ public interface PartnerSessionBeanLocal {
 
     public void deleteDoctor(Long partnerId) throws PartnerNotFoundException, DeletePartnerException;
 
+    public DoctorEntity createNewDoctor(DoctorEntity newStaff);
+
+    public NurseEntity createNewNurse(NurseEntity newStaff);
+
 }

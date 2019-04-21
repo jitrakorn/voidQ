@@ -83,7 +83,23 @@ public class PartnerSessionBean implements PartnerSessionBeanLocal {
 
         return newStaff;
     }
+    
+    @Override
+   public DoctorEntity createNewDoctor(DoctorEntity newStaff) {
+        em.persist(newStaff);
+        em.flush();
 
+        return newStaff;
+    }
+   
+   @Override
+     public NurseEntity createNewNurse(NurseEntity newStaff) {
+        em.persist(newStaff);
+        em.flush();
+
+        return newStaff;
+    }
+   
     @Override
     public StaffEntity retrievePartnerByEmail(String email) throws PartnerNotFoundException {
         Query query = em.createQuery("SELECT d FROM DoctorEntity d WHERE d.email = :inEmail");
