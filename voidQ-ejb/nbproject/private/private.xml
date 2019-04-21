@@ -12,12 +12,9 @@
     </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/Users/mingxuan/Desktop/Y2S2/IS3106/Project/voidQ/voidQ-ejb/src/java/util/enumeration/BookingStatus.java</file>
+            <file>file:/Users/mingxuan/Desktop/Y2S2/IS3106/Project/voidQ/voidQ-ejb/src/java/ejb/session/stateless/AdministratorSessionBean.java</file>
             <file>file:/Users/mingxuan/Desktop/Y2S2/IS3106/Project/voidQ/voidQ-ejb/src/java/ejb/session/stateless/PatientSessionBean.java</file>
-            <file>file:/Users/mingxuan/Desktop/Y2S2/IS3106/Project/voidQ/voidQ-ejb/src/java/ejb/session/stateless/PatientSessionBeanLocal.java</file>
             <file>file:/Users/mingxuan/Desktop/Y2S2/IS3106/Project/voidQ/voidQ-ejb/src/java/ejb/entity/UserEntity.java</file>
-            <file>file:/Users/mingxuan/Desktop/Y2S2/IS3106/Project/voidQ/voidQ-ejb/src/java/ejb/entity/StaffEntity.java</file>
-            <file>file:/Users/mingxuan/Desktop/Y2S2/IS3106/Project/voidQ/voidQ-ejb/src/java/ejb/sms/SMS.java</file>
         </group>
     </open-files>
 </project-private>
