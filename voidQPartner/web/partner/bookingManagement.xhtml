@@ -40,8 +40,28 @@
             <p:column headerText="Booking Date" sortBy="#{booking.transactionDateTime}" filterBy="#{booking.transactionDateTime}" filterMatchMode="contains">
                 <h:outputText value="#{booking.transactionDateTime}"/>
             </p:column>
-
         </p:dataTable>
+        
+        <h:outputText value="TRANSACTION HISTORY" styleClass="title title--small"/>
+        <p:dataTable id="transactionTable" value="#{partnerBookingManagedBean.transactions}" var="transaction" rowKey="#{transaction.transactionId}" rowIndexVar="row"
+                     filteredValue="#{partnerBookingManagedBean.filteredTransactionEntities}"
+                     rows="10" paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="10,20,50">
+                        
+            <p:column headerText="Transaction Patient" sortBy="#{transaction.bookingEntity.patientEntity.firstName}" filterBy="#{transaction.bookingEntity.patientEntity.firstName}" filterMatchMode="contains">
+                <h:outputText value="#{transaction.bookingEntity.patientEntity.firstName} #{transaction.bookingEntity.patientEntity.lastName}"/>
+            </p:column>
+            
+                                    
+            <p:column headerText="Transaction Date" sortBy="#{transaction.transactionDateTime}" filterBy="#{transaction.transactionDateTime}" filterMatchMode="contains">
+                <h:outputText value="#{transaction.transactionDateTime}"/>
+            </p:column>
+            
+            <p:column headerText="Transaction Status" sortBy="#{transaction.status}" filterBy="#{transaction.status}" filterMatchMode="contains">
+                <h:outputText value="#{transaction.status}"/>
+            </p:column>
+            
+        </p:dataTable>
+
 
         <p:dialog id="eventDetailsDialog" widgetVar="eventDialog" header="#{partnerBookingManagedBean.event.title}" showEffect="slide" hideEffect="slide">
             <p:growl autoUpdate="true"/>
@@ -66,10 +86,10 @@
                         <p:outputLabel for="bookingStatus" value="Booking Status: " style="font-weight: bold"/>
                         <h:outputText id="bookingStatus" value="#{partnerBookingManagedBean.bookingStatusFromEvent}"/>
                     </p:panelGrid>
-                    <p:commandButton value="Check-In" actionListener="#{partnerBookingManagedBean.checkinPatient}" update="bookingDetails partnerDetails bookingHistoryTable"/>
-                    <p:commandButton value="Visited" actionListener="#{partnerBookingManagedBean.visitedPatient}" update="bookingDetails partnerDetails bookingHistoryTable"/>
-                    <p:commandButton value="No-Show" actionListener="#{partnerBookingManagedBean.noShowPatient}" update="bookingDetails partnerDetails bookingHistoryTable"/>
-                    <p:commandButton value="Paid" actionListener="#{partnerBookingManagedBean.paidPatient}" update="bookingDetails partnerDetails bookingHistoryTable"/>
+                    <p:commandButton value="Check-In" actionListener="#{partnerBookingManagedBean.checkinPatient}" update="bookingDetails partnerDetails bookingHistoryTable transactionTable"/>
+                    <p:commandButton value="Visited" actionListener="#{partnerBookingManagedBean.visitedPatient}" update="bookingDetails partnerDetails bookingHistoryTable transactionTable"/>
+                    <p:commandButton value="No-Show" actionListener="#{partnerBookingManagedBean.noShowPatient}" update="bookingDetails partnerDetails bookingHistoryTable transactionTable"/>
+                    <p:commandButton value="Paid" actionListener="#{partnerBookingManagedBean.paidPatient}" update="bookingDetails partnerDetails bookingHistoryTable transactionTable"/>
                 </h:form>
             </p:panelGrid>
         </p:dialog> 

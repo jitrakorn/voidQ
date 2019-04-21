@@ -9,9 +9,12 @@ import ejb.entity.BookingEntity;
 import ejb.entity.ClinicEntity;
 import ejb.entity.DoctorEntity;
 import ejb.entity.StaffEntity;
+import ejb.entity.TransactionEntity;
 import ejb.session.stateless.BookingSessionBeanLocal;
 import ejb.session.stateless.PartnerSessionBeanLocal;
+import ejb.session.stateless.TransactionSessionBeanLocal;
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -35,11 +38,16 @@ import util.enumeration.BookingStatus;
 public class partnerBookingManagedBean implements Serializable {
 
     @EJB
+    private TransactionSessionBeanLocal transactionSessionBean;
+
+    @EJB
     private PartnerSessionBeanLocal partnerSessionBean;
 
     @EJB
     private BookingSessionBeanLocal bookingSessionBean;
 
+    private List<TransactionEntity> filteredTransactionEntities;
+    private List<TransactionEntity> transactions;
     private final ScheduleModel schedule;
     private StaffEntity currentStaff;
     private ClinicEntity currentClinic;
@@ -64,8 +72,8 @@ public class partnerBookingManagedBean implements Serializable {
     @PostConstruct
     public void postConstruct() {
         currentStaff = (StaffEntity) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("currentPartner");
-
         currentClinic = partnerSessionBean.getPartnerById(currentStaff.getClinicEntity().getClinicId());
+        transactions = transactionSessionBean.getAllTransactionsByClinicId(currentClinic.getClinicId());
 
         if (!bookingSessionBean.getBookingsByClinicId(currentClinic.getClinicId()).isEmpty()) {
             bookings = bookingSessionBean.getBookingsByClinicId(currentClinic.getClinicId());
@@ -144,6 +152,7 @@ public class partnerBookingManagedBean implements Serializable {
         } else {
             // perhaps some real payment methods here
             booking.setStatus(BookingStatus.PAID);
+            booking.setTransactionEntity(new TransactionEntity("PAID", new Date(), booking));
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, booking.getPatientEntity().getFirstName() + " " + booking.getPatientEntity().getLastName() + " has paid!", null));
 
             bookingSessionBean.updateBooking(booking);
@@ -235,4 +244,22 @@ public class partnerBookingManagedBean implements Serializable {
     public void setFilteredBookingEntities(List<BookingEntity> filteredBookingEntities) {
         this.filteredBookingEntities = filteredBookingEntities;
     }
+
+    public List<TransactionEntity> getTransactions() {
+        return transactions;
+    }
+
+    public void setTransactions(List<TransactionEntity> transactions) {
+        this.transactions = transactions;
+    }
+
+    public List<TransactionEntity> getFilteredTransactionEntities() {
+        return filteredTransactionEntities;
+    }
+
+    public void setFilteredTransactionEntities(List<TransactionEntity> filteredTransactionEntities) {
+        this.filteredTransactionEntities = filteredTransactionEntities;
+    }
+    
+    
 }
