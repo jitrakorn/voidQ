@@ -64,8 +64,8 @@ export class ClinicDetailsPage implements OnInit {
 					this.sessionService.setBookingId(newBookingId);
 					this.message = "booked ! ";
 					this.presentToast();
-					this.navigationCtrl.navigateRoot("/view-booking");
-					
+					this.navigationCtrl.navigateRoot("/tabs");
+					alert("Booking Successful!");
 				},
 				error => {
 					this.message = "An error has occurred while booking: " + error;

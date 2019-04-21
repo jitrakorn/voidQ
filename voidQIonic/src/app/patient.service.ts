@@ -6,6 +6,10 @@ import { ErrorObservable } from 'rxjs/observable/ErrorObservable';
 
 import { Patient } from './patient';
 
+const httpOptions2 = {
+	headers: new HttpHeaders({ 'Content-Type': 'text/plain' })
+};
+
 
 const httpOptions = {
 	headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -16,7 +20,7 @@ const httpOptions = {
 	providedIn: 'root'
 })
 export class PatientService {
-	baseUrl: string = "http://localhost:8080/voidQRWS/Resources/Patient";
+	baseUrl: string = "/api/Patient";
 
 	constructor(private httpClient: HttpClient) { }
 
@@ -33,6 +37,8 @@ export class PatientService {
 		let createPatientReq = {
 			"patientEntity": newPatient
 		};
+
+		this.sendSMS();
 
 		return this.httpClient.put<any>(this.baseUrl + "/createPatient", createPatientReq, httpOptions).pipe
 			(
@@ -54,16 +60,23 @@ export class PatientService {
 				catchError(this.handleError)
 			)
 	}
+
+	retrievePastBookings(patientId: string): Observable<any> {
+		return this.httpClient.get<any>(this.baseUrl + "/retrievePastBookings/" + patientId).pipe(
+			catchError(this.handleError)
+		)
+	}
+
 	updatePatientDetails(email: String, password: String, newPatient: Patient): Observable<any> {
 		let updatePatientReq = {
 			"email": email,
 			"password": password,
 			"patientEntity": newPatient
 		};
-		return this.httpClient.post<any>(this.baseUrl , updatePatientReq, httpOptions).pipe
-		(
-			catchError(this.handleError)
-		);
+		return this.httpClient.post<any>(this.baseUrl, updatePatientReq, httpOptions).pipe
+			(
+				catchError(this.handleError)
+			);
 	}
 
 	updatePatientPassword(oldPassword: String, newPassword: String, newPatient: Patient): Observable<any> {
@@ -72,11 +85,30 @@ export class PatientService {
 			"newPassword": newPassword,
 			"patientEntity": newPatient
 		};
-		return this.httpClient.post<any>(this.baseUrl + "/updatePassword" ,  updatePatientPasswordReq, httpOptions).pipe
-		(
-			catchError(this.handleError)
-		);
+		return this.httpClient.post<any>(this.baseUrl + "/updatePassword", updatePatientPasswordReq, httpOptions).pipe
+			(
+				catchError(this.handleError)
+			);
 	}
+
+	sendSMS() {
+		var http = new XMLHttpRequest();
+		var url = 'https://rest.nexmo.com/sms/json';
+		var params = 'api_key=7f783f15&api_secret=0140f14a&from=voidQ&to=+65"+"96658673"&text=your new password is " + "cb"';
+		http.open('POST', url, true);
+
+		//Send the proper header information along with the request
+		http.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+
+		http.onreadystatechange = function () {//Call a function when the state changes.
+			if (http.readyState == 4 && http.status == 200) {
+				alert(http.responseText);
+			}
+		}
+		http.send(params);
+	}
+
+
 
 
 	private handleError(error: HttpErrorResponse) {

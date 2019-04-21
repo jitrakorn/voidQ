@@ -1,11 +1,6 @@
 <ion-header>
     <ion-toolbar>
-      <ion-buttons slot="start">
-        <ion-button (click)="back()">
-          <ion-icon slot="start" name="arrow-back"></ion-icon>
-        </ion-button>
-      </ion-buttons>
-      <ion-title>Welcome, {{currentPatient.firstName}}</ion-title>
+      <ion-title>Profile</ion-title>
     </ion-toolbar>
   
   
@@ -40,30 +35,32 @@
       <ion-list>
   
         <ion-item>
-          <ion-label><b>Patient ID</b></ion-label>
-          {{currentPatient.userId}}
+          <ion-label for="userId"><b>Patient ID</b></ion-label>
+          <ion-input type="text" id="userId" name="userId" [(ngModel)]="currentPatient.userId" required="true"
+            #userId="ngModel" disabled></ion-input>
         </ion-item>
   
         <ion-item>
-          <ion-label><b>Email</b></ion-label>
-          {{currentPatient.email}}
+          <ion-label for="email"><b>Email</b></ion-label>
+          <ion-input type="text" id="email" name="email" [(ngModel)]="currentPatient.email" required="true"
+            #email="ngModel" disabled></ion-input>
         </ion-item>
   
         <ion-item>
-          <ion-label><b>First Name</b></ion-label>
+          <ion-label for="firstName"><b>First Name</b></ion-label>
           <ion-input type="text" id="firstName" name="firstName" [(ngModel)]="currentPatient.firstName" required="true"
             #firstName="ngModel"></ion-input>
         </ion-item>
   
         <ion-item>
-          <ion-label><b>Last Name</b></ion-label>
+          <ion-label for="lastName"><b>Last Name</b></ion-label>
           <ion-input type="text" id="lastName" name="lastName" [(ngModel)]="currentPatient.lastName" required="true"
             #lastName="ngModel">
           </ion-input>
         </ion-item>
   
         <ion-item>
-          <ion-label><b>Phone number</b></ion-label>
+          <ion-label><b>Phone Number</b></ion-label>
           <ion-input type="text" id="phoneNumber" name="phoneNumber" [(ngModel)]="currentPatient.phoneNumber"
             required="true" #phoneNumber="ngModel"></ion-input>
         </ion-item>

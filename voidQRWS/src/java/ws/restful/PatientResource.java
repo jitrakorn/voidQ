@@ -6,12 +6,14 @@ import datamodel.ws.rest.ErrorRsp;
 import datamodel.ws.rest.PatientLoginRsp;
 import datamodel.ws.rest.RetrieveCurrentBookingQueuePositionRsp;
 import datamodel.ws.rest.RetrieveCurrentBookingRsp;
+import datamodel.ws.rest.RetrievePastBookingsRsp;
 import datamodel.ws.rest.UpdatePatientPasswordReq;
 import datamodel.ws.rest.UpdatePatientReq;
 import ejb.entity.BookingEntity;
 
 import ejb.entity.PatientEntity;
 import ejb.session.stateless.PatientSessionBeanLocal;
+import java.util.List;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -208,6 +210,38 @@ public class PatientResource {
             bookingEntity.setNurseEntity(null);
             bookingEntity.setTransactionEntity(null);
             return Response.status(Status.OK).entity(new RetrieveCurrentBookingRsp(bookingEntity)).build();
+        } catch (BookingNotFoundException ex) {
+            ErrorRsp errorRsp = new ErrorRsp("empty");
+            return Response.status(Status.OK).entity(errorRsp).build();
+        }
+
+    }
+
+    @Path("retrievePastBookings/{patientId}")
+    @GET
+    @Consumes(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response retrievePastBookings(@PathParam("patientId") String patientId) {
+
+        Long longPatientId = Long.parseLong(patientId);
+
+        try {
+            List<BookingEntity> bookingEntities = patientSessionBeanLocal.retrievePastBookings(longPatientId);
+            for (BookingEntity bookingEntity : bookingEntities) {
+                bookingEntity.getClinicEntity().getBookingEntities().clear();
+                bookingEntity.getClinicEntity().getDoctorEntities().clear();
+                bookingEntity.getClinicEntity().getNurseEntities().clear();
+                bookingEntity.getPatientEntity().getBookingEntities().clear();
+                if (bookingEntity.getDoctorEntity() != null) {
+                    bookingEntity.getDoctorEntity().getBookingEntities().clear();
+                    bookingEntity.getDoctorEntity().getMessageOfTheDayEntities().clear();
+                }
+
+                bookingEntity.setNurseEntity(null);
+                bookingEntity.setTransactionEntity(null);
+            }
+
+            return Response.status(Status.OK).entity(new RetrievePastBookingsRsp(bookingEntities)).build();
         } catch (BookingNotFoundException ex) {
             ErrorRsp errorRsp = new ErrorRsp("empty");
             return Response.status(Status.OK).entity(errorRsp).build();

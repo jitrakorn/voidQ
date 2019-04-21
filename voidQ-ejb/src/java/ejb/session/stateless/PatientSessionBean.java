@@ -226,6 +226,28 @@ public class PatientSessionBean implements PatientSessionBeanLocal {
         return booking;
 
     }
+    
+    @Override
+    public List<BookingEntity> retrievePastBookings(Long patientId) throws BookingNotFoundException {
+        List<BookingEntity> bookings;
+        
+        try {
+            bookings = em.createQuery("SELECT b FROM BookingEntity b WHERE b.patientEntity.userId= :patient")
+                    .setParameter("patient", patientId)
+                    .getResultList();
+            
+            for (BookingEntity booking:bookings) {
+            booking.getDoctorEntity();
+            booking.getClinicEntity();
+            booking.getPatientEntity();
+        }
+        } catch (NoResultException ex) {
+            throw new BookingNotFoundException("No bookings found for patient Id " + patientId + "!"); 
+        }
+        
+        return bookings;
+        
+    }
 
     private String prepareInputDataValidationErrorsMessage(Set<ConstraintViolation<PatientEntity>> constraintViolations) {
         String msg = "Input data validation error!:";
