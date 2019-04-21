@@ -93,6 +93,23 @@ public class ClinicSessionBean implements ClinicSessionBeanLocal {
         return checkedInBookings.size();
     }
     
+    @Override
+    public List<ClinicEntity> retrieveAllClinics() {
+        return em.createQuery("SELECT c FROM ClinicEntity c").getResultList();
+    }
+    
+    @Override
+    public void updateClinic(ClinicEntity clinic) {
+        em.merge(clinic);
+        em.flush();
+    }
+    
+    @Override
+    public void deleteClinic(ClinicEntity clinic) {
+        em.remove(clinic);
+        em.flush();
+    }
+    
 
     private String prepareInputDataValidationErrorsMessage(Set<ConstraintViolation<ClinicEntity>> constraintViolations) {
         String msg = "Input data validation error!:";

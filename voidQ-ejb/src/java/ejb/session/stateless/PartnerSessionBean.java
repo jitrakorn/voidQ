@@ -8,8 +8,8 @@ package ejb.session.stateless;
 import ejb.entity.BookingEntity;
 import ejb.entity.ClinicEntity;
 import ejb.entity.DoctorEntity;
+import ejb.entity.NurseEntity;
 import ejb.entity.StaffEntity;
-import java.util.Calendar;
 import java.util.List;
 import java.util.Set;
 import javax.ejb.Local;
@@ -19,14 +19,13 @@ import javax.persistence.NoResultException;
 import javax.persistence.NonUniqueResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import javax.persistence.TemporalType;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 import util.enumeration.ApplicationStatus;
 import util.enumeration.Availability;
-import util.enumeration.BookingStatus;
+import util.exception.ClinicNotActivatedException;
 import util.exception.DeletePartnerException;
 import util.exception.InputDataValidationException;
 import util.exception.InvalidLoginCredentialException;
@@ -176,21 +175,39 @@ public class PartnerSessionBean implements PartnerSessionBeanLocal {
         // Also check for existing staff before proceeding with the update
 
         // Updated in v4.2 with bean validation
+        DoctorEntity doctorCheck = new DoctorEntity();
+        NurseEntity nurseCheck = new NurseEntity();
+
         Set<ConstraintViolation<StaffEntity>> constraintViolations = validator.validate(staff);
 
         if (constraintViolations.isEmpty()) {
             if (staff.getUserId() != null) {
-                StaffEntity staffToUpdate = retrieveStaffByStaffId(staff.getUserId());
+                Object staffClass = staff.getClass();
+                System.out.println(staffClass);
 
-                if (staffToUpdate.getUserId().equals(staff.getUserId())) {
-                    staffToUpdate.setEmail(staff.getEmail());
-                    staffToUpdate.setFirstName(staff.getFirstName());
-                    staffToUpdate.setLastName(staff.getLastName());
-                } else {
-                    throw new UpdatePartnerException("Email of staff record to be updated does not match the existing record");
+                if (staff.getClass().equals(doctorCheck.getClass())) {
+                    doctorCheck = (DoctorEntity) retrievePartnerByEmail(staff.getEmail());
+
+                    if (doctorCheck.getUserId().equals(staff.getUserId())) {
+                        doctorCheck.setEmail(staff.getEmail());
+                        doctorCheck.setFirstName(staff.getFirstName());
+                        doctorCheck.setLastName(staff.getLastName());
+                    } else {
+                        throw new UpdatePartnerException("Email of doctor record to be updated does not match the existing record");
+                    }
+                } else if (staff.getClass().equals(nurseCheck.getClass())) {
+                    nurseCheck = (NurseEntity) retrievePartnerByEmail(staff.getEmail());
+
+                    if (nurseCheck.getUserId().equals(staff.getUserId())) {
+                        nurseCheck.setEmail(staff.getEmail());
+                        nurseCheck.setFirstName(staff.getFirstName());
+                        nurseCheck.setLastName(staff.getLastName());
+                    } else {
+                        throw new UpdatePartnerException("Email of nurse record to be updated does not match the existing record");
+                    }
                 }
             } else {
-                throw new PartnerNotFoundException("Staff ID not provided for stadf to be updated");
+                throw new PartnerNotFoundException("Staff ID not provided for staff to be updated");
             }
         } else {
             throw new InputDataValidationException(prepareInputDataValidationErrorsMessagea(constraintViolations));
@@ -198,10 +215,14 @@ public class PartnerSessionBean implements PartnerSessionBeanLocal {
     }
 
     @Override
-    public StaffEntity emailLogin(String email, String password) throws InvalidLoginCredentialException {
+    public StaffEntity emailLogin(String email, String password) throws InvalidLoginCredentialException, ClinicNotActivatedException {
         try {
             StaffEntity staffEntity = retrievePartnerByEmail(email);
             String passwordHash = CryptographicHelper.getInstance().byteArrayToHexString(CryptographicHelper.getInstance().doMD5Hashing(password + staffEntity.getSalt()));
+
+            if (staffEntity.getClinicEntity().getApplicationStatus().equals(ApplicationStatus.NOTACTIVATED)) {
+                throw new ClinicNotActivatedException("Clinic is not activated");
+            }
 
             if (staffEntity.getPassword().equals(passwordHash)) {
                 return staffEntity;
@@ -250,7 +271,7 @@ public class PartnerSessionBean implements PartnerSessionBeanLocal {
                 .setParameter("status", Availability.AVAILABLE)
                 .setParameter("clinic", currentClinic)
                 .getResultList();
-        
+
         DoctorEntity appointedDoctor = doctors.get(0);
 
         booking.setDoctorEntity(appointedDoctor);
@@ -263,14 +284,30 @@ public class PartnerSessionBean implements PartnerSessionBeanLocal {
 
         return appointedDoctor;
     }
-    
+
     @Override
     public DoctorEntity availDoctor(DoctorEntity appointedDoctor) {
         appointedDoctor.setStatus(Availability.AVAILABLE);
         em.merge(appointedDoctor);
         em.flush();
-        
+
         return appointedDoctor;
+    }
+
+    @Override
+    public List<DoctorEntity> getDoctorsByClinicId(Long clinicId) {
+        ClinicEntity clinic = em.find(ClinicEntity.class, clinicId);
+        return em.createQuery("SELECT d FROM DoctorEntity d WHERE d.clinicEntity = :clinic")
+                .setParameter("clinic", clinic)
+                .getResultList();
+    }
+
+    @Override
+    public List<NurseEntity> getNursesByClinicId(Long clinicId) {
+        ClinicEntity clinic = em.find(ClinicEntity.class, clinicId);
+        return em.createQuery("SELECT n FROM NurseEntity n WHERE n.clinicEntity = :clinic")
+                .setParameter("clinic", clinic)
+                .getResultList();
     }
 
     private String prepareInputDataValidationErrorsMessage(Set<ConstraintViolation<ClinicEntity>> constraintViolations) {

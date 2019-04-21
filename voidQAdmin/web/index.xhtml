@@ -7,25 +7,44 @@
                 xmlns:ez="http://xmlns.jcp.org/jsf/composite/ezcomp"
                 xmlns:p="http://primefaces.org/ui">
     
-    <ui:define name="content">
-        
-       
-        
+        <ui:define name="title">Index</ui:define>
+        <ui:define name="content">
         <h:panelGroup rendered="#{sessionScope.isLogin == false}">
-            <article>
-                <h3>Welcome</h3>
+            <h:outputText value="LOG-IN" styleClass="title title--big"/>
 
-            </article>
+            <h:form id="loginForm" styleClass="form form--narrow" >
+                <h:inputText id="username" value="#{loginManagedBean.username}" size="16" required="true" requiredMessage="Username is required." maxlength="32" styleClass="text-input__input text-input__input--align-center" >
+                    <f:validateLength minimum="4" />
+                </h:inputText>
+                <h:outputLabel for="username" value="EMAIL" styleClass="text-input__label"/>
+                <br/>
+                <h:inputSecret id="password" value="#{loginManagedBean.password}" size="16" required="true" requiredMessage="Password is required." maxlength="32" styleClass="text-input__input text-input__input--align-center">
+                    <f:validateLength minimum="4" />
+                </h:inputSecret>
+                <h:outputLabel for="password" value="PASSWORD" styleClass="text-input__label"/>
+                <br/>
+                <h:commandButton type="submit" value="LOGIN" actionListener="#{loginManagedBean.login}" styleClass="button" />
+            </h:form>
         </h:panelGroup>
 
         <h:panelGroup rendered="#{sessionScope.isLogin == true}">
             <article>
-                <h3>Message Of The Day</h3>                    
+                <h3>Announcement</h3> 
                 <p>                    
-                    <ui:repeat value="#{indexManagedBean.messageOfTheDayEntities}" var="motd">
-                        
+                    <ui:repeat value="#{partnerIndexManagedBean.messageOfTheDayEntities}" var="motd">
+
                         <p:panel header="#{utilManagedBean.formatMotdHeader(motd.messageDate)} - #{motd.title}" toggleable="true">
                             <h:outputText value="#{motd.message}" />
+
+                            <h:outputText value="Posted by : #{motd.staffEntity.firstName} #{motd.staffEntity.lastName} #{motd.messageDate} " style="float:right;" />
+                            <br/>
+                            <h:outputText value="Last edited by : #{motd.lastEditedStaffEntity.firstName} #{motd.lastEditedStaffEntity.lastName} #{motd.lastEditedMessageDate}" rendered="#{motd.lastEditedStaffEntity!=null}" style="float:right;" />
+                            <br/>
+                            <p:commandButton actionListener="#{partnerIndexManagedBean.redirect}" id="iconOnly"  style="margin-right:20px;" icon="pi pi-save" title="Icon Only" >
+                                <f:attribute name="newsID" value="#{motd.motdId}" />
+                            </p:commandButton>
+
+
                         </p:panel>
                         <br/>                
 
@@ -33,7 +52,7 @@
                 </p>
             </article>
         </h:panelGroup>
-        
+
     </ui:define>
 
 </ui:composition>

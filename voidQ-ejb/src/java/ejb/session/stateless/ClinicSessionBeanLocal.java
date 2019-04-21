@@ -23,4 +23,10 @@ public interface ClinicSessionBeanLocal {
     public List<ClinicEntity> retrieveAllActivatedClinics();
     
     public Integer retrieveCurrentClinicCurrentDayCurrentQueue(Long clinicId);
+    
+    public List<ClinicEntity> retrieveAllClinics();
+    
+    public void updateClinic(ClinicEntity clinic);
+    
+    public void deleteClinic(ClinicEntity clinic);
 }
