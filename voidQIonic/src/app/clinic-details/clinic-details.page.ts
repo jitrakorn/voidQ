@@ -44,7 +44,7 @@ export class ClinicDetailsPage implements OnInit {
 	
 	back()
 	{
-		this.location.back();
+		this.navigationCtrl.navigateBack("/tabs");
 	}
 	
 

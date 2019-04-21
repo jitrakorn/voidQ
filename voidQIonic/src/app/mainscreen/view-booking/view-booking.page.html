@@ -27,7 +27,7 @@
 
 			<span *ngIf="booking.status == 'BOOKED' || booking.status == 'CHECKED_IN'">
 				<br /> <br />
-				There are currently <b>{{queueNum}}</b> patients in front of you.
+				There are currently <b>{{queueNum - 1}}</b> patients in front of you.
 			</span>
 
 			<span *ngIf="booking.status == 'VISITING'">
