@@ -106,7 +106,7 @@ public class ClinicSessionBean implements ClinicSessionBeanLocal {
     
     @Override
     public void deleteClinic(ClinicEntity clinic) {
-        em.remove(clinic);
+        em.remove(em.find(ClinicEntity.class, clinic.getClinicId()));
         em.flush();
     }
     

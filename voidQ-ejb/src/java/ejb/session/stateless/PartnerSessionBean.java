@@ -214,6 +214,7 @@ public class PartnerSessionBean implements PartnerSessionBeanLocal {
                     partnerToUpdate.setClinicName(clinic.getClinicName());
                     partnerToUpdate.setDescription(clinic.getDescription());
                     partnerToUpdate.setUnitPrice(clinic.getUnitPrice());
+                    partnerToUpdate.setApplicationStatus(clinic.getApplicationStatus());
 
                 } else {
                     throw new UpdatePartnerException("ID of partner record to be updated does not match the existing record");

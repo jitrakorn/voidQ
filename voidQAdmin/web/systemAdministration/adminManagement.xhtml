@@ -5,16 +5,16 @@
                 xmlns:f="http://xmlns.jcp.org/jsf/core"
                 template="/template/defaultTemplate.xhtml"
                 xmlns:p="http://primefaces.org/ui">
-    
-    
-    
-      <ui:define name="content">
+
+
+
+    <ui:define name="content">
 
         <div>
             <h3>Admin Management</h3>
-            
+
             <h:form>
-            
+
                 <p:menubar>
 
                     <p:submenu label="File" icon="ui-icon-document">
@@ -25,9 +25,9 @@
                 <br/>
 
             </h:form>
-            
+
             <h:form id="formAllAdmins">
-            
+
                 <p:messages id="messages" redisplay="false" closable="true" />
 
                 <p:dataTable id="dataTableAllAdmins" widgetVar="dataTableAllAdmins" value="#{adminManagementManagedBean.admins}" var="adminEntity" rowKey="#{adminEntity.userId}" rowIndexVar="row"
@@ -52,12 +52,12 @@
                     <p:column headerText="Name" sortBy="#{adminEntity.firstName}" filterBy="#{adminEntity.firstName}" filterMatchMode="contains">
                         <h:outputText value="#{adminEntity.firstName}" />
                     </p:column>
-                    
+
                     <p:column headerText="Description" sortBy="#{adminEntity.lastName}" filterBy="#{adminEntity.lastName}" filterMatchMode="contains">
                         <h:outputText value="#{adminEntity.lastName}" />
                     </p:column>
-                    
-                    
+
+
                     <p:column headerText="Contact Number" sortBy="#{adminEntity.phoneNumber}" filterBy="#{adminEntity.phoneNumber}" filterMatchMode="contains">
                         <h:outputText value="#{adminEntity.phoneNumber}" />
                     </p:column>
@@ -86,208 +86,219 @@
                 </p:confirmDialog>
 
             </h:form>
-            
+
             <h:form id="formCreateNewAdmin">
-            
-            <p:dialog id="dialogCreateNewAdmin" widgetVar="dialogCreateNewAdmin" header="Create New Admin" closable="true">
 
-                <p:messages id="messagesCreateNewAdmin" redisplay="false" />
-                
-                <p:panelGrid>
-                    
-                    <p:row>
-                        <p:column>
-                            <p:outputLabel for="email" value="Email: " style="font-weight: bold;" />
-                        </p:column>
-                        <p:column>
-                            <p:inputText id="email" value="#{adminManagementManagedBean.newAdmin.email}" required="true" requiredMessage="Email is required" />
-                        </p:column>
-                        <p:column>
-                            <p:message for="email" />
-                        </p:column>
-                    </p:row>
-                    
-                   <p:row>
-                        <p:column>
-                            <p:outputLabel for="password" value="Password " style="font-weight: bold;" />
-                        </p:column>
-                        <p:column>
-                            <p:password id="password" value="#{adminManagementManagedBean.newAdmin.password}" required="true" requiredMessage="Password is required" />
-                        </p:column>
-                        <p:column>
-                            <p:message for="password" />
-                        </p:column>
-                    </p:row>
-                    
-                    
-                    <p:row>
-                        <p:column>
-                            <p:outputLabel for="fname" value="First Name: " style="font-weight: bold;" />
-                        </p:column>
-                        <p:column>
-                            <p:inputText id="fname" value="#{adminManagementManagedBean.newAdmin.firstName}" required="true" requiredMessage="First Name is required" />
-                        </p:column>
-                        <p:column>
-                            <p:message for="fname" />
-                        </p:column>
-                    </p:row>
-                    
-                    <p:row>
-                        <p:column>
-                            <p:outputLabel for="lname" value="Last Name: " style="font-weight: bold;" />
-                        </p:column>
-                        <p:column>
-                            <p:inputText id="lname" value="#{adminManagementManagedBean.newAdmin.lastName}" required="true" requiredMessage="Last Name is required" />
-                        </p:column>
-                        <p:column>
-                            <p:message for="lname" />
-                        </p:column>
-                    </p:row>
-                    
-                    <p:row>
-                        <p:column colspan="3">
-                            <p:commandButton type="reset" value="Clear" />&nbsp;
-                            <p:commandButton  value="Create New Admin" update="@form formAllAdmins:dataTableAllAdmins" actionListener="#{adminManagementManagedBean.createNewAdmin}" oncomplete="PF('dialogCreateNewAdmin').show();" />
-                        </p:column>
-                    </p:row>
-                  
-                </p:panelGrid>
+                <p:dialog id="dialogCreateNewAdmin" widgetVar="dialogCreateNewAdmin" header="Create New Admin" closable="true">
 
-            </p:dialog>
-            
-        </h:form>
-        
-        <h:form id="formViewAdmin">
-            
-            <p:dialog id="dialogViewAdmin" widgetVar="dialogViewAdmin" header="View Admin" closable="true">
+                    <p:messages id="messagesCreateNewAdmin" redisplay="false" />
 
-                <p:panelGrid>
-                    
-                    <p:row>
-                        <p:column>
-                            <h:outputLabel value="User ID: " />
-                        </p:column>
-                        <p:column>
-                            <h:outputText value="#{adminManagementManagedBean.selectedAdminEntityToView.userId}" />
-                        </p:column>
-                    </p:row>
-                    
-                    <p:row>
-                        <p:column>
-                            <h:outputLabel value="Email: " />
-                        </p:column>
-                        <p:column>
-                            <h:outputText value="#{adminManagementManagedBean.selectedAdminEntityToView.email}" />
-                        </p:column>
-                    </p:row>
-                    
-                    <p:row>
-                        <p:column>
-                            <h:outputLabel value="First Name: " />
-                        </p:column>
-                        <p:column>
-                            <h:outputText value="#{adminManagementManagedBean.selectedAdminEntityToView.firstName}" />
-                        </p:column>
-                    </p:row>
-                    
-                    <p:row>
-                        <p:column>
-                            <h:outputLabel value="Last Name " />
-                        </p:column>
-                        <p:column>
-                            <h:outputText value="#{adminManagementManagedBean.selectedAdminEntityToView.lastName}" />
-                        </p:column>
-                    </p:row>
-                    
-                    <p:row>
-                        <p:column>
-                            <h:outputLabel value="Contact Number " />
-                        </p:column>
-                        <p:column>
-                            <h:outputText value="#{adminManagementManagedBean.selectedAdminEntityToView.phoneNumber}" />
-                        </p:column>
-                    </p:row>
-                    
-                 
-                    
-                </p:panelGrid>
+                    <p:panelGrid>
 
-            </p:dialog>
-            
-        </h:form>
-        
-        <h:form id="formUpdateAdmin">
-            
-            <p:dialog id="dialogUpdateAdmin" widgetVar="dialogUpdateAdmin" header="Update Admin" closable="true">
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="email" value="Email: " style="font-weight: bold;" />
+                            </p:column>
+                            <p:column>
+                                <p:inputText id="email" value="#{adminManagementManagedBean.newAdmin.email}" required="true" requiredMessage="Email is required" />
+                            </p:column>
+                            <p:column>
+                                <p:message for="email" />
+                            </p:column>
+                        </p:row>
 
-                <p:messages id="messagesUpdateAdmin" redisplay="false" />
-                
-                <p:panelGrid>
-                    
-                    <p:row>
-                        <p:column>
-                            <h:outputLabel value="User ID: " />
-                        </p:column>
-                        <p:column>
-                            <h:outputText value="#{adminManagementManagedBean.selectedAdminEntityToUpdate.userId}" />
-                        </p:column>
-                        <p:column>
-                            &nbsp;
-                        </p:column>
-                    </p:row>
-                    
-                    <p:row>
-                        <p:column>
-                            <h:outputLabel value="Email: " />
-                        </p:column>
-                        <p:column>
-                            <h:outputText value="#{adminManagementManagedBean.selectedAdminEntityToUpdate.email}" />
-                        </p:column>
-                        <p:column>
-                            &nbsp;
-                        </p:column>
-                    </p:row>
-                    
-                    <p:row>
-                        <p:column>
-                            <p:outputLabel for="fname" value="First Name: " />
-                        </p:column>
-                        <p:column>
-                            <p:inputText id="fname" value="#{adminManagementManagedBean.selectedAdminEntityToUpdate.firstName}" required="true" requiredMessage="First Name is required" />
-                        </p:column>
-                        <p:column>
-                            <p:message for="fname" />
-                        </p:column>
-                    </p:row>
-                    
-                    <p:row>
-                        <p:column>
-                            <p:outputLabel for="lname" value="Last Name: " />
-                        </p:column>
-                        <p:column>
-                            <p:inputText id="lname" value="#{adminManagementManagedBean.selectedAdminEntityToUpdate.lastName}" required="true" requiredMessage="Description is required" />
-                        </p:column>
-                        <p:column>
-                            <p:message for="lname" />
-                        </p:column>
-                    </p:row>
-                    
-                  
-                    
-                    <p:row>
-                        <p:column colspan="3">
-                            <p:commandButton value="Update Admin" update="@form formAllAdmins:dataTableAllAdmins" actionListener="#{adminManagementManagedBean.updateAdmin}" oncomplete="PF('dialogUpdateAdmin').show();" />
-                        </p:column>
-                    </p:row>
-                    
-                </p:panelGrid>
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="password" value="Password " style="font-weight: bold;" />
+                            </p:column>
+                            <p:column>
+                                <p:password id="password" value="#{adminManagementManagedBean.newAdmin.password}" required="true" requiredMessage="Password is required" />
+                            </p:column>
+                            <p:column>
+                                <p:message for="password" />
+                            </p:column>
+                        </p:row>
 
-            </p:dialog>
-            
-        </h:form>
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="fname" value="First Name: " style="font-weight: bold;" />
+                            </p:column>
+                            <p:column>
+                                <p:inputText id="fname" value="#{adminManagementManagedBean.newAdmin.firstName}" required="true" requiredMessage="First Name is required" />
+                            </p:column>
+                            <p:column>
+                                <p:message for="fname" />
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="lname" value="Last Name: " style="font-weight: bold;" />
+                            </p:column>
+                            <p:column>
+                                <p:inputText id="lname" value="#{adminManagementManagedBean.newAdmin.lastName}" required="true" requiredMessage="Last Name is required" />
+                            </p:column>
+                            <p:column>
+                                <p:message for="lname" />
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="phoneNum" value="Phone Number: " style="font-weight: bold;" />
+                            </p:column>
+                            <p:column>
+                                <p:inputText id="phoneNum" value="#{adminManagementManagedBean.newAdmin.phoneNumber}" required="true" requiredMessage="Phone number is required" />
+                            </p:column>
+                            <p:column>
+                                <p:message for="phoneNum" />
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:commandButton type="reset" value="Clear" />&nbsp;
+                                <p:commandButton  value="Create New Admin" update="@form formAllAdmins:dataTableAllAdmins" actionListener="#{adminManagementManagedBean.createNewAdmin}" oncomplete="PF('dialogCreateNewAdmin').show();" />
+                            </p:column>
+                        </p:row>
+
+                    </p:panelGrid>
+
+                </p:dialog>
+
+            </h:form>
+
+            <h:form id="formViewAdmin">
+
+                <p:dialog id="dialogViewAdmin" widgetVar="dialogViewAdmin" header="View Admin" closable="true">
+
+                    <p:panelGrid>
+
+                        <p:row>
+                            <p:column>
+                                <h:outputLabel value="User ID: " />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{adminManagementManagedBean.selectedAdminEntityToView.userId}" />
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <h:outputLabel value="Email: " />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{adminManagementManagedBean.selectedAdminEntityToView.email}" />
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <h:outputLabel value="First Name: " />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{adminManagementManagedBean.selectedAdminEntityToView.firstName}" />
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <h:outputLabel value="Last Name " />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{adminManagementManagedBean.selectedAdminEntityToView.lastName}" />
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <h:outputLabel value="Contact Number " />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{adminManagementManagedBean.selectedAdminEntityToView.phoneNumber}" />
+                            </p:column>
+                        </p:row>
+
+
+
+                    </p:panelGrid>
+
+                </p:dialog>
+
+            </h:form>
+
+            <h:form id="formUpdateAdmin">
+
+                <p:dialog id="dialogUpdateAdmin" widgetVar="dialogUpdateAdmin" header="Update Admin" closable="true">
+
+                    <p:messages id="messagesUpdateAdmin" redisplay="false" />
+
+                    <p:panelGrid>
+
+                        <p:row>
+                            <p:column>
+                                <h:outputLabel value="User ID: " />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{adminManagementManagedBean.selectedAdminEntityToUpdate.userId}" />
+                            </p:column>
+                            <p:column>
+                                &nbsp;
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <h:outputLabel value="Email: " />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{adminManagementManagedBean.selectedAdminEntityToUpdate.email}" />
+                            </p:column>
+                            <p:column>
+                                &nbsp;
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="fname" value="First Name: " />
+                            </p:column>
+                            <p:column>
+                                <p:inputText id="fname" value="#{adminManagementManagedBean.selectedAdminEntityToUpdate.firstName}" required="true" requiredMessage="First Name is required" />
+                            </p:column>
+                            <p:column>
+                                <p:message for="fname" />
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="lname" value="Last Name: " />
+                            </p:column>
+                            <p:column>
+                                <p:inputText id="lname" value="#{adminManagementManagedBean.selectedAdminEntityToUpdate.lastName}" required="true" requiredMessage="Description is required" />
+                            </p:column>
+                            <p:column>
+                                <p:message for="lname" />
+                            </p:column>
+                        </p:row>
+
+
+
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:commandButton value="Update Admin" update="@form formAllAdmins:dataTableAllAdmins" actionListener="#{adminManagementManagedBean.updateAdmin}" oncomplete="PF('dialogUpdateAdmin').show();" />
+                            </p:column>
+                        </p:row>
+
+                    </p:panelGrid>
+
+                </p:dialog>
+
+            </h:form>
 
         </div>
-        
+
     </ui:define>
 
 </ui:composition>

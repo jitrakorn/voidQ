@@ -53,10 +53,6 @@
                         <p:commandButton value="Approve" actionListener="#{createNewPartnerManagedBean.approve}" update="@form viewAllApplications:dataTableAllClinics" icon="ui-icon-pencil" title="Approve">
                             <f:attribute name="clinicEntityToUpdate" value="#{clinicEntity}"/>
                         </p:commandButton>
-                        
-                         <p:commandButton value="Reject" actionListener="#{createNewPartnerManagedBean.doUpdateClinic}" update="formViewReject" oncomplete="PF('dialogViewReject').show()" icon="ui-icon-pencil" title="Reject">
-                            <f:attribute name="clinicEntityToUpdate" value="#{clinicEntity}" />
-                        </p:commandButton>
 
                     </p:column>
 

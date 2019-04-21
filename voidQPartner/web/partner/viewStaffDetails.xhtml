@@ -7,6 +7,7 @@
     <ui:define name="title">Staff Details</ui:define>
 
     <ui:define name="content">
+        <h:form>
         <h:outputText value="STAFF DETAILS" styleClass="title title--big" />
         #{updateUserManagedBean.foo()}
         <h:form id="formUser" styleClass="form form--wide">
@@ -22,7 +23,6 @@
             </h:panelGrid>
             <br/>
             <h:commandButton value="UPDATE" actionListener="#{updateUserManagedBean.updateStaff}" styleClass="button"/>
-
         </h:form>
 
         <br/>
@@ -41,10 +41,10 @@
             <br/>
             <h:commandButton value="UPDATE PASSWORD" actionListener="#{updateUserManagedBean.updatePassword}" styleClass="button"/>
         </h:form>
-        
-                <h:outputText value="DOCTOR DETAILS" styleClass="title title--small" />
+
+        <h:outputText value="DOCTOR DETAILS" styleClass="title title--small" />
         #{updateUserManagedBean.foo()}
-        <p:dataTable value="#{updateUserManagedBean.doctors}" var="doctor">
+        <p:dataTable id="doctorTable" value="#{updateUserManagedBean.doctors}" var="doctor">
             <p:column headerText="Name">
                 <h:outputText value="#{doctor.firstName} #{doctor.lastName}"/>
             </p:column>
@@ -60,7 +60,7 @@
 
         <h:outputText value="NURSE DETAILS" styleClass="title title--small" />
         #{updateUserManagedBean.foo()}
-        <p:dataTable value="#{updateUserManagedBean.nurses}" var="nurse">
+        <p:dataTable id="nurseTable" value="#{updateUserManagedBean.nurses}" var="nurse">
             <p:column headerText="Name">
                 <h:outputText value="#{nurse.firstName} #{nurse.lastName}"/>
             </p:column>
@@ -69,6 +69,6 @@
                 <h:outputText value="#{nurse.email}"/>
             </p:column>
         </p:dataTable>
-
+        </h:form>
     </ui:define>
 </ui:composition>

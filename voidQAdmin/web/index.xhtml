@@ -29,7 +29,8 @@
 
         <h:panelGroup rendered="#{sessionScope.isLogin == true}">
             <article>
-                <h3>Announcement</h3> 
+                <h3>Announcement</h3>
+                <h:link value="#{createNewPartnerManagedBean.getUnApproved} unapproved clinics" outcome = "/clinicAdministration/viewApplications.xhtml" rendered="#{createNewPartnerManagedBean.getUnApproved > 0}"/>
                 <p>                    
                     <ui:repeat value="#{partnerIndexManagedBean.messageOfTheDayEntities}" var="motd">
 
