@@ -7,6 +7,7 @@ import { NavController } from '@ionic/angular';
 import { Location } from '@angular/common';
 import {ToastController} from '@ionic/angular';
 import { ConstantPool } from '@angular/compiler';
+import { Router } from '@angular/router';
 @Component({
 	selector: 'app-clinic-details',
 	templateUrl: './clinic-details.page.html',
@@ -38,13 +39,10 @@ export class ClinicDetailsPage implements OnInit {
 		}
 	}
 
-	ionViewWillEnter() {
-		
-	}
 	
 	back()
 	{
-		this.navigationCtrl.navigateBack("/tabs");
+		this.navigationCtrl.navigateRoot("/tabs");
 	}
 	
 

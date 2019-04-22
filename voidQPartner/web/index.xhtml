@@ -30,20 +30,29 @@
             </h:form>
         </h:panelGroup>
 
+        
+  
         <h:panelGroup rendered="#{sessionScope.isLogin == true}">
+              <h:outputText value="ANNOUNCEMENTS" styleClass="title title--big" />
+
+        <h:button value="CREATE ANNOUNCEMENT" outcome="news/newAnnouncement" styleClass="button"/>
             <article>
-                <h3>Announcement</h3>                    
-                <p>                    
+               
+                
+                  
                     <ui:repeat value="#{partnerIndexManagedBean.messageOfTheDayEntities}" var="motd">
 
                         <p:panel header="#{utilManagedBean.formatMotdHeader(motd.messageDate)} - #{motd.title}" toggleable="true">
                             <h:outputText value="#{motd.message}" />
+                            
+                               <br/>   <br/>
 
-                            <h:outputText value="Posted by : #{motd.staffEntity.firstName} #{motd.staffEntity.lastName} #{motd.messageDate} " style="float:right;" />
+                            <h:outputText value="Posted by : Doctor #{motd.doctorEntity.firstName} #{motd.doctorEntity.lastName} #{motd.messageDate} " style="float:right;" />
                             <br/>
-                            <h:outputText value="Last edited by : #{motd.lastEditedStaffEntity.firstName} #{motd.lastEditedStaffEntity.lastName} #{motd.lastEditedMessageDate}" rendered="#{motd.lastEditedStaffEntity!=null}" style="float:right;" />
+                            <h:outputText value="Last edited by : Doctor #{motd.lastEditedDoctorEntity.firstName} #{motd.lastEditedDoctorEntity.lastName} #{motd.lastEditedMessageDate}" rendered="#{motd.lastEditedDoctorEntity!=null}" style="float:right;" />
                             <br/>
-                            <p:commandButton actionListener="#{partnerIndexManagedBean.redirect}" id="iconOnly"  style="margin-right:20px;" icon="pi pi-save" title="Icon Only" >
+                               <br/>
+                            <p:commandButton actionListener="#{partnerIndexManagedBean.redirect}" id="iconOnly"  style="margin-right:20px;" title="Edit" >
                                 <f:attribute name="newsID" value="#{motd.motdId}" />
                             </p:commandButton>
 
@@ -52,9 +61,10 @@
                         <br/>                
 
                     </ui:repeat>                                                              
-                </p>
+               
             </article>
         </h:panelGroup>
+
 
     </ui:define>
 

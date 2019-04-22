@@ -6,53 +6,38 @@
                 template="/template/defaultTemplate.xhtml"
                 xmlns:p="http://primefaces.org/ui">
     <ui:define name="content">
+        <h:outputText value="ANNOUNCEMENTS" styleClass="title title--big" />
 
-        <div>
-            <h3>Create New Announcement</h3>
-            <br></br>
-            #{updateUserManagedBean.foo()}
-           <h:form id="form">
-   
- 
-               <p:carousel value="#{viewNewsDetailsManagedBean.messageOfTheDayEntity}" headerText="Custom" var="news" itemStyle="height:200px;text-align:center" numVisible="1" easing="easeOutBounce" style="width:250px" circular="true">
-        <h:panelGrid columns="2" style="width:100%" columnClasses="label,value">
-          
- 
-            <h:outputText value="Title" />
-            <h:outputText value="#{news.title}" />
- 
-            <h:outputText value="News" />
-            <h:outputText value="#{news.message}" />
- 
-      
- 
-            <f:facet name="footer">
-                <p:commandButton update=":form:carDetail" oncomplete="PF('carDialog').show()" icon="pi pi-search">
-                    <f:setPropertyActionListener value="#{news}" target="#{viewNewsDetailsManagedBean.selectedMessageOfTheDayEntity}" />
-                </p:commandButton>
-            </f:facet>
-        </h:panelGrid>
-    </p:carousel> 
-     
-   
- 
-    <p:dialog header="Car Info" widgetVar="carDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
-        <p:outputPanel id="carDetail" style="text-align:center;">
-            <p:panelGrid  columns="2" rendered="#{not empty viewNewsDetailsManagedBean.selectedMessageOfTheDayEntity}" columnClasses="label,value">
+        <h:button value="CREATE ANNOUNCEMENT" outcome="newAnnouncement" styleClass="button"/>
+        #{updateUserManagedBean.foo()}
+        <h:panelGroup rendered="#{sessionScope.isLogin == true}">
+            <article>
+                <h3>Announcement</h3>
+                
+                  
+                    <ui:repeat value="#{partnerIndexManagedBean.messageOfTheDayEntities}" var="motd">
 
- 
-                <h:outputText value="Title:" />
-                <h:outputText value="#{viewNewsDetailsManagedBean.selectedMessageOfTheDayEntity.title}" />
- 
-                <h:outputText value="Message" />
-                <h:outputText value="#{viewNewsDetailsManagedBean.selectedMessageOfTheDayEntity.message}" />
- 
+                        <p:panel header="#{utilManagedBean.formatMotdHeader(motd.messageDate)} - #{motd.title}" toggleable="true">
+                            <h:outputText value="#{motd.message}" />
+
+                            <h:outputText value="Posted by : #{motd.doctorEntity.firstName} #{motd.doctorEntity.lastName} #{motd.messageDate} " style="float:right;" />
+                            <br/>
+                            <h:outputText value="Last edited by : #{motd.lastEditedDoctorEntity.firstName} #{motd.lastEditedDoctorEntity.lastName} #{motd.lastEditedMessageDate}" rendered="#{motd.lastEditedDoctorEntity!=null}" style="float:right;" />
+                            <br/>
+                            <p:commandButton actionListener="#{partnerIndexManagedBean.redirect}" id="iconOnly"  style="margin-right:20px;" icon="pi pi-save" title="Icon Only" >
+                                <f:attribute name="newsID" value="#{motd.motdId}" />
+                            </p:commandButton>
+
+
+                        </p:panel>
+                        <br/>                
+
+                    </ui:repeat>                                                              
                
-            </p:panelGrid>
-        </p:outputPanel>
-    </p:dialog>
-</h:form>
-        </div>
+            </article>
+        </h:panelGroup>
+
+          
     </ui:define>
 
 </ui:composition>

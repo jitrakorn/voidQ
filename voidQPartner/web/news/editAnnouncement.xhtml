@@ -8,7 +8,7 @@
     <ui:define name="content">
 
         <div>
-            <h3>Create New Announcement</h3>
+            <h3>Edit New Announcement</h3>
             <br></br>
             #{updateUserManagedBean.foo()}
             <h:form id="formNews">
@@ -20,7 +20,7 @@
                 </style>
 
 
-                    <p:panelGrid id="userPanel" columns="2" rendered="#{newsManagedBean.staffToUpdate.title== 'doctor'}">
+                    <p:panelGrid id="userPanel" columns="2" rendered="#{newsManagedBean.doctorToUpdate!=null}">
 
 
                      <h:outputText value="Title *" />

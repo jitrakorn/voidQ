@@ -5,9 +5,6 @@ import { catchError } from 'rxjs/operators';
 import { ErrorObservable } from 'rxjs/observable/ErrorObservable';
 import { Patient } from './patient';
 
-const httpOptions2 = {
-	headers: new HttpHeaders({ 'Content-Type': 'text/plain' })
-};
 
 
 const httpOptions = {

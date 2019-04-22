@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild , NgZone} from '@angular/core';
 import { IonInfiniteScroll, ToastController, Platform, NavController } from '@ionic/angular';
 
 import { GoogleMap, GoogleMaps, MyLocation, Marker, GoogleMapsAnimation, GoogleMapsEvent } from '@ionic-native/google-maps/';
@@ -6,6 +6,8 @@ import { Clinic } from 'src/app/clinic';
 import { ClinicService } from 'src/app/clinic.service';
 import { SessionService } from 'src/app/session.service';
 import { CompileShallowModuleMetadata } from '@angular/compiler';
+import { Router } from '@angular/router';
+import { Location } from '@angular/common';
 
 
 @Component({
@@ -18,30 +20,32 @@ export class ClinicsPage implements OnInit {
 
 	clinics: Clinic[];
 	clinicsWithQueue: Object[];
+	
 
 	map: GoogleMap;
 	loading: any;
 	async ngOnInit() {
 	
 	
+		
 	}
-
+	
 	async ionViewWillEnter() {
-		this.clinicsWithQueue= [];
-		console.log("hjh");
-		// Since ngOnInit() is executed before `deviceready` event,
-		// you have to wait the event.
+	
 
-		this.clinicService.retrieveClinics().subscribe(
+		this.clinicsWithQueue= [];
+		
+		 this.clinicService.retrieveClinics().subscribe(
 			clinicResponse => {
-				this.clinics = clinicResponse.clinicEntities;
+				this.zone.run(() => {
+					this.clinics = clinicResponse.clinicEntities;
 				console.log(this.clinics);
 
 				for (let clinic of this.clinics) {
-					this.clinicService.retrieveCurrentClinicCurrentDayCurrentQueue(String(clinic.clinicId)).subscribe(
+				this.clinicService.retrieveCurrentClinicCurrentDayCurrentQueue(String(clinic.clinicId)).subscribe(
 						queueResponse => {
 							
-					
+				
 							this.clinicsWithQueue.push({
 								clinicId: clinic.clinicId,
 								address: clinic.address,
@@ -54,24 +58,38 @@ export class ClinicsPage implements OnInit {
 								unitPrice: clinic.unitPrice,
 								queueNum: queueResponse.queueNumber
 							})
+						
 							console.log(this.clinicsWithQueue);
 						}
 					)
-				}
+				}			
+				});
+				
 			},
 			error => {
 				console.log('********** home.page.ts (retrieveClinics): ' + error);
 			}
 		);
+		
 
-		await this.platform.ready();
-		await this.loadMap();
-		await this.goToMyLocation();
+		await this.platform.ready().then( () => {
+
+	
+			this.loadMap();
+			this.map.one( GoogleMapsEvent.MAP_READY ).then( ( data: any ) => {
+				this.goToMyLocation();
+			})
+		});
+
+	
+	
 	}
+	
 
 	constructor(public sessionService: SessionService, public toastCtrl: ToastController,
-		private platform: Platform, private clinicService: ClinicService, private navigationCtrl: NavController) {
+		private platform: Platform, private clinicService: ClinicService, private navigationCtrl: NavController,private router: Router,private location : Location,private zone : NgZone) {
 			this.clinicsWithQueue = [];
+			
 	}
 
 	// loadData(event) {
@@ -114,7 +132,8 @@ export class ClinicsPage implements OnInit {
 	goBook(clinic: Object) {
 		console.log(clinic);
 		this.sessionService.setClinicObj(clinic);
-		this.navigationCtrl.navigateForward("/clinic-details");
+		//this.router.navigate(['/clinic-details']);
+		this.navigationCtrl.navigateRoot("/clinic-details");
 	}
 
 	loadMap() {
@@ -146,22 +165,25 @@ export class ClinicsPage implements OnInit {
 			});
 
 			//add a marker
-			for (let clinic of this.clinics) {
+			for (let clinic of this.clinicsWithQueue) {
 				var clinicLocations =
 				{
-					"lat": Number(clinic.lat),
-					"lng": Number(clinic.lng)
+					"lat": Number(clinic["lat"]),
+					"lng": Number(clinic["lng"])
 
 				};
 
 				let marker: Marker = this.map.addMarkerSync({
-					title: String(clinic.clinicName),
+					title: String(clinic["clinicName"]),
 					snippet: String(this.distance(location.latLng.lat, location.latLng.lng, clinicLocations.lat, clinicLocations.lng) + " km away"),
 					position: clinicLocations,
 					animation: GoogleMapsAnimation.DROP
 				});
-
-
+			
+				marker.on(GoogleMapsEvent.INFO_CLICK).subscribe(() => {
+					this.goBook(clinic);
+					
+				  });
 		
 			}
 
